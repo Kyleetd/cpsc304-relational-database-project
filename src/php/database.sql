@@ -1,6 +1,6 @@
 CREATE TABLE [User] (
     ID SERIAL PRIMARY KEY,
-    name CHAR(20)
+    name VARCHAR(20)
 );
 
 CREATE TABLE User_Achievement (
@@ -12,7 +12,7 @@ CREATE TABLE User_Achievement (
     FOREIGN KEY (userID) REFERENCES [User] (ID)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (goalID) REFERENCES FitnessGoal (goalID)
+    FOREIGN KEY (goalID) REFERENCES User_FitnessGoal (goalID)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     UNIQUE (goalID)
@@ -25,6 +25,18 @@ CREATE TABLE User_FitnessGoal (
     userID INT,
     FOREIGN KEY (userID) REFERENCES [User] (ID)
         ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE ConsistsOf (
+    workoutID INT,
+    exerciseName CHAR(20),
+    PRIMARY KEY (workoutID, exerciseName),
+    FOREIGN KEY (workoutID) REFERENCES Workout (workoutID)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+    FOREIGN KEY (exerciseName) REFERENCES Exercise (name)
+        ON DELETE SET NULL
         ON UPDATE CASCADE
 );
 
@@ -115,29 +127,17 @@ CREATE TABLE AccomplishedBy (
     goalID INT,
     workoutID INT,
     PRIMARY KEY (goalID, workoutID),
-    FOREIGN KEY (goalID) REFERENCES FitnessGoal (goalID)
+    FOREIGN KEY (goalID) REFERENCES User_FitnessGoal (goalID)
         ON DELETE SET NULL
         ON UPDATE CASCADE,
     FOREIGN KEY (workoutID) REFERENCES Workout (workoutID)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
-);
-
-CREATE TABLE ConsistsOf (
-    workoutID INT,
-    exerciseName CHAR(20),
-    PRIMARY KEY (workoutID, exerciseName),
-    FOREIGN KEY (workoutID) REFERENCES Workout (workoutID)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE,
-    FOREIGN KEY (exerciseName) REFERENCES Exercise (name)
         ON DELETE SET NULL
         ON UPDATE CASCADE
 );
 
 CREATE TABLE TrainingPlan (
     planID INT,
-    name CHAR(20),
+    name CHAR(100),
     description CHAR(20),
     PRIMARY KEY (planID)
 );
@@ -165,5 +165,3 @@ CREATE TABLE Sees (
         ON DELETE SET NULL
         ON UPDATE CASCADE
 );
-
-
