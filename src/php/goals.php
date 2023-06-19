@@ -27,11 +27,11 @@
     }
 
     td:first-child {
-        width: 100px; /* Set width for the first cell in each row (Set Achieved or Delete) */
+        width: 100px; /* Set width for the first column (Set Achieved or Delete) */
     }
 
     td:nth-child(3) {
-        width: 40%; /* Set width for the third cell in each row (Description) */
+        width: 40%; /* Set width for the third column (Description) */
     }
 
     .add-goal-button {
@@ -80,6 +80,18 @@
     while ($row = oci_fetch_assoc($stmt)) {
         echo 'userID: ' . $row['ID'] . '<br>';
         echo 'Name: ' . $row['NAME'] . '<br>';
+    }
+
+
+    $queryuser = "SELECT * FROM \"User_Achievement\"";
+    $stmt = oci_parse($db_conn, $queryuser);
+    oci_execute($stmt);
+    
+    // Fetch and print each row
+    while ($row = oci_fetch_assoc($stmt)) {
+        echo 'userID: ' . $row['USERID'] . '<br>';
+        echo 'Description: ' . $row['DESCRIPTION'] . '<br>';
+        echo 'Date Accomplished: ' . $row['DATEACCOMPLISHED'] . '<br>';
     }
     // DELETE
 
@@ -153,11 +165,12 @@
             $goalRow = oci_fetch_assoc($stmt);
 
             // Insert goal into User_Achievement table
-            $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID) VALUES (:description, :dateAccomplished, :userID)";
+            $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID, GOALID) VALUES (:description, :dateAccomplished, :userID, :goalID)";
             $insertStmt = oci_parse($db_conn, $insertQuery);
             oci_bind_by_name($insertStmt, ":description", $goalRow['DESCRIPTION']);
             oci_bind_by_name($insertStmt, ":dateAccomplished", $goalRow['TARGETDATE']);
             oci_bind_by_name($insertStmt, ":userID", $goalRow['USERID']);
+            oci_bind_by_name($insertStmt, ":goalID", $goalRow['GOALID']);
             oci_execute($insertStmt);
         }
         // Refresh table
