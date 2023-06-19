@@ -73,9 +73,14 @@ CREATE TABLE Gym (
     address VARCHAR(40),
     postalCode VARCHAR(20),
     city VARCHAR(20),
-    country VARCHAR(20),
     name VARCHAR(20),
     PRIMARY KEY (address, postalCode)
+);
+
+CREATE TABLE PCC (
+    postalCode VARCHAR(20),
+    country VARCHAR(20),
+    PRIMARY KEY (postalCode)
 );
 
 CREATE TABLE User_Measurement (
