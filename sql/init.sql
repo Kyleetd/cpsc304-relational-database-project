@@ -22,7 +22,7 @@ CREATE TABLE User_FitnessGoal (
     targetDate VARCHAR(20),
     userID INT,
     FOREIGN KEY (userID) REFERENCES "User" (ID)
-        ON DELETE CASCADE
+        ON DELETE SET NULL
 );
 
 CREATE TABLE ConsistsOf (

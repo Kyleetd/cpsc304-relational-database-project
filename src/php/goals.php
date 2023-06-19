@@ -26,6 +26,14 @@
         border-bottom: 1px solid #ddd;
     }
 
+    td:first-child {
+        width: 100px; /* Set width for the first cell in each row (Set Achieved or Delete) */
+    }
+
+    td:nth-child(3) {
+        width: 40%; /* Set width for the third cell in each row (Description) */
+    }
+
     .add-goal-button {
         display: inline-block;
         width: 30px;
@@ -41,14 +49,11 @@
     .hidden-row {
         display: none;
     }
-</style>
-<script>
-    function showInputForm() {
-        var formRow = document.getElementById('form-row');
-        formRow.style.display = 'table-row';
+
+    .set-achieved-column {
+        width: 50px;
     }
-</script>
-</head>
+</style>
 <body>
 
     <div class="header">
@@ -66,17 +71,32 @@
         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
     }
 
-    // Prepare and execute the SQL query
+    // DELETE
+    $queryuser = "SELECT * FROM \"User\"";
+    $stmt = oci_parse($db_conn, $queryuser);
+    oci_execute($stmt);
+    
+    // Fetch and print each row
+    while ($row = oci_fetch_assoc($stmt)) {
+        echo 'userID: ' . $row['ID'] . '<br>';
+        echo 'Name: ' . $row['NAME'] . '<br>';
+    }
+    // DELETE
+
+    // Define & execute SQL query
     $query = "SELECT * FROM User_FitnessGoal";
     $stmt = oci_parse($db_conn, $query);
     oci_execute($stmt);
 
-    // Display the table
+    // Display table
     echo '<table>';
-    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th></tr>';
+    echo '<tr><th>Set Achieved or Delete</th><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th></tr>';
+
+    echo '<form method="post" action="">'; // Add form element for delete functionality
 
     while ($row = oci_fetch_assoc($stmt)) {
         echo '<tr>';
+        echo '<td><input type="checkbox" name="goals[]" value="' . $row['GOALID'] . '"></td>';
         echo '<td>' . $row['GOALID'] . '</td>';
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
@@ -84,35 +104,76 @@
         echo '</tr>';
     }
 
-    // Display the input form row
+    // Display input form row (last row) if '+' button is clicked
     echo '<tr id="form-row" class="hidden-row">';
     echo '<td></td>';
-    echo '<td>';
-    echo '<form method="post" action="">';
-    echo '<input type="text" name="description" placeholder="Enter goal description">';
-    echo '</td>';
+    echo '<td></td>';
+    echo '<td><input type="text" name="description" placeholder="Enter goal description"></td>';
     echo '<td><input type="text" name="targetDate" placeholder="Enter target date"></td>';
-    echo '<td>';
+    echo '<td><input type="number" name="userID" placeholder="Enter user ID"></td>';
+    echo '<td colspan="2">';
     echo '<input type="submit" name="submit" value="Add">';
-    echo '</form>';
     echo '</td>';
     echo '</tr>';
 
     echo '</table>';
 
+    // Add delete and achieve buttons
+    echo '<button type="submit" name="achieved">Achieve</button>';
+    echo '<button type="submit" name="delete">Delete</button>';
+
+    echo '</form>'; // Close the form element
+
     // Handle form submission
     if (isset($_POST['submit'])) {
         $description = $_POST['description'];
         $targetDate = $_POST['targetDate'];
+        $userID = (int) $_POST['userID'];
 
-        // Perform the database insertion
-        $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE) VALUES (:description, :targetDate)";
+        // Insert goal in User_Achievement table
+        $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) VALUES (:description, :targetDate, :userID)";
         $insertStmt = oci_parse($db_conn, $insertQuery);
         oci_bind_by_name($insertStmt, ":description", $description);
         oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
+        oci_bind_by_name($insertStmt, ":userID", $userID);
         oci_execute($insertStmt);
 
         // Refresh the page to display the updated table
+        header("Refresh:0");
+
+    } else if (isset($_POST['achieved'])) {
+        $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
+
+        foreach ($selectedGoals as $goalId) {
+            // Get goal information from User_FitnessGoal table
+            $query = "SELECT * FROM User_FitnessGoal WHERE GOALID = :goalId";
+            $stmt = oci_parse($db_conn, $query);
+            oci_bind_by_name($stmt, ":goalId", $goalId);
+            oci_execute($stmt);
+            $goalRow = oci_fetch_assoc($stmt);
+
+            // Insert goal into User_Achievement table
+            $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID) VALUES (:description, :dateAccomplished, :userID)";
+            $insertStmt = oci_parse($db_conn, $insertQuery);
+            oci_bind_by_name($insertStmt, ":description", $goalRow['DESCRIPTION']);
+            oci_bind_by_name($insertStmt, ":dateAccomplished", $goalRow['TARGETDATE']);
+            oci_bind_by_name($insertStmt, ":userID", $goalRow['USERID']);
+            oci_execute($insertStmt);
+        }
+        // Refresh table
+        header("Refresh:0");
+
+    } else if (isset($_POST['delete'])) {
+        $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
+
+        foreach ($selectedGoals as $goalId) {
+            // Delete the goal from User_FitnessGoal table
+            $deleteQuery = "DELETE FROM User_FitnessGoal WHERE goalID = :goalId";
+            $deleteStmt = oci_parse($db_conn, $deleteQuery);
+            oci_bind_by_name($deleteStmt, ":goalId", $goalId);
+            oci_execute($deleteStmt);
+        }
+        // Refresh table
         header("Refresh:0");
     }
 
@@ -121,6 +182,13 @@
     oci_close($db_conn);
 
     ?>
+
+    <script>
+        function showInputForm() {
+            var formRow = document.getElementById('form-row');
+            formRow.style.display = 'table-row';
+        }
+    </script>
 
 </body>
 
