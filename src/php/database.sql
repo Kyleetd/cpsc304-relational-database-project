@@ -5,8 +5,8 @@ CREATE TABLE [User] (
 
 CREATE TABLE User_Achievement (
     achievementID SERIAL PRIMARY KEY,
-    description CHAR(100),
-    dateAccomplished CHAR(20),
+    description VARCHAR(100),
+    dateAccomplished VARCHAR(20),
     userID INT,
     goalID INT NOT NULL,
     FOREIGN KEY (userID) REFERENCES [User] (ID)
@@ -20,8 +20,8 @@ CREATE TABLE User_Achievement (
 
 CREATE TABLE User_FitnessGoal (
     goalID SERIAL PRIMARY KEY,
-    description CHAR(100),
-    targetDate CHAR(20),
+    description VARCHAR(100),
+    targetDate VARCHAR(20),
     userID INT,
     FOREIGN KEY (userID) REFERENCES [User] (ID)
         ON DELETE CASCADE
@@ -30,7 +30,7 @@ CREATE TABLE User_FitnessGoal (
 
 CREATE TABLE ConsistsOf (
     workoutID INT,
-    exerciseName CHAR(20),
+    exerciseName VARCHAR(20),
     PRIMARY KEY (workoutID, exerciseName),
     FOREIGN KEY (workoutID) REFERENCES Workout (workoutID)
         ON DELETE SET NULL
@@ -42,15 +42,15 @@ CREATE TABLE ConsistsOf (
 
 CREATE TABLE Workout (
     workoutID SERIAL PRIMARY KEY,
-    name CHAR(20)
+    name VARCHAR(20)
 );
 
 CREATE TABLE Exercise (
-    name CHAR(20) PRIMARY KEY
+    name VARCHAR(20) PRIMARY KEY
 );
 
 CREATE TABLE CardioExercise (
-    name CHAR(20) PRIMARY KEY,
+    name VARCHAR(20) PRIMARY KEY,
     duration INT,
     speed INT,
     FOREIGN KEY (name) REFERENCES Exercise (name)
@@ -59,7 +59,7 @@ CREATE TABLE CardioExercise (
 );
 
 CREATE TABLE StrengthExercise (
-    name CHAR(20) PRIMARY KEY,
+    name VARCHAR(20) PRIMARY KEY,
     reps INT,
     weight INT,
     sets INT,
@@ -69,7 +69,7 @@ CREATE TABLE StrengthExercise (
 );
 
 CREATE TABLE FlexibilityExercise (
-    name CHAR(20) PRIMARY KEY,
+    name VARCHAR(20) PRIMARY KEY,
     duration INT,
     sets INT,
     FOREIGN KEY (name) REFERENCES Exercise (name)
@@ -78,11 +78,11 @@ CREATE TABLE FlexibilityExercise (
 );
 
 CREATE TABLE Gym (
-    address CHAR(40),
-    postalCode CHAR(20),
-    city CHAR(20),
-    country CHAR(20),
-    name CHAR(20),
+    address VARCHAR(40),
+    postalCode VARCHAR(20),
+    city VARCHAR(20),
+    country VARCHAR(20),
+    name VARCHAR(20),
     PRIMARY KEY (address, postalCode)
 );
 
@@ -100,7 +100,7 @@ CREATE TABLE User_Measurement (
 CREATE TABLE Completes (
     userID INT,
     workoutID INT,
-    date CHAR(8),
+    date VARCHAR(8),
     PRIMARY KEY (userID, workoutID),
     FOREIGN KEY (userID) REFERENCES [User] (ID)
         ON DELETE SET NULL
@@ -111,8 +111,8 @@ CREATE TABLE Completes (
 );
 
 CREATE TABLE Attends (
-    address CHAR(40),
-    postalCode CHAR(20),
+    address VARCHAR(40),
+    postalCode VARCHAR(20),
     userID INT,
     PRIMARY KEY (address, postalCode, userID),
     FOREIGN KEY (address, postalCode) REFERENCES Gym (address, postalCode)
@@ -137,14 +137,14 @@ CREATE TABLE AccomplishedBy (
 
 CREATE TABLE TrainingPlan (
     planID INT,
-    name CHAR(100),
-    description CHAR(20),
+    name VARCHAR(100),
+    description VARCHAR(20),
     PRIMARY KEY (planID)
 );
 
 CREATE TABLE TrainingPlanConsistsOf (
     planID INT,
-    exerciseName CHAR(20),
+    exerciseName VARCHAR(20),
     PRIMARY KEY (planID, exerciseName),
     FOREIGN KEY (planID) REFERENCES TrainingPlan (planID)
         ON DELETE SET NULL

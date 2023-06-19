@@ -7,7 +7,26 @@
     <title>Document</title>
 </head>
 <body>
-    <button id="fitnessGoalsButton">Fitness Goals</button>
+    <a href="https://www.students.cs.ubc.ca/~kyleetd/Goals.php">
+        <button id="fitnessGoalsButton">Fitness Goals</button>
+    </a>
     <button id="fitnessAchievementsButton">Fitness Achievements</button>
+
+<?php
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['fitnessGoalsButton'])) {
+        // Handle Fitness Achievements button click
+        // Display Fitness Achievements content
+    } elseif (isset($_POST['fitnessAchievementsButton'])) {
+        // Handle Fitness Achievements button click
+        // Display Fitness Achievements content
+        echo '<h1>Fitness Achievements</h1>';
+    }
+}
+
+
+?>
+
 </body>
 </html>
