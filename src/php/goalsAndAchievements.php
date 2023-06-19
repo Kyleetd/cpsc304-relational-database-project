@@ -7,13 +7,14 @@
     <title>Goals and Achievements</title>
 </head>
 <body>
-    <a href="https://www.students.cs.ubc.ca/~kyleetd/Goals.php">
+    <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goals.php">
         <button id="fitnessGoalsButton">Fitness Goals</button>
     </a>
-    <button id="fitnessAchievementsButton">Fitness Achievements</button>
+    <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/achievements.php">
+        <button id="fitnessGoalsButton">Fitness Achievements</button>
+    </a>
 
 <?php
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['fitnessGoalsButton'])) {
         // Handle Fitness Achievements button click
@@ -24,8 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '<h1>Fitness Achievements</h1>';
     }
 }
-
-
 ?>
 
 </body>

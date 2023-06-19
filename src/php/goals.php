@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- <link rel="stylesheet" type="text/css" href="../css/goalsAndAchievements.css" /> -->
         <title>Goals</title>
     </head>
 
@@ -102,6 +101,24 @@ function printResult($result) { //prints results from a select statement
     }
 
     echo "</table>";
+}
+
+function connectToDB() {
+    global $db_conn;
+
+    // Your username is ora_(CWL_ID) and the password is a(student number). For example,
+    // ora_platypus is the username and a12345678 is the password.
+    $db_conn = OCILogon("ora_kyleetd", "a78242021", "dbhost.students.cs.ubc.ca:1522/stu");
+
+    if ($db_conn) {
+        debugAlertMessage("Database is Connected");
+        return true;
+    } else {
+        debugAlertMessage("Cannot connect to Database");
+        $e = OCI_Error(); // For OCILogon errors pass no handle
+        echo htmlentities($e['message']);
+        return false;
+    }
 }
 
 ?>
