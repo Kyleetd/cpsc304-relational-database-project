@@ -39,6 +39,36 @@
 
 <?php
 
+// Establish a connection to the Oracle database
+$db_conn = OCILogon("ora_kyleetd", "a78242021", "dbhost.students.cs.ubc.ca:1522/stu");
+
+// Check if the connection was successful
+if ($db_conn) {
+    
+    // Drop the "GOALSTABLE" table
+    $query = "DROP TABLE GOALSTABLE";
+    $stmt = oci_parse($db_conn, $query);
+    oci_execute($stmt);
+    
+    // Execute the SQL query to retrieve table names
+    $query = "SELECT table_name FROM user_tables";
+    $stmt = oci_parse($db_conn, $query);
+    oci_execute($stmt);
+
+    // Fetch and display the table names
+    echo "<h1>Tables in the Database:</h1>";
+    while ($row = oci_fetch_array($stmt, OCI_ASSOC)) {
+        echo "<p>{$row['TABLE_NAME']}</p>";
+    }
+
+    // Free the statement and close the connection
+    oci_free_statement($stmt);
+    oci_close($db_conn);
+} else {
+    // Display an error message if the connection failed
+    echo "<h1>Failed to connect to the database.</h1>";
+}
+
 function executePlainSQL($cmdstr) {
     global $db_conn, $success;
 
