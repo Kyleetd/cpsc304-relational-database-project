@@ -124,40 +124,29 @@
         OCILogoff($db_conn);
     }
 
+    $columns = array();
+
     function handleTableSelectedRequest() {
         if (connectToDB()) {
-                // Get the selected table name
-            $selectedTable = $_POST['table_selection'];
-            echo $selectedTable." is the currently selected table.";
-
             // Query the selected table
-            $result = executePlainSQL("SELECT * FROM $selectedTable");
+            $table = $_POST['table_selection'];
+            $result = executePlainSQL("SELECT * FROM $table");
 
-            // Get column names
+            //Add columns to columns array
+            global $columns;
             $numCols = oci_num_fields($result);
-            $columns = array();
-            for ($i = 1; $i <= $numCols; $i++) {
-                $columns[] = oci_field_name($stmt, $i);
+            for ($i = 1; $i < $numCols; $i++) {
+                $columns[] = oci_field_name($result, $i);
             }
             disconnectFromDB();
         }
     }
-
-    // if (connectToDB()) {
-    //     $query = "SELECT table_name FROM user_tables";
-    //     $stmt = oci_parse($db_conn, $query);
-    //     oci_execute($stmt);
-
-    //     echo "<br>Retrieved data from all tables names:<br>";
-    //     echo "<table>";
-    //     echo "<tr><th>Table Name</th></tr>";
-    //     while ($row = OCI_Fetch_Array($stmt, OCI_BOTH)) {
-    //         echo "<tr><td>" . $row["TABLE_NAME"] . "</td></tr>"; //or just use "echo $row[0]"
-    //     }
-    //     echo "</table>";
-    //     oci_close($db_conn);
-    // }
+    
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table_selection'])) {
+        handleTableSelectedRequest();
+    }
     ?>
+
     <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
         Select a Table :  
         <select name="table_selection">  
@@ -165,11 +154,9 @@
 
         <?php  
             if (connectToDB()) {
-                $query = "SELECT table_name FROM user_tables";
-                $stmt = oci_parse($db_conn, $query);
-                oci_execute($stmt);
+                $result = executePlainSQL("SELECT table_name FROM user_tables");
 
-                while ($row = OCI_Fetch_Array($stmt, OCI_BOTH)) {
+                while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                     echo "<option value=".$row["TABLE_NAME"].">".$row["TABLE_NAME"]."</option>";
                 }
                 oci_close($db_conn);
@@ -179,10 +166,17 @@
         <input type="submit" name="Submit" value="Select" />  
     </form>
 
-    <?php
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['table_selection'])) {
-            handleTableSelectedRequest();
-        }
-    ?>
+    <p>The <?php echo $_POST['table_selection']?> table is currently selected.</p>
+
+    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) { ?>
+        <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="">
+            Select all columns you would like to show:
+            <?php foreach ($columns as $column) : ?>
+                <input type="checkbox" name="all_columns" value="<?php echo $column; ?>">
+                <label><?php echo $column; ?></label><br>
+            <?php endforeach; ?>
+            <input type="submit" name="Submit" value="Submit">
+        </form>
+    <?php } ?>
 </body>
 </html>
