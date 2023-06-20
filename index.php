@@ -11,7 +11,7 @@
     // load up your config file 
     require_once("./src/php/resources/config.php");
     
-    require_once(TEMPLATES_PATH . "/header.php");
+    require_once("/header.php");
   ?>
   
 </body>
