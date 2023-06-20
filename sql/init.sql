@@ -1,4 +1,4 @@
--- Drop Table Statements
+- Drop Table Statements
 
 DROP TABLE AccomplishedBy;
 DROP TABLE Attends;
