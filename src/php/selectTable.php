@@ -136,7 +136,9 @@
             global $columns;
             $numCols = oci_num_fields($result);
             for ($i = 1; $i < $numCols; $i++) {
-                $columns[] = oci_field_name($result, $i);
+                $column = oci_field_name($result, $i);
+                $dataType = oci_field_type($result, $i);
+                $columns[$column] = $dataType;
             }
             disconnectFromDB();
         }
@@ -166,14 +168,24 @@
         <input type="submit" name="Submit" value="Select" />  
     </form>
 
-    <p>The <?php echo $_POST['table_selection']?> table is currently selected.</p>
+    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) {
 
-    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) { ?>
+        ?><p>The <?php echo $_POST['table_selection']?> table is currently selected.</p>
+
         <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="">
             Select all columns you would like to show:
-            <?php foreach ($columns as $column) : ?>
-                <input type="checkbox" name="all_columns" value="<?php echo $column; ?>">
+            <?php foreach ($columns as $column => $dataType) : ?>
+                <input type="checkbox" name="selected_columns[]" value="<?php echo $column; ?>">
                 <label><?php echo $column; ?></label><br>
+                <?php if ($dataType === 'NUMBER') : ?>
+                    <input type="text" name="filter[<?php echo $column; ?>]" placeholder="integer"><br>
+                <?php elseif ($dataType === 'VARCHAR') : ?>
+                    <input type="text" name="filter[<?php echo $column; ?>]" placeholder="text"><br>
+                <?php elseif ($dataType === 'REAL') : ?>
+                    <input type="text" name="filter[<?php echo $column; ?>]" placeholder="number"><br>
+                <?php else : ?>
+                    <input type="text" name="filter[<?php echo $column; ?>]" placeholder="text"><br>
+                <?php endif; ?>
             <?php endforeach; ?>
             <input type="submit" name="Submit" value="Submit">
         </form>
