@@ -22,10 +22,24 @@
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 1px 3px;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #333;
+            font-size: 20px;
+        }
     </style>
 
     <div class="header">
         <h1>Fitness Achievements</h1>
+        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goalsAndAchievements.php" class="back-button">Back</a>
     </div>
 
     <?php
