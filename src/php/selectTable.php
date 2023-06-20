@@ -124,24 +124,40 @@
         OCILogoff($db_conn);
     }
 
-    if (connectToDB()) {
-        $query = "SELECT table_name FROM user_tables";
-        $stmt = oci_parse($db_conn, $query);
-        oci_execute($stmt);
+    // if (connectToDB()) {
+    //     $query = "SELECT table_name FROM user_tables";
+    //     $stmt = oci_parse($db_conn, $query);
+    //     oci_execute($stmt);
 
-        echo "<br>Retrieved data from all tables names:<br>";
-        echo "<table>";
-        echo "<tr><th>Table Name</th></tr>";
-
-     while ($row = oci_fetch_assoc($stmt)) {
-        echo '<tr>';
-        echo '<td>'.$row['TABLE_NAME'].'</td>';
-        echo '</tr>';
-    }
-        echo "</table>";
-        oci_close($db_conn);
-    }
-
+    //     echo "<br>Retrieved data from all tables names:<br>";
+    //     echo "<table>";
+    //     echo "<tr><th>Table Name</th></tr>";
+    //     while ($row = OCI_Fetch_Array($stmt, OCI_BOTH)) {
+    //         echo "<tr><td>" . $row["TABLE_NAME"] . "</td></tr>"; //or just use "echo $row[0]"
+    //     }
+    //     echo "</table>";
+    //     oci_close($db_conn);
+    // }
     ?>
+    <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
+        Select a Table :  
+        <select name="TableSelection">  
+        <option value="">--- Select ---</option>  
+
+        <?php  
+            if (connectToDB()) {
+                $query = "SELECT table_name FROM user_tables";
+                $stmt = oci_parse($db_conn, $query);
+                oci_execute($stmt);
+
+                while ($row = OCI_Fetch_Array($stmt, OCI_BOTH)) {
+                    echo "<option value=".$row["TABLE_NAME"].">".$row["TABLE_NAME"]."</option>";
+                }
+                oci_close($db_conn);
+            }
+        ?>  
+        </select>  
+        <input type="submit" name="Submit" value="Select" />  
+    </form>  
 </body>
 </html>

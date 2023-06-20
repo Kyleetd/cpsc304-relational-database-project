@@ -59,7 +59,7 @@
     echo '</table>';
 
     // Close the database connection
-    oci_free_statement($stmt);
+
     oci_close($db_conn);
 
     ?>
