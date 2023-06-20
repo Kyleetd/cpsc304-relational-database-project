@@ -124,6 +124,25 @@
         OCILogoff($db_conn);
     }
 
+    function handleTableSelectedRequest() {
+        if (connectToDB()) {
+                // Get the selected table name
+            $selectedTable = $_POST['table_selection'];
+            echo $selectedTable." is the currently selected table.";
+
+            // Query the selected table
+            $result = executePlainSQL("SELECT * FROM $selectedTable");
+
+            // Get column names
+            $numCols = oci_num_fields($result);
+            $columns = array();
+            for ($i = 1; $i <= $numCols; $i++) {
+                $columns[] = oci_field_name($stmt, $i);
+            }
+            disconnectFromDB();
+        }
+    }
+
     // if (connectToDB()) {
     //     $query = "SELECT table_name FROM user_tables";
     //     $stmt = oci_parse($db_conn, $query);
@@ -141,7 +160,7 @@
     ?>
     <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
         Select a Table :  
-        <select name="TableSelection">  
+        <select name="table_selection">  
         <option value="">--- Select ---</option>  
 
         <?php  
@@ -158,6 +177,12 @@
         ?>  
         </select>  
         <input type="submit" name="Submit" value="Select" />  
-    </form>  
+    </form>
+
+    <?php
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['table_selection'])) {
+            handleTableSelectedRequest();
+        }
+    ?>
 </body>
 </html>
