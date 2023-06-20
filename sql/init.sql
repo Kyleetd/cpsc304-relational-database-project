@@ -31,6 +31,7 @@ CREATE TABLE User_FitnessGoal (
     goalID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     description VARCHAR(100),
     targetDate VARCHAR(20),
+    achieved INT,
     userID INT,
     FOREIGN KEY (userID) REFERENCES "User" (ID)
         ON DELETE SET NULL
@@ -180,12 +181,16 @@ INSERT INTO "User" (name) VALUES ('Kashish');
 INSERT INTO "User" (name) VALUES ('Mickey');
 INSERT INTO "User" (name) VALUES ('Naruto');
 
-INSERT INTO User_FitnessGoal (description, targetDate, userID) VALUES ('Lose weight', '2023-12-31', 1);
-INSERT INTO User_FitnessGoal (description, targetDate, userID) VALUES ('Build muscle', '2023-10-15', 2);
-INSERT INTO User_FitnessGoal (description, targetDate, userID) VALUES ('Improve flexibility', '2024-01-30', 3);
-INSERT INTO User_FitnessGoal (description, targetDate, userID) VALUES ('Increase endurance', '2023-11-30', 4);
-INSERT INTO User_FitnessGoal (description, targetDate, userID) VALUES ('Maintain overall fitness', '2023-12-31', 5);
-INSERT INTO User_FitnessGoal (description, targetDate, userID) VALUES ('Run for 30 minutes', '2023-12-31', 5);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('20 chin-ups', '2023-12-31', 1, 1);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('80 push-ups', '2023-10-15', 1, 2);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('Splits on both sides', '2024-01-30', 1, 3);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('Splits on both sides', '2023-11-30', 1, 4);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('Run for 30 minutes at 9 kph', '2023-12-31', 1, 5);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('100 chin-ups', '2023-11-11', 0, 1);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('80 push-ups', '2023-10-15', 0, 2);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('Lose Weight', '2024-01-01', 0, 3);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('Cycle for 30 minutes', '2023-08-01', 0, 4);
+INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('Run for 60 minutes at 9 kph', '2023-12-31', 0, 5);
 
 INSERT INTO Workout (name) VALUES ('Cardio-Centric High Impact');
 INSERT INTO Workout (name) VALUES ('Endurance Boost');
@@ -295,9 +300,6 @@ INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (4, 4);
 INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (5, 1);
 INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (5, 2);
 INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (5, 5);
-INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (6, 1);
-INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (6, 2);
-INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (6, 5);
 
 INSERT INTO TrainingPlan (planID, name, description) VALUES (1, 'Plan 1', 'Jump series');
 INSERT INTO TrainingPlan (planID, name, description) VALUES (2, 'Plan 2', 'Cardio routines');
@@ -328,6 +330,5 @@ INSERT INTO Sees (userID, planID) VALUES (2, 1);
 INSERT INTO Sees (userID, planID) VALUES (3, 2);
 INSERT INTO Sees (userID, planID) VALUES (4, 3);
 INSERT INTO Sees (userID, planID) VALUES (5, 3);
-
 
 

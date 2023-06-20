@@ -53,12 +53,26 @@
     .set-achieved-column {
         width: 50px;
     }
+
+    .back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 1px 3px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    font-size: 20px;
+    }
 </style>
 <body>
 
     <div class="header">
         <h1>Fitness Goals</h1>
         <div class="add-goal-button" onclick="showInputForm()">+</div>
+        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goalsAndAchievements.php" class="back-button">Back</a>
     </div>
 
     <?php
@@ -70,30 +84,6 @@
         $e = oci_error();
         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
     }
-
-    // DELETE
-    $queryuser = "SELECT * FROM \"User\"";
-    $stmt = oci_parse($db_conn, $queryuser);
-    oci_execute($stmt);
-    
-    // Fetch and print each row
-    while ($row = oci_fetch_assoc($stmt)) {
-        echo 'userID: ' . $row['ID'] . '<br>';
-        echo 'Name: ' . $row['NAME'] . '<br>';
-    }
-
-
-    $queryuser = "SELECT * FROM \"User_Achievement\"";
-    $stmt = oci_parse($db_conn, $queryuser);
-    oci_execute($stmt);
-    
-    // Fetch and print each row
-    while ($row = oci_fetch_assoc($stmt)) {
-        echo 'userID: ' . $row['USERID'] . '<br>';
-        echo 'Description: ' . $row['DESCRIPTION'] . '<br>';
-        echo 'Date Accomplished: ' . $row['DATEACCOMPLISHED'] . '<br>';
-    }
-    // DELETE
 
     // Define & execute SQL query
     $query = "SELECT * FROM User_FitnessGoal";
@@ -107,6 +97,10 @@
     echo '<form method="post" action="">'; // Add form element for delete functionality
 
     while ($row = oci_fetch_assoc($stmt)) {
+        // Skip rendering the row if it has been achieved
+        if ($row['ACHIEVED'] == 1) {
+            continue;
+        }
         echo '<tr>';
         echo '<td><input type="checkbox" name="goals[]" value="' . $row['GOALID'] . '"></td>';
         echo '<td>' . $row['GOALID'] . '</td>';
@@ -150,13 +144,19 @@
         oci_bind_by_name($insertStmt, ":userID", $userID);
         oci_execute($insertStmt);
 
-        // Refresh the page to display the updated table
+        // Refresh table
         header("Refresh:0");
 
     } else if (isset($_POST['achieved'])) {
         $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
 
         foreach ($selectedGoals as $goalId) {
+            // Update User_FitnessGoal table to set ACHIEVED = 1
+            $updateQuery = "UPDATE User_FitnessGoal SET ACHIEVED = 1 WHERE GOALID = :goalId";
+            $updateStmt = oci_parse($db_conn, $updateQuery);
+            oci_bind_by_name($updateStmt, ":goalId", $goalId);
+            oci_execute($updateStmt);
+
             // Get goal information from User_FitnessGoal table
             $query = "SELECT * FROM User_FitnessGoal WHERE GOALID = :goalId";
             $stmt = oci_parse($db_conn, $query);
