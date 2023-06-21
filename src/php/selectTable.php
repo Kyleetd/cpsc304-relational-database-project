@@ -103,21 +103,25 @@
         <input type="submit" name="Submit" value="Select" />  
     </form>
 
-    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) {
-
-        ?><p>The <?php echo $_POST['table_selection']?> table is currently selected.</p>
+    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) :?>
+        
+        <p>The <?php echo $_POST['table_selection']?> table is currently selected.</p>
 
         <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="">
             Select all columns you would like to show:
             <?php foreach ($columns as $column => $dataType) : ?>
                 <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>">
                 <label><?php echo $column; ?></label><br>
-                <?php if ($dataType === 'NUMBER') : ?>
+                
+                <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
+                    <select name="filter_operators[<?php echo $column; ?>]">
+                        <option value="=">Equal to (=)</option>
+                        <option value="<">Less than (<)</option>
+                        <option value=">">Greater than (>)</option>
+                        <option value="<=">Less than or equal to (<=)</option>
+                        <option value=">=">Greater than or equal to (>=)</option>
+                    </select>
                     <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="integer"><br>
-                <?php elseif ($dataType === 'VARCHAR') : ?>
-                    <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="text"><br>
-                <?php elseif ($dataType === 'REAL') : ?>
-                    <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="number"><br>
                 <?php else : ?>
                     <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="text"><br>
                 <?php endif; ?>
@@ -126,12 +130,10 @@
             <input type="hidden" name="table_selection" value="<?php echo $_POST['table_selection']; ?>">
             <input type="submit" name="Submit" value="Get Table">
         </form>
-    <?php } ?>
+    <?php endif; ?>
 
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' 
-        && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) : 
-
-        ?>
+        && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) : ?>
         <table>
             <thead>
                 <tr>
