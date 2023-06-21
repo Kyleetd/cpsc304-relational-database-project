@@ -88,20 +88,18 @@
 </div>
 
 <div id="filter-line">
-    <form method="post">
-        JOIN WHERE
-        <select id="filter-dropdown" name="filter-dropdown">
-            <option value="address">Address</option>
-            <option value="postalCode">Postal Code</option>
-            <option value="city">City</option>
-            <option value="name">Name</option>
-            <option value="country">Country</option>
-            <option value="userID">UserID</option>
-        </select>
-        =
-        <input type="text" id="filter-input" name="filter-input" placeholder="Enter value">
-        <button type="submit" name="apply_filter">Apply Filter</button>
-    </form>
+    JOIN WHERE
+    <select id="filter-dropdown">
+        <option value="address">Address</option>
+        <option value="postalCode">Postal Code</option>
+        <option value="city">City</option>
+        <option value="name">Name</option>
+        <option value="country">Country</option>
+        <option value="userID">UserID</option>
+    </select>
+    =
+    <input type="text" id="filter-input" name="filter-input" placeholder="Enter value">
+    <button onclick="applyFilter()">Apply Filter</button>
 </div>
 
 <?php
@@ -123,9 +121,10 @@ $stmt = oci_parse($db_conn, $query);
 oci_execute($stmt);
 
 // Display the table
-echo '<form method="post" action="">';
 echo '<table>';
 echo '<tr><th>Address</th><th>Postal Code</th><th>City</th><th>Name</th><th>Country</th><th>UserID</th></tr>';
+
+echo '<form method="post" action="">';
 
 while ($row = oci_fetch_assoc($stmt)) {
     echo '<tr>';
@@ -150,7 +149,9 @@ echo '<td colspan="2">';
 echo '<input type="submit" name="submit" value="Add">';
 echo '</td>';
 echo '</tr>';
+
 echo '</table>';
+
 echo '</form>'; 
 
 // Handle form submission
@@ -187,72 +188,8 @@ if (isset($_POST['submit'])) {
     oci_execute($insertStmt);
 
     // Refresh table
-    echo '<script>';
-    echo 'document.addEventListener("DOMContentLoaded", function() {';
-    echo '    var formRow = document.getElementById("form-row");';
-    echo '    formRow.style.display = "none";';
-    echo '    var tableBody = document.querySelector("table tbody");';
-    echo '    tableBody.innerHTML = `' . $tableRows . '`;';
-    echo '});';
-    echo '</script>';
-} else if (isset($_POST['apply_filter'])) {
-
-    // Get the filter input value
-    $filterDropdown = $_POST['filter-dropdown'];
-    $filterValue = trim(strtolower($_POST['filter-input']));
-
-    // Create a view for the joinedAll table
-    $viewQuery = "CREATE VIEW joinedAll AS
-                SELECT Gym.address, Gym.postalCode, PCC.country, Gym.city, Gym.name, Attends.userID
-                FROM Gym
-                LEFT JOIN Attends ON Gym.address = Attends.address AND Gym.postalCode = Attends.postalCode
-                LEFT JOIN PCC ON Gym.postalCode = PCC.postalCode";
-
-    // Execute the view creation query
-    $createViewStmt = oci_parse($db_conn, $viewQuery);
-    oci_execute($createViewStmt);
-
-    // Perform a separate query on the view
-    $filterQuery = "SELECT address, postalCode, country, city, name, userID
-                    FROM joinedAll
-                    WHERE LOWER(" . $filterDropdown . ") = :filterValue";
-
-    $filterStmt = oci_parse($db_conn, $filterQuery);
-    oci_bind_by_name($filterStmt, ":filterValue", $filterValue);
-    oci_bind_by_name($filterStmt, ":filterDropdown", $filterDropdown);
-    oci_execute($filterStmt);    
-
-    // Fetch all rows from the executed statement into an array
-    $rows = oci_fetch_all($stmt, $result, null, null, OCI_FETCHSTATEMENT_BY_ROW);
-
-    // Display the filtered table
-    echo '<form method="post" action="">';
-    echo '<table>';
-    echo '<tr><th>Address</th><th>Postal Code</th><th>City</th><th>Name</th><th>Country</th><th>UserID</th></tr>';
-
-    while ($row = oci_fetch_assoc($filterStmt)) {
-        echo '<tr>';
-        echo '<td data-column="address">' . $row['ADDRESS'] . '</td>';
-        echo '<td data-column="postalCode">' . $row['POSTALCODE'] . '</td>';
-        echo '<td data-column="city">' . $row['CITY'] . '</td>';
-        echo '<td data-column="name">' . $row['NAME'] . '</td>';
-        echo '<td data-column="country">' . $row['COUNTRY'] . '</td>';
-        echo '<td data-column="userID">' . $row['USERID'] . '</td>';
-        echo '</tr>';
-    }
-    echo '</table>';
-    echo '</form>';
-
-    // Refresh table
-    echo '<script>';
-    echo 'document.addEventListener("DOMContentLoaded", function() {';
-    echo '    var formRow = document.getElementById("form-row");';
-    echo '    formRow.style.display = "none";';
-    echo '    var tableBody = document.querySelector("table tbody");';
-    echo '    tableBody.innerHTML = `' . $tableRows . '`;';
-    echo '});';
-    echo '</script>';
-}
+    header("Refresh:0");
+} 
 		
 // Close the database connection	
 oci_free_statement($stmt);	
@@ -264,6 +201,38 @@ oci_close($db_conn);
     function showInputForm() {
         var formRow = document.getElementById('form-row');
         formRow.style.display = 'table-row';
+    }
+    function applyFilter() {
+        var filterDropdown = document.getElementById("filter-dropdown");
+        var filterInput = document.getElementById("filter-input");
+
+        var filterColumn = filterDropdown.value;
+        var filterValue = filterInput.value.trim().toLowerCase();
+
+        var table = document.getElementsByTagName("table")[0];
+        var rows = table.getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+
+            var rowVisible = false;
+            for (var j = 0; j < cells.length; j++) {
+                var cell = cells[j];
+                var cellValue = cell.innerHTML.trim().toLowerCase();
+
+                if (j === 0 && cellValue === filterValue) {
+                    rowVisible = true;
+                    break;
+                }
+
+                if (j > 0 && filterColumn === cell.getAttribute("data-column") && cellValue === filterValue) {
+                    rowVisible = true;
+                    break;
+                }
+            }
+
+            rows[i].style.display = rowVisible ? "" : "none";
+        }
     }
     function openNumberOfGymsPerCountry() {
         window.open("https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/numberOfGymsPerCountry.php", "_blank");
