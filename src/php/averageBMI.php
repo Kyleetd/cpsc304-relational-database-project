@@ -54,21 +54,34 @@ if (!$db_conn) {
     trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 }
 
+// Create a TEMP view
+$tempQuery = "CREATE VIEW TEMP(userID, average) AS
+              SELECT u.userID, AVG(u.bmi) AS average
+              FROM User_Measurement u
+              GROUP BY userID";
+
+// Execute the view creation query
+$createTempViewStmt = oci_parse($db_conn, $tempQuery);
+oci_execute($createTempViewStmt);
+
 // define & execute the SQL query
-$query = "SELECT PCC.country, COUNT(*)
-          FROM PCC
-          GROUP BY PCC.country";
+$query = "SELECT userID, average
+          FROM Temp
+          WHERE average < (SELECT AVG(Temp.average) FROM TEMP)";
 $stmt = oci_parse($db_conn, $query);
 oci_execute($stmt);
 
 // Display the table
 echo '<table>';
-echo '<tr><th>Country</th><th>Number of Gyms</th></tr>';
+echo '<tr><th>UserID</th><th>Name</th><th>Height</th><th>Weight</th><th>BMI</th><th></th></tr>';
 
 while ($row = oci_fetch_assoc($stmt)) {
     echo '<tr>';
-    echo '<td>'.$row['COUNTRY'].'</td>';
-    echo '<td>'.$row['COUNT(*)'].'</td>';
+    echo '<td data-column="userID">'.$row['USERID'].'</td>';
+    echo '<td data-column="name">'.$row['NAME'].'</td>';
+    echo '<td data-column="height">'.$row['HEIGHT'].'</td>';
+    echo '<td data-column="weight">'.$row['WEIGHT'].'</td>';
+    echo '<td data-column="BMI">'.$row['BMI'].'</td>';
     echo '</tr>';
 }
 

@@ -134,7 +134,7 @@ echo '<td><input type="number" name="userID" placeholder="Enter user ID"></td>';
 echo '<td><input type="text" name="name" placeholder="Enter name"></td>';
 echo '<td><input type="number" name="height" placeholder="Enter height"></td>';
 echo '<td><input type="number" name="weight" placeholder="Enter weight"></td>';
-echo '<td><input type="number" name="BMI" placeholder="Enter BMI"></td>';
+echo '<td><input type="text" name="BMI" placeholder="Enter BMI"></td>';
 echo '<td colspan="2">';
 echo '<input type="submit" name="submit" value="Add">';
 echo '</td>';
