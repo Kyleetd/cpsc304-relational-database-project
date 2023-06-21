@@ -7,11 +7,20 @@
   <title>Dashboard</title>
 </head>
 <body>
-    <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goalsAndAchievements.php">
+  <div class="menu-container">
+    <a href="./selectData.php">
+        <button class="fitnessGoalsButton">View Any Table</button>
+    </a>
+    <a href="./goalsAndAchievements.php">
         <button class="fitnessGoalsButton">Goals And Achievements</button>
     </a>
-    <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/profile.php">
-        <button class="fitnessGoalsButton">Profile</button>
+    <a href="./profile.php">
+        <button class="fitnessGoalsButton">User Profiles</button>
     </a>
+    <a href="./gym.php">
+        <button class="fitnessGoalsButton">Gyms</button>
+    </a>
+
+  </div>
 </body>
 </html>
