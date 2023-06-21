@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/selectTable.css" />
     <title>Select Data</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Select Table Data</h1>
@@ -30,9 +41,38 @@
             disconnectFromDB();
         }
     }
+
+    function handleColAndFilterRequest() {
+        if (connectToDB()) {
+            $selectedColumns = $_POST['selected_columns'];
+            $filterStatements = $_POST['filter'];
+        
+            // Build the SELECT statement
+            $selectStatement = "SELECT " . implode(", ", $selectedColumns) . " FROM $selectedTable WHERE ";
+        
+            // Build the filter conditions
+            $filterConditions = array();
+            foreach ($filterStatements as $column => $value) {
+                if (!empty($value)) {
+                    $filterConditions[] = "$column = '$value'";
+                }
+            }
+            $filterClause = implode(" AND ", $filterConditions);
+        
+            // Finalize the query
+            $query = $selectStatement . $filterClause;
+        
+            // Execute the query
+            $stmt = oci_parse($conn, $query);
+            oci_execute($stmt);
+            disconnectFromDB();
+        }
+    }
     
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['table_selection'])) {
         handleTableSelectedRequest();
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_columns']) && isset($_POST['filter'])) {
+        handleColAndFilterRequest();
     }
     ?>
 
@@ -48,7 +88,7 @@
                 while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                     echo "<option value=".$row["TABLE_NAME"].">".$row["TABLE_NAME"]."</option>";
                 }
-                oci_close($db_conn);
+                disconnectFromDB();
             }
         ?>  
         </select>  
@@ -74,8 +114,29 @@
                     <input type="text" name="filter[<?php echo $column; ?>]" placeholder="text"><br>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <input type="submit" name="Submit" value="Submit">
+            <input type="submit" name="Submit" value="Get Table">
         </form>
+
+        <?php if (isset($stmt)) : ?>
+            <table>
+                <thead>
+                    <tr>
+                        <?php foreach ($selectedColumns as $column) : ?>
+                            <th><?php echo $column; ?></th>
+                        <?php endforeach; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = oci_fetch_array($stmt, OCI_ASSOC)) : ?>
+                        <tr>
+                            <?php foreach ($selectedColumns as $column) : ?>
+                                <td><?php echo $row[$column]; ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
     <?php } ?>
 </body>
 </html>
