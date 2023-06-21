@@ -51,7 +51,6 @@
     }
 
     $results = array();
-
     function handleColAndFilterRequest() {
         if (connectToDB()) {
             global $results;
@@ -122,24 +121,34 @@
             <div class="filter-container">
                 <?php foreach ($columns as $column => $dataType) : ?>
                     <div class="filter-cell">
-                    <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
-                        id="filter_list[<?php echo $column; ?>]">
-                    <label for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
-                    <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
-                        <select name="filter_operators[<?php echo $column; ?>]">
-                            <option value="=">Equal to (=)</option>
-                            <option value="<">Less than (<)</option>
-                            <option value=">">Greater than (>)</option>
-                            <option value="<=">Less than or equal to (<=)</option>
-                            <option value=">=">Greater than or equal to (>=)</option>
-                        </select>
-                    <?php elseif ($dataType === 'VARCHAR2') : ?>
-                        <select name="filter_operators[<?php echo $column; ?>]">
-                            <option value="=">Equal to (=)</option>
-                            <option value="!=">Not equal to (!=)</option>
-                        </select>
-                    <?php endif; ?>
-                    <input type="text" name="filter_list[<?php echo $column; ?>]">
+                        <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
+                            id="filter_list[<?php echo $column; ?>]">
+                        <label for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
+                        <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
+                            <select name="filter_operators[<?php echo $column; ?>]">
+                                <option value="=">Equal to (=)</option>
+                                <option value="<">Less than (<)</option>
+                                <option value=">">Greater than (>)</option>
+                                <option value="<=">Less than or equal to (<=)</option>
+                                <option value=">=">Greater than or equal to (>=)</option>
+                            </select>
+                            <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="Number">
+                        <?php elseif ($dataType === 'VARCHAR2') : ?>
+                            <select name="filter_operators[<?php echo $column; ?>]" >
+                                <option value="=">Equal to (=)</option>
+                                <option value="!=">Not equal to (!=)</option>
+                            </select>
+                            <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="Text">
+                        <?php elseif ($dataType === 'DATE') : ?>
+                            <select name="filter_operators[<?php echo $column; ?>]">
+                                <option value="=">Equal to (=)</option>
+                                <option value="<">Less than (<)</option>
+                                <option value=">">Greater than (>)</option>
+                                <option value="<=">Less than or equal to (<=)</option>
+                                <option value=">=">Greater than or equal to (>=)</option>
+                            </select>
+                            <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="DD-MM-YYYY">
+                        <?php endif; ?>
                     <br>
                     </div>
                 <?php endforeach; ?>
