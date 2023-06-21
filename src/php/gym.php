@@ -63,29 +63,59 @@
     #filter-dropdown {
         margin: 0 5px;
     }
+    .button-container-back-reset {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        display: flex;
+        flex-direction: row;
+    }
     .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 1px 3px;
-            background-color: #f2f2f2;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            text-decoration: none;
-            color: #333;
-            font-size: 20px;
+        font-family: Arial, sans-serif;
+        position: absolute;
+        top: 30px;
+        left: 0px;
+        padding: 1px 3px;
+        background-color: #f2f2f2;
+        border: 1px solid #000000;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #333;
+        font-size: 15px;
+        width: 43px; 
+    }
+    .reset-button {
+        font-family: Arial, sans-serif;
+        position: absolute;
+        top: 40px;
+        left: 10px;
+        padding: 1px 3px;
+        background-color: #f2f2f2;
+        border: 1px solid #000000;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #333;
+        font-size: 15px;
+        width: 50px; 
+        height: 20px;
+        margin: auto;
     }
 </style>
 
 <body>
-<div class="header">
-        <h1>Joint Table: Gyms, PCC, and User</h1>
-        <div class="button-container">
-            <div class="button add-goal-button" onclick="showInputForm()">Add Gym</div>
-            <div class="button" id="join" onclick="openNumberOfGymsPerCountry()">Compute Number of Gyms per Country</div>
-        </div>
-        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
-</div>
+<form method="post" action="">
+  <div class="header">
+    <h1>Joint Table: Gyms, PCC, and User</h1>
+    <div class="button-container">
+      <div class="button add-goal-button" onclick="showInputForm()">Add Gym</div>
+      <div class="button" id="join" onclick="openNumberOfGymsPerCountry()">Compute Number of Gyms per Country</div>
+    </div>
+    <div class="button-container-back-reset">
+      <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
+      <button type="submit" class="reset" name="reset">Reset</button>
+    </div>
+  </div>
+</form>
 
 <div id="filter-line">
     <form method="post">
@@ -252,6 +282,10 @@ if (isset($_POST['submit'])) {
     echo '    tableBody.innerHTML = `' . $tableRows . '`;';
     echo '});';
     echo '</script>';
+} else if (isset($_POST['reset'])) {
+    // Redirect the user to the same page
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
 }
 		
 // Close the database connection	
