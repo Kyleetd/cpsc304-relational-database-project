@@ -3,30 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/selectTable.css" />
+    <link rel="stylesheet" type="text/css" href="../css/selectData.css" />
     <title>Select Data</title>
-
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-            padding: 5px;
-        }
-
-        .filter-container {
-            display:table;
-        }
-
-        .filter-cell {
-            display: table-row;
-        }
-    </style>
 </head>
 <body>
-    <h1>Select Table Data</h1>
+    <div class="header">
+        <h1>Select Table Data</h1>
+    </div>
 
     <?php
     require_once('./dbUtils.php');
@@ -91,6 +74,7 @@
     }
     ?>
 
+    <div class="form-container">
     <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
         Select a Table :  
         <select name="table_selection">  
@@ -181,5 +165,6 @@
             </tbody>
         </table>
     <?php endif; ?>
+    </div>
 </body>
 </html>
