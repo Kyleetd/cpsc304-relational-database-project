@@ -109,6 +109,7 @@
     <div class="button-container">
       <div class="button add-goal-button" onclick="showInputForm()">Add Gym</div>
       <div class="button" id="join" onclick="openNumberOfGymsPerCountry()">Compute Number of Gyms per Country</div>
+      <div class="button" id="join" onclick="openUsersAttendingAllGyms()">Find Users Attending all Gyms</div>
     </div>
     <div class="button-container-back-reset">
       <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
@@ -301,6 +302,9 @@ oci_close($db_conn);
     }
     function openNumberOfGymsPerCountry() {
         window.open("https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/numberOfGymsPerCountry.php", "_blank");
+    }
+    function openUsersAttendingAllGyms() {
+        window.open("https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/allUsersAllGyms.php", "_blank");
     }
 </script>
 
