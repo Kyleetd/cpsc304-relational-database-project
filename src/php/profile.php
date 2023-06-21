@@ -82,7 +82,7 @@
         <h1>Profile: Users and Measurements</h1>
         <div class="button-container">
             <div class="button add-user-button" onclick="showInputForm()">Add User</div>
-            <div class="button" id="join" onclick="openAverageBMI()">Find users with average BMI < overall average BMI</div>
+            <div class="button" id="join" onclick="openAverageBMI()">Compute users with average BMI < overall average BMI</div>
         </div>
         <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
 </div>
@@ -183,17 +183,16 @@ if (isset($_POST['submit'])) {
 
     // Create a view for the joinedAll table
     $viewQuery = "CREATE VIEW joinedAll AS
-                SELECT Gym.address, Gym.postalCode, PCC.country, Gym.city, Gym.name, Attends.userID
-                FROM Gym
-                LEFT JOIN Attends ON Gym.address = Attends.address AND Gym.postalCode = Attends.postalCode
-                LEFT JOIN PCC ON Gym.postalCode = PCC.postalCode";
+                SELECT User_Measurement.userID, User.name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
+                FROM User_Measurement, User
+                WHERE User_Measurement.userID = User.ID";
 
     // Execute the view creation query
     $createViewStmt = oci_parse($db_conn, $viewQuery);
     oci_execute($createViewStmt);
 
     // Perform a separate query on the view
-    $filterQuery = "SELECT address, postalCode, country, city, name, userID
+    $filterQuery = "SELECT userID, name, height, weight, BMI
                     FROM joinedAll
                     WHERE LOWER(" . $filterDropdown . ") = :filterValue";
 
@@ -208,16 +207,15 @@ if (isset($_POST['submit'])) {
     // Display the filtered table
     echo '<form method="post" action="">';
     echo '<table>';
-    echo '<tr><th>Address</th><th>Postal Code</th><th>City</th><th>Name</th><th>Country</th><th>UserID</th></tr>';
+    echo '<tr><th>UserID</th><th>Name</th><th>Height</th><th>Weight</th><th>BMI</th><th></th></tr>';
 
     while ($row = oci_fetch_assoc($filterStmt)) {
         echo '<tr>';
-        echo '<td data-column="address">' . $row['ADDRESS'] . '</td>';
-        echo '<td data-column="postalCode">' . $row['POSTALCODE'] . '</td>';
-        echo '<td data-column="city">' . $row['CITY'] . '</td>';
-        echo '<td data-column="name">' . $row['NAME'] . '</td>';
-        echo '<td data-column="country">' . $row['COUNTRY'] . '</td>';
         echo '<td data-column="userID">' . $row['USERID'] . '</td>';
+        echo '<td data-column="name">' . $row['NAME'] . '</td>';
+        echo '<td data-column="height">' . $row['HEIGHT'] . '</td>';
+        echo '<td data-column="weight">' . $row['WEIGHT'] . '</td>';
+        echo '<td data-column="BMI">' . $row['BMI'] . '</td>';
         echo '</tr>';
     }
     echo '</table>';
@@ -245,8 +243,8 @@ oci_close($db_conn);
         var formRow = document.getElementById('form-row');
         formRow.style.display = 'table-row';
     }
-    function openNumberOfGymsPerCountry() {
-        window.open("https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/numberOfGymsPerCountry.php", "_blank");
+    function openAverageBMI() {
+        window.open("https://www.students.cs.ubc.ca/~gargkash/project_j4i5v_j7r8j_r6z9i/src/php/averageBMI.php", "_blank");
     }
 </script>
 
