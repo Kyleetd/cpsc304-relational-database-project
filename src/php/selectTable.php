@@ -15,6 +15,14 @@
             border: 1px solid black;
             padding: 5px;
         }
+
+        .filter-container {
+            display:table;
+        }
+
+        .filter-cell {
+            display: table-row;
+        }
     </style>
 </head>
 <body>
@@ -58,7 +66,7 @@
             $filterConditions = array();
             foreach ($filterStatements as $column => $value) {
                 if (!empty($value)) {
-                    $filterConditions[] = "$column = '$value'";
+                    $filterConditions[] = "$column".$_POST['filter_operators'][$column]."'$value'";
                 }
             }
         
@@ -109,23 +117,33 @@
 
         <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="">
             Select all columns you would like to show:
-            <?php foreach ($columns as $column => $dataType) : ?>
-                <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>">
-                <label><?php echo $column; ?></label><br>
-                
-                <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
-                    <select name="filter_operators[<?php echo $column; ?>]">
-                        <option value="=">Equal to (=)</option>
-                        <option value="<">Less than (<)</option>
-                        <option value=">">Greater than (>)</option>
-                        <option value="<=">Less than or equal to (<=)</option>
-                        <option value=">=">Greater than or equal to (>=)</option>
-                    </select>
-                    <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="integer"><br>
-                <?php else : ?>
-                    <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="text"><br>
-                <?php endif; ?>
-            <?php endforeach; ?>
+            Enter values in text book to filter. Leave empty if no filtering desired.
+
+            <div class="filter-container">
+                <?php foreach ($columns as $column => $dataType) : ?>
+                    <div class="filter-cell">
+                    <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
+                        id="filter_list[<?php echo $column; ?>]">
+                    <label for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
+                    <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
+                        <select name="filter_operators[<?php echo $column; ?>]">
+                            <option value="=">Equal to (=)</option>
+                            <option value="<">Less than (<)</option>
+                            <option value=">">Greater than (>)</option>
+                            <option value="<=">Less than or equal to (<=)</option>
+                            <option value=">=">Greater than or equal to (>=)</option>
+                        </select>
+                    <?php elseif ($dataType === 'VARCHAR2') : ?>
+                        <select name="filter_operators[<?php echo $column; ?>]">
+                            <option value="=">Equal to (=)</option>
+                            <option value="!=">Not equal to (!=)</option>
+                        </select>
+                    <?php endif; ?>
+                    <input type="text" name="filter_list[<?php echo $column; ?>]">
+                    <br>
+                    </div>
+                <?php endforeach; ?>
+            </div>
 
             <input type="hidden" name="table_selection" value="<?php echo $_POST['table_selection']; ?>">
             <input type="submit" name="Submit" value="Get Table">
@@ -135,6 +153,7 @@
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' 
         && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) : ?>
         <table>
+            <caption><?php echo $_POST['table_selection']; ?></caption>
             <thead>
                 <tr>
                     <?php foreach ($_POST['selected_columns_list'] as $column) : ?>
