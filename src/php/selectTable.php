@@ -54,21 +54,22 @@
             // Build the SELECT statement
             $selectStatement = "SELECT " . implode(", ", $selectedColumns) . " FROM $selectedTable";
         
-            // Build the filter conditions
-            // $filterConditions = array();
-            // foreach ($filterStatements as $column => $value) {
-            //     if (!empty($value)) {
-            //         $filterConditions[] = "$column = '$value'";
-            //     }
-            // }
-            // $filterClause = implode(" AND ", $filterConditions);
+            //Build the filter conditions
+            $filterConditions = array();
+            foreach ($filterStatements as $column => $value) {
+                if (!empty($value)) {
+                    $filterConditions[] = "$column = '$value'";
+                }
+            }
         
             // Finalize the query
-            $query = $selectStatement; //. $filterClause;
+            if (!empty($filterConditions)) {
+                $filterClause = implode(" AND ", $filterConditions);
+                $query = $selectStatement." WHERE ".$filterClause;
+            } else {
+                $query = $selectStatement;
+            }
         
-            // Execute the query
-            // $stmt = oci_parse($conn, $query);
-            // oci_execute($stmt);
             $results = executePlainSQL($query);
             disconnectFromDB();
         }
