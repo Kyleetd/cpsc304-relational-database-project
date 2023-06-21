@@ -94,7 +94,7 @@
     echo '<table>';
     echo '<tr><th>Set Achieved or Delete</th><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th></tr>';
 
-    echo '<form method="post" action="">'; // Add form element for delete functionality
+    echo '<form method="post" action="">'; // Add form element for add & delete functionality
 
     while ($row = oci_fetch_assoc($stmt)) {
         // Skip rendering the row if it has been achieved
