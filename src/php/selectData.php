@@ -49,9 +49,15 @@
             if (connectToDB()) {
                 $result = executePlainSQL("SELECT table_name FROM user_tables");
 
-                while ($row = oci_fetch_array($result, OCI_ASSOC)) {
-                    echo "<option value='".$row["TABLE_NAME"]."'>".$row["TABLE_NAME"]."</option>";
-                }
+                while ($row = oci_fetch_array($result, OCI_ASSOC)) { ?>
+                    <option value='<?php echo $row["TABLE_NAME"]; ?>'
+                        <?php if (isset($_POST['table_selection']) && $row["TABLE_NAME"] == $_POST['table_selection']) {
+                            echo "selected";
+                        }?> 
+                        >
+                        <?php echo $row["TABLE_NAME"]; ?>
+                    </option>
+                <?php }
                 disconnectFromDB();
             }
         ?>  
@@ -60,10 +66,8 @@
     </form>
 
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) :?>
-        
-        <p>The <?php echo $_POST['table_selection']?> table is currently selected.</p>
-
         <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="./selectDataResult.php">
+            <br>
             Select all columns you would like to show:
             Enter values in text book to filter. Leave empty if no filtering desired.
 

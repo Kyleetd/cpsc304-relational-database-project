@@ -1,9 +1,9 @@
-.filter-container {
-    display:table;
-}
-
 .filter-cell {
-    display: table-row;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .header {
@@ -14,7 +14,8 @@
 }
 
 .form-container {
-    width: 500px;
+    margin: auto;
+    width: 650px;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 5px;
@@ -29,10 +30,6 @@
 .form-container form {
     display: flex;
     flex-direction: column;
-}
-
-.form-container label {
-    margin-bottom: 10px;
 }
 
 .form-container select,
