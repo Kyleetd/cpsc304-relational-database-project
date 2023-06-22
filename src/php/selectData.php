@@ -42,6 +42,32 @@
         border-radius: 3px;
         color: #5D3FD3;
     }
+    .form-container {
+        text-align: center;
+        margin-top: auto;
+        align-items: center;
+    }
+    .attributes-container {
+        text-align: center;
+        margin-top: auto;
+        align-items: center;
+    }
+    .filter-cell {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .center-content {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .filter-container {
+        text-align: center;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+    }
     body {
         background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
         background-size: cover;
@@ -49,6 +75,16 @@
         background-position: center;
         margin: 0;
         height: 100vh; 
+    }
+    .purple-box {
+        background-color: purple;
+        padding: 10px;
+        margin: 10px;
+        display: inline-flex;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
     }
     </style>
 
@@ -80,77 +116,87 @@
     ?>
 
     <div class="form-container">
-    <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
-        <span style="color: orange;">Select a Table :</span>  
-        <select name="table_selection">  
-        <option value="">--- Select ---</option>  
-
-        <?php  
-            if (connectToDB()) {
-                $result = executePlainSQL("SELECT table_name FROM user_tables");
-
-                while ($row = oci_fetch_array($result, OCI_ASSOC)) { ?>
-                    <option value='<?php echo $row["TABLE_NAME"]; ?>'
-                        <?php if (isset($_POST['table_selection']) && $row["TABLE_NAME"] == $_POST['table_selection']) {
-                            echo "selected";
-                        }?> 
-                        >
-                        <?php echo $row["TABLE_NAME"]; ?>
-                    </option>
-                <?php }
-                disconnectFromDB();
-            }
-        ?>  
-        </select>  
-        <input class="select-button" type="submit" name="Submit" value="Select" />  
-    </form>
-
-    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) :?>
-        <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="./selectDataResult.php">
-            <br>
-            Select all columns you would like to show:
-            Enter values in text book to filter. Leave empty if no filtering desired.
-
-            <div class="filter-container">
-                <?php foreach ($columns as $column => $dataType) : ?>
-                    <div class="filter-cell">
-                        <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
-                            id="filter_list[<?php echo $column; ?>]">
-                        <label for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
-                        <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
-                            <select name="filter_operators[<?php echo $column; ?>]">
-                                <option value="=">Equal to (=)</option>
-                                <option value="<">Less than (<)</option>
-                                <option value=">">Greater than (>)</option>
-                                <option value="<=">Less than or equal to (<=)</option>
-                                <option value=">=">Greater than or equal to (>=)</option>
-                            </select>
-                            <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="Number">
-                        <?php elseif ($dataType === 'VARCHAR2') : ?>
-                            <select name="filter_operators[<?php echo $column; ?>]" >
-                                <option value="=">Equal to (=)</option>
-                                <option value="!=">Not equal to (!=)</option>
-                            </select>
-                            <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="Text">
-                        <?php elseif ($dataType === 'DATE') : ?>
-                            <select name="filter_operators[<?php echo $column; ?>]">
-                                <option value="=">Equal to (=)</option>
-                                <option value="<">Less than (<)</option>
-                                <option value=">">Greater than (>)</option>
-                                <option value="<=">Less than or equal to (<=)</option>
-                                <option value=">=">Greater than or equal to (>=)</option>
-                            </select>
-                            <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="DD-MM-YYYY">
-                        <?php endif; ?>
-                    <br>
-                    </div>
-                <?php endforeach; ?>
+        <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
+            <div class="purple-box">
+                <span style="color: orange;">Select a Table :</span>  
             </div>
+            <select name="table_selection">  
+                <option value="">--- Select ---</option>  
 
-            <input type="hidden" name="table_selection" value="<?php echo $_POST['table_selection']; ?>">
-            <input class="get-table-button" type="submit" name="Submit" value="Get Table">
+                <?php  
+                if (connectToDB()) {
+                    $result = executePlainSQL("SELECT table_name FROM user_tables");
+
+                    while ($row = oci_fetch_array($result, OCI_ASSOC)) {
+                        ?>
+                        <option value='<?php echo $row["TABLE_NAME"]; ?>'
+                            <?php if (isset($_POST['table_selection']) && $row["TABLE_NAME"] == $_POST['table_selection']) {
+                                echo "selected";
+                            } ?> 
+                        >
+                            <?php echo $row["TABLE_NAME"]; ?>
+                        </option>
+                        <?php
+                    }
+                    disconnectFromDB();
+                }
+                ?>  
+            </select>  
+            <input class="select-button" type="submit" name="Submit" value="Select" />  
         </form>
-    <?php endif; ?>
     </div>
+
+    <div class="attributes-container">
+        <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) :?>
+            <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="./selectDataResult.php">
+                <br>
+                <div class="center-content">
+                    <div class="purple-box">
+                        <span style="color: orange;">Select all columns you would like to show: Enter values in text book to filter. Leave empty if no filtering desired.</span>
+                    </div>
+                </div>
+
+                <div class="filter-container">
+                    <?php foreach ($columns as $column => $dataType) : ?>
+                        <div class="filter-cell">
+                            <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
+                                id="filter_list[<?php echo $column; ?>]">
+                            <label for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
+                            <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
+                                <select name="filter_operators[<?php echo $column; ?>]">
+                                    <option value="=">Equal to (=)</option>
+                                    <option value="<">Less than (<)</option>
+                                    <option value=">">Greater than (>)</option>
+                                    <option value="<=">Less than or equal to (<=)</option>
+                                    <option value=">=">Greater than or equal to (>=)</option>
+                                </select>
+                                <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="Number">
+                            <?php elseif ($dataType === 'VARCHAR2') : ?>
+                                <select name="filter_operators[<?php echo $column; ?>]" >
+                                    <option value="=">Equal to (=)</option>
+                                    <option value="!=">Not equal to (!=)</option>
+                                </select>
+                                <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="Text">
+                            <?php elseif ($dataType === 'DATE') : ?>
+                                <select name="filter_operators[<?php echo $column; ?>]">
+                                    <option value="=">Equal to (=)</option>
+                                    <option value="<">Less than (<)</option>
+                                    <option value=">">Greater than (>)</option>
+                                    <option value="<=">Less than or equal to (<=)</option>
+                                    <option value=">=">Greater than or equal to (>=)</option>
+                                </select>
+                                <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="DD-MM-YYYY">
+                            <?php endif; ?>
+                            <br>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <input type="hidden" name="table_selection" value="<?php echo $_POST['table_selection']; ?>">
+                <input class="get-table-button" type="submit" name="Submit" value="Get Table">
+            </form>
+        <?php endif; ?>
+    </div>
+
 </body>
 </html>

@@ -18,7 +18,8 @@ body {
     font-size: 25px;
     padding: 10px;
     background-color: transparent;
-    color: orange; /* Modified color */
+    color: orange; 
+    text-shadow: 2px 2px 4px #5D3FD3;
 }
 .button-container {
     display: inline-block;
@@ -39,7 +40,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: orange; /* Modified color */
+    color: orange;
 }
 table {
     margin: auto;
@@ -50,7 +51,7 @@ table {
 th, td {
     padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid orange;
     color: orange; 
 }
 .add-goal-button {
@@ -60,7 +61,7 @@ th, td {
     line-height: 30px;
     text-align: center;
     background-color: #f2f2f2;
-    border: 2px solid #ddd;
+    border: 2px solid orange;
     border-radius: 5px;
     cursor: pointer;
     background-color: #BF40BF;
@@ -73,7 +74,7 @@ th, td {
     line-height: 30px;
     text-align: center;
     background-color: #f2f2f2;
-    border: 2px solid #ddd;
+    border: 2px solid orange;
     border-radius: 5px;
     cursor: pointer;
     background-color: #BF40BF;
@@ -86,7 +87,7 @@ th, td {
     line-height: 30px;
     text-align: center;
     background-color: #f2f2f2;
-    border: 2px solid #ddd;
+    border: 2px solid orange;
     border-radius: 5px;
     cursor: pointer;
     background-color: #BF40BF;
@@ -99,7 +100,7 @@ th, td {
     line-height: 15px;
     text-align: center;
     background-color: #f2f2f2;
-    border: 2px solid #ddd;
+    border: 2px solid orange;
     border-radius: 5px;
     cursor: pointer;
     background-color: #BF40BF;
@@ -142,7 +143,7 @@ display: none;
     left: 0px;
     padding: 1px 3px;
     background-color: #BF40BF;
-    border: 1px solid white;
+    border: 1px solid orange;
     border-radius: 3px;
     text-decoration: none;
     color: #333;
@@ -150,6 +151,20 @@ display: none;
     width: 43px; 
     color: orange; 
 }
+.button-container {
+    /* Add container styles if necessary */
+}
+.button-container input[type="submit"] {
+    font-family: Arial, sans-serif;
+    background-color: #BF40BF;
+    border: 1px solid orange;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    width: 43px; 
+    color: orange; 
+  }
 </style>
 
 <body>
@@ -227,7 +242,7 @@ echo '<td><input type="text" name="name" placeholder="Enter gym name"></td>';
 echo '<td><input type="text" name="country" placeholder="Enter country"></td>';
 echo '<td><input type="number" name="userID" placeholder="Enter user ID"></td>';
 echo '<td colspan="2">';
-echo '<input type="submit" name="submit" value="Add">';
+echo '<div class="button-container"><input type="submit" name="submit" value="Add"></div>';
 echo '</td>';
 echo '</tr>';
 echo '</table>';

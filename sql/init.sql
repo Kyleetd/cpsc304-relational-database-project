@@ -17,12 +17,12 @@ DROP TABLE Workout;
 DROP TABLE Gym;
 DROP TABLE PCC;
 DROP TABLE TrainingPlan;
-DROP TABLE "User";
+DROP TABLE Users;
 
 
 -- Table Creation Statements
 
-CREATE TABLE "User" (
+CREATE TABLE Users (
     ID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(30)
 );
@@ -33,7 +33,7 @@ CREATE TABLE User_FitnessGoal (
     targetDate VARCHAR(20),
     achieved INT,
     userID INT,
-    FOREIGN KEY (userID) REFERENCES "User" (ID)
+    FOREIGN KEY (userID) REFERENCES Users (ID)
         ON DELETE SET NULL
 );
 
@@ -60,7 +60,7 @@ CREATE TABLE User_Achievement (
     dateAccomplished VARCHAR(20),
     userID INT,
     goalID INT NOT NULL,
-    FOREIGN KEY (userID) REFERENCES "User" (ID) ON DELETE CASCADE,
+    FOREIGN KEY (userID) REFERENCES Users (ID) ON DELETE CASCADE,
     FOREIGN KEY (goalID) REFERENCES User_FitnessGoal (goalID) ON DELETE CASCADE,
     UNIQUE (goalID)
 );
@@ -70,7 +70,7 @@ CREATE TABLE Completes (
     workoutID INT,
     dateCompleted VARCHAR(10),
     PRIMARY KEY (userID, workoutID),
-    FOREIGN KEY (userID) REFERENCES "User" (ID) ON DELETE SET NULL,
+    FOREIGN KEY (userID) REFERENCES Users (ID) ON DELETE SET NULL,
     FOREIGN KEY (workoutID) REFERENCES Workout (workoutID) ON DELETE CASCADE
 );
 
@@ -119,7 +119,7 @@ CREATE TABLE User_Measurement (
     BMI REAL,
     userID INT NOT NULL,
     PRIMARY KEY (userID, height, weight, BMI),
-    FOREIGN KEY (userID) REFERENCES "User" (ID)
+    FOREIGN KEY (userID) REFERENCES Users (ID)
         ON DELETE CASCADE
 );
 
@@ -130,7 +130,7 @@ CREATE TABLE Attends (
     PRIMARY KEY (address, postalCode, userID),
     FOREIGN KEY (address, postalCode) REFERENCES Gym (address, postalCode)
         ON DELETE SET NULL,
-    FOREIGN KEY (userID) REFERENCES "User" (ID)
+    FOREIGN KEY (userID) REFERENCES Users (ID)
         ON DELETE SET NULL
 );
 
@@ -165,7 +165,7 @@ CREATE TABLE Sees (
     userID INT,
     planID INT,
     PRIMARY KEY (userID, planID),
-    FOREIGN KEY (userID) REFERENCES "User" (ID)
+    FOREIGN KEY (userID) REFERENCES Users (ID)
         ON DELETE SET NULL,
     FOREIGN KEY (planID) REFERENCES TrainingPlan (planID)
         ON DELETE SET NULL
@@ -175,11 +175,11 @@ CREATE TABLE Sees (
 
 -- Insert Statements
 
-INSERT INTO "User" (name) VALUES ('Kylee');
-INSERT INTO "User" (name) VALUES ('Jon');
-INSERT INTO "User" (name) VALUES ('Kashish');
-INSERT INTO "User" (name) VALUES ('Mickey');
-INSERT INTO "User" (name) VALUES ('Naruto');
+INSERT INTO Users (name) VALUES ('Kylee');
+INSERT INTO Users (name) VALUES ('Jon');
+INSERT INTO Users (name) VALUES ('Kashish');
+INSERT INTO Users (name) VALUES ('Mickey');
+INSERT INTO Users (name) VALUES ('Naruto');
 
 INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('20 chin-ups', '2023-12-31', 1, 1);
 INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('80 push-ups', '2023-10-15', 1, 2);

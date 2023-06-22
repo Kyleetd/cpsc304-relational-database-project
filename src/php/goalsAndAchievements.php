@@ -30,6 +30,7 @@
         color: #7F00FF;
         font-size: 40px;
         margin-bottom: 10px;
+        border: 3px solid #8D6CE9; 
     }
 </style>
 
