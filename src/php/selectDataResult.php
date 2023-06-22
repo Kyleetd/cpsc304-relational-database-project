@@ -89,9 +89,6 @@
         }
     }
    
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_list'])) {
-        handleUpdate();
-    }
     if ($_SERVER['REQUEST_METHOD'] === 'POST' 
         && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) {
         handleColAndFilterRequest();
