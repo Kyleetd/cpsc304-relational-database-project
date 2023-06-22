@@ -98,7 +98,7 @@
 
 <?php
 // Establish a connection to the Oracle database
-$db_conn = OCILogon("ora_gargkash", "a89601264", "dbhost.students.cs.ubc.ca:1522/stu");
+$db_conn = OCILogon("ora_kyleetd", "a78242021", "dbhost.students.cs.ubc.ca:1522/stu");
 
 // Check if the connection was successful
 if (!$db_conn) {
@@ -107,9 +107,9 @@ if (!$db_conn) {
 }
 
 // define & execute the SQL query
-$query = "SELECT User_Measurement.userID, User.name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
-          FROM User_Measurement, User
-          LEFT JOIN User_Measurement ON User";
+$query = 'SELECT User_Measurement.userID, "User".name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
+          FROM "User", User_Measurement
+          WHERE User_Measurement.userID = "User".ID';
 $stmt = oci_parse($db_conn, $query);
 oci_execute($stmt);
 
@@ -169,65 +169,7 @@ if (isset($_POST['submit'])) {
     // Refresh table
      echo '<script>window.location.href = window.location.href;</script>';
      exit();
-} else if (isset($_POST['apply_filter'])) {
-
-    // Get the filter input value
-    $filterValue = trim(strtolower($_POST['filter-input']));
-
-    // Create a view for the joinedAll table
-    $viewQuery = "CREATE VIEW joinedAll AS
-                SELECT User_Measurement.userID, User.name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
-                FROM User_Measurement, User
-                LEFT JOIN User_Measurement ON User";
-
-    // Execute the view creation query
-    $createViewStmt = oci_parse($db_conn, $viewQuery);
-    oci_execute($createViewStmt);
-
-    // Perform a separate query on the view
-    $filterQuery = "SELECT COUNT(*)
-                    FROM joinedAll
-                    WHERE BMI > :filterValue";
-
-    $filterStmt = oci_parse($db_conn, $filterQuery);
-    oci_bind_by_name($filterStmt, ":filterValue", $filterValue);
-    oci_execute($filterStmt);    
-
-    // Fetch all rows from the executed statement into an array
-    $rows = oci_fetch_all($stmt, $result, null, null, OCI_FETCHSTATEMENT_BY_ROW);
-
-    // Display the filtered table
-    echo '<form method="post" action="">';
-    echo '<table>';
-    echo '<tr><th>UserID</th><th>Name</th><th>Height</th><th>Weight</th><th>BMI</th><th></th></tr>';
-
-    while ($row = oci_fetch_assoc($filterStmt)) {
-        echo '<tr>';
-        echo '<td data-column="userID">' . $row['USERID'] . '</td>';
-        echo '<td data-column="name">' . $row['NAME'] . '</td>';
-        echo '<td data-column="height">' . $row['HEIGHT'] . '</td>';
-        echo '<td data-column="weight">' . $row['WEIGHT'] . '</td>';
-        echo '<td data-column="BMI">' . $row['BMI'] . '</td>';
-        echo '</tr>';
-    }
-    echo '</table>';
-    echo '</form>';
-
-    // Refresh table
-    echo '<script>';
-    echo 'document.addEventListener("DOMContentLoaded", function() {';
-    echo '    var formRow = document.getElementById("form-row");';
-    echo '    formRow.style.display = "none";';
-    echo '    var tableBody = document.querySelector("table tbody");';
-    echo '    tableBody.innerHTML = `' . $tableRows . '`;';
-    echo '});';
-    echo '</script>';
-} else if (isset($_POST['reset'])) {
-    // Redirect the user to the same page
-    header("Location: " . $_SERVER['PHP_SELF']);
-    echo '<script>window.location.href = window.location.href;</script>';
-    exit();
-}
+} 
 		
 // Close the database connection	
 oci_free_statement($stmt);	
