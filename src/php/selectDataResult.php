@@ -8,9 +8,49 @@
 </head>
 <body>
     <div class="header">
-        <h1>View Table Data</h1>
+        <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">View Table Data</h1>
         <a href="./selectData.php" class="back-button">Back</a>
     </div>
+    <style>
+    .header {
+        text-align: center;
+        font-size: 25px;
+        padding: 10px;
+        background-color: transparent;
+    }
+    .back-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 1px 3px;
+        background-color: orange;
+        border: 1px solid #5D3FD3;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #5D3FD3;
+        font-size: 20px;
+    }
+    body {
+        background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0;
+        height: 100vh; 
+    }
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        width: 80%;
+        background-color: #5D3FD3; 
+    }
+    th, td {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid orange;
+        color: orange; 
+    }
+    </style>
 
     <?php
     require_once('./dbUtils.php');
@@ -57,7 +97,7 @@
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' 
         && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) : ?>
         <table>
-            <caption><?php echo $_POST['table_selection']; ?></caption>
+        <caption style="color: #5D3FD3;"><?php echo $_POST['table_selection']; ?></caption>
             <thead>
                 <tr>
                     <?php foreach ($_POST['selected_columns_list'] as $column) : ?>
