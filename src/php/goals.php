@@ -266,11 +266,7 @@
         echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
         echo '</td>';
         echo '</tr>';
-    
-        echo '</table>';
-    
-        // Add delete and achieve buttons
-    
+        echo '</table>'; 
         echo '</form>'; // Close the form element
 
     // Close the database connection
