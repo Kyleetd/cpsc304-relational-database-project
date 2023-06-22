@@ -159,7 +159,7 @@
         echo "<tr class='update-row' style='display: none;'>
             <td>&nbsp</td>
             <td><input type='text' name='update_list[DESCRIPTION]'></td>
-            <td><input type='text' name='update_list[TARGETDATE]' placeholder='YYYY-MM-DD'></td>
+            <td><input type='date' min='1900-01-01' max='9999-12-31' name='update_list[TARGETDATE]'></td>
             <td>&nbsp</td>
             <td>
                 <button type='submit'>Update</button>
@@ -170,14 +170,12 @@
     $rowIndex++;
     }
 
-
-
     echo '<form id="add-del" method="post" action="">'; // Add form element for add & delete functionality
     // Display input form row (last row) if '+' button is clicked
     echo '<tr id="form-row" class="hidden-row">';
     echo '<td>&nbsp</td>';
     echo '<td><input type="text" name="description" placeholder="Enter goal description" style="color: #5D3FD3;"></td>';
-    echo '<td><input type="text" name="targetDate" placeholder="Enter target date" style="color: #5D3FD3;"></td>';
+    echo '<td><input type="date" name="targetDate" min="1900-01-01" max="9999-12-31" style="color: #5D3FD3;"></td>';
     echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
     echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
