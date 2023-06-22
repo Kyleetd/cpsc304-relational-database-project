@@ -120,7 +120,7 @@
 
     <?php
     // Establish a connection to the Oracle database
-    $db_conn = OCILogon("ora_kyleetd", "a78242021", "dbhost.students.cs.ubc.ca:1522/stu");
+    $db_conn = OCILogon("ora_jhan27", "a82584830", "dbhost.students.cs.ubc.ca:1522/stu");
 
     // Check if the connection was successful
     if (!$db_conn) {
@@ -153,7 +153,7 @@
         echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='ach-del-button'>Delete</button></td>";
         echo '</tr>';
 
-        echo "<form id='row-form-$rowIndex' method='post' action='action.php'>";
+        echo "<form id='row-form-$rowIndex' method='post' action=''>";
         echo "<tr class='update-row' style='display: none;'>
             <td>&nbsp</td>
             <td>&nbsp</td>
@@ -217,44 +217,43 @@
             echo '<div class="error-message">Invalid user ID. Please enter a valid user ID.</div>';
         }   
     } else if (isset($_POST['achieved'])) {
-        $selectedGoal = isset($_POST['goals']) ? $_POST['goals'] : [];
+        $goalId = $_POST['achieved'];
 
-        foreach ($selectedGoals as $goalId) {
-            // Update User_FitnessGoal table to set ACHIEVED = 1
-            $updateQuery = "UPDATE User_FitnessGoal SET ACHIEVED = 1 WHERE GOALID = :goalId";
-            $updateStmt = oci_parse($db_conn, $updateQuery);
-            oci_bind_by_name($updateStmt, ":goalId", $goalId);
-            oci_execute($updateStmt);
+        // Update User_FitnessGoal table to set ACHIEVED = 1
+        $updateQuery = "UPDATE User_FitnessGoal SET ACHIEVED = 1 WHERE GOALID = :goalId";
+        $updateStmt = oci_parse($db_conn, $updateQuery);
+        oci_bind_by_name($updateStmt, ":goalId", $goalId);
+        oci_execute($updateStmt);
 
-            // Get goal information from User_FitnessGoal table
-            $query = "SELECT * FROM User_FitnessGoal WHERE GOALID = :goalId";
-            $stmt = oci_parse($db_conn, $query);
-            oci_bind_by_name($stmt, ":goalId", $goalId);
-            oci_execute($stmt);
-            $goalRow = oci_fetch_assoc($stmt);
+        // Get goal information from User_FitnessGoal table
+        $query = "SELECT * FROM User_FitnessGoal WHERE GOALID = :goalId";
+        $stmt = oci_parse($db_conn, $query);
+        oci_bind_by_name($stmt, ":goalId", $goalId);
+        oci_execute($stmt);
+        $goalRow = oci_fetch_assoc($stmt);
 
-            // Insert goal into User_Achievement table
-            $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID, GOALID) VALUES (:description, :dateAccomplished, :userID, :goalID)";
-            $insertStmt = oci_parse($db_conn, $insertQuery);
-            oci_bind_by_name($insertStmt, ":description", $goalRow['DESCRIPTION']);
-            oci_bind_by_name($insertStmt, ":dateAccomplished", $goalRow['TARGETDATE']);
-            oci_bind_by_name($insertStmt, ":userID", $goalRow['USERID']);
-            oci_bind_by_name($insertStmt, ":goalID", $goalRow['GOALID']);
-            oci_execute($insertStmt);
-        }
+        // Insert goal into User_Achievement table
+        $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID, GOALID) VALUES (:description, :dateAccomplished, :userID, :goalID)";
+        $insertStmt = oci_parse($db_conn, $insertQuery);
+        $todayDate = date("Y-m-d");
+        oci_bind_by_name($insertStmt, ":description", $goalRow['DESCRIPTION']);
+        oci_bind_by_name($insertStmt, ":dateAccomplished", $todayDate);
+        oci_bind_by_name($insertStmt, ":userID", $goalRow['USERID']);
+        oci_bind_by_name($insertStmt, ":goalID", $goalRow['GOALID']);
+        oci_execute($insertStmt);
+
         echo '<script>window.location.href = window.location.href;</script>';
         exit();        
 
     } else if (isset($_POST['delete'])) {
-        $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
+        $goalId = $_POST['delete'];
 
-        foreach ($selectedGoals as $goalId) {
-            // Delete the goal from User_FitnessGoal table
-            $deleteQuery = "DELETE FROM User_FitnessGoal WHERE goalID = :goalId";
-            $deleteStmt = oci_parse($db_conn, $deleteQuery);
-            oci_bind_by_name($deleteStmt, ":goalId", $goalId);
-            oci_execute($deleteStmt);
-        }
+        // Delete the goal from User_FitnessGoal table
+        $deleteQuery = "DELETE FROM User_FitnessGoal WHERE goalID = :goalId";
+        $deleteStmt = oci_parse($db_conn, $deleteQuery);
+        oci_bind_by_name($deleteStmt, ":goalId", $goalId);
+        oci_execute($deleteStmt);
+
         echo '<script>window.location.href = window.location.href;</script>';
         exit();
     }
