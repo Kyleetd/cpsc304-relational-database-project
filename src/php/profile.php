@@ -23,24 +23,7 @@
     .button-container {
         display: inline-block;
         vertical-align: middle;
-    }
-    .button {
-        display: inline-block;
-        background-color: #BF40BF;
-        width: auto; 
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #f2f2f2;
-        border: 2px solid #ddd;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-right: 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: orange;
-    }
+    } 
     table {
         margin: auto;
         border-collapse: collapse;
@@ -66,27 +49,65 @@
         background-color: #BF40BF;
         color: orange; 
     }
+    .bmi-button {
+        display: inline-block;
+        width: auto; 
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #f2f2f2;
+        border: 2px solid orange;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #BF40BF;
+        color: orange; 
+    }
+    .find-count-button {
+        display: inline-block;
+        width: auto; 
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #f2f2f2;
+        border: 2px solid orange;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #BF40BF;
+        color: orange; 
+    }
     .hidden-row {
         display: none;
     }
     #filter-line {
         text-align: center;
         margin: 20px 0;
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+
+    #filter-line .center-content {
+        border: 2px solid orange;
+        padding: 10px;
+    }
+
+    #filter-line .count-text {
+        color: purple;
     }
     #filter-dropdown {
         margin: 0 5px;
     }
     .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 1px 3px;
-            background-color: #f2f2f2;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            text-decoration: none;
-            color: #333;
-            font-size: 20px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 1px 3px;
+        background-color: #5D3FD3;
+        border: 1px solid orange;
+        border-radius: 3px;
+        text-decoration: none;
+        color: orange;
+        font-size: 20px;
     }
 </style>
 
@@ -95,19 +116,21 @@
         <h1>Profile: Users and Measurements</h1>
         <div class="button-container">
             <div class="button add-user-button" onclick="showInputForm()">Add User</div>
-            <div class="button" id="join" onclick="openAverageBMI()">Compute users with average BMI < overall average BMI</div>
+            <div class="button bmi-button" id="join" onclick="openAverageBMI()">Compute users with average BMI < overall average BMI</div>
         </div>
         <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
 </div>
 
 <div id="filter-line">
+  <div class="center-content">
     <form method="post">
-        COUNT USERS HAVING BMI
-        >
-        <input type="number" id="find-count" name="find-count" placeholder="Enter BMI value" min="0">
-        <button type="submit" name="find-count-submit">Find Count</button>
+      <span class="count-text">COUNT USERS HAVING BMI > </span>
+      <input type="number" id="find-count" name="find-count" placeholder="Enter BMI value" min="0">
+      <button type="submit" class="find-count-button" name="find-count-submit">Find Count</button>
     </form>
+  </div>
 </div>
+
 
 <?php
 // Establish a connection to the Oracle database
