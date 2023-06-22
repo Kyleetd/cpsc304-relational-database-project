@@ -271,12 +271,16 @@ INSERT INTO Gym (address, postalCode, city, name) VALUES ('3407 Guadalupe St', '
 INSERT INTO Gym (address, postalCode, city, name) VALUES ('206 Lakeside Dr', 'V1L 6B9', 'Nelson', 'Maverick Strength');
 INSERT INTO Gym (address, postalCode, city, name) VALUES ('1121 Ironwood St', 'V9W 5L6', 'Campbell River', 'West Coast Muscle and Fitness');
 INSERT INTO Gym (address, postalCode, city, name) VALUES ('1350 Manufacturing St Suite 204', '75207', 'Dallas', 'Hunger in the Wild Gym');
+INSERT INTO Gym (address, postalCode, city, name) VALUES ('589 Baker St.', 'V1L 6A3', 'Nelson', 'Power By you');
+INSERT INTO Gym (address, postalCode, city, name) VALUES ('06720 Ciudad de Mexico', 'J3T 1C9', 'Mexico City', 'Extasis Gym');
 
 INSERT INTO PCC (postalCode, country) VALUES ('V6T 1Z1', 'Canada');
 INSERT INTO PCC (postalCode, country) VALUES ('78705',  'United States');
 INSERT INTO PCC (postalCode, country) VALUES ('V1L 6B9', 'Canada');
 INSERT INTO PCC (postalCode, country) VALUES ('V9W 5L6', 'Canada');
 INSERT INTO PCC (postalCode, country) VALUES ('75207',  'United States');
+INSERT INTO PCC (postalCode, country) VALUES ('V1L 6A3', 'Canada');
+INSERT INTO PCC (postalCode, country) VALUES ('J3T 1C9', 'Mexico');
 
 INSERT INTO User_Measurement (height, weight, BMI, UserID) VALUES ('175', '60', '19.6', 1);
 INSERT INTO User_Measurement (height, weight, BMI, UserID) VALUES ('188', '75', '21.2', 2);
@@ -286,10 +290,22 @@ INSERT INTO User_Measurement (height, weight, BMI, UserID) VALUES ('166', '49', 
 
 INSERT INTO Attends (address, postalCode, userID) VALUES ('6000 Student Union Blvd', 'V6T 1Z1', 1);
 INSERT INTO Attends (address, postalCode, userID) VALUES ('6000 Student Union Blvd', 'V6T 1Z1', 2);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('6000 Student Union Blvd', 'V6T 1Z1', 3);
 INSERT INTO Attends (address, postalCode, userID) VALUES ('206 Lakeside Dr', 'V1L 6B9', 3);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('1350 Manufacturing St Suite 204', '75207', 3);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('3407 Guadalupe St', '78705', 3);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('1121 Ironwood St', 'V9W 5L6', 3);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('589 Baker St.', 'V1L 6A3', 3);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('06720 Ciudad de Mexico', 'J3T 1C9', 3);
 INSERT INTO Attends (address, postalCode, userID) VALUES ('1350 Manufacturing St Suite 204', '75207', 4);
 INSERT INTO Attends (address, postalCode, userID) VALUES ('3407 Guadalupe St', '78705', 4);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('6000 Student Union Blvd', 'V6T 1Z1', 5);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('206 Lakeside Dr', 'V1L 6B9', 5);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('1350 Manufacturing St Suite 204', '75207', 5);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('3407 Guadalupe St', '78705', 5);
 INSERT INTO Attends (address, postalCode, userID) VALUES ('1121 Ironwood St', 'V9W 5L6', 5);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('589 Baker St.', 'V1L 6A3', 5);
+INSERT INTO Attends (address, postalCode, userID) VALUES ('06720 Ciudad de Mexico', 'J3T 1C9', 5);
 
 INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (1, 3);
 INSERT INTO AccomplishedBy (goalID, workoutID) VALUES (1, 4);

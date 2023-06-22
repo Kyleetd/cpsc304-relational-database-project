@@ -7,99 +7,181 @@
 </head>
 
 <style>
-    .header {
-        text-align: center;
-        font-size: 25px;
-        padding: 10px;
-        background-color: #f2f2f2;
+body {
+    background-image: url('https://i.pinimg.com/564x/a9/80/22/a98022cdb8b339e11542132b6428ac92.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.header {
+    text-align: center;
+    font-size: 25px;
+    padding: 10px;
+    background-color: transparent;
+    color: orange; /* Modified color */
+}
+.button-container {
+    display: inline-block;
+    vertical-align: middle;
+}
+.button {
+    display: inline-block;
+    background-color: #BF40BF;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: orange; /* Modified color */
+}
+table {
+    margin: auto;
+    border-collapse: collapse;
+    width: 80%;
+    background-color: #BF40BF; 
     }
-    .button-container {
-        display: inline-block;
-        vertical-align: middle;
-    }
-    .button {
-        display: inline-block;
-        width: auto; 
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #f2f2f2;
-        border: 2px solid #ddd;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-right: 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    table {
-        margin: auto;
-        border-collapse: collapse;
-        width: 80%;
-        }
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-    .add-goal-button {
-        display: inline-block;
-        width: auto; 
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #f2f2f2;
-        border: 2px solid #ddd;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .hidden-row {
-    display: none;
-    }
-    #filter-line {
-        text-align: center;
-        margin: 20px 0;
-    }
-    #filter-dropdown {
-        margin: 0 5px;
-    }
-    .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 1px 3px;
-            background-color: #f2f2f2;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            text-decoration: none;
-            color: #333;
-            font-size: 20px;
-    }
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: orange; 
+}
+.add-goal-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.gyms-per-country-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.all-gyms-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.apply-filter-button {
+    display: inline-block;
+    width: auto; 
+    height: 25px;
+    line-height: 15px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.reset-button {
+    display: inline-block;
+    width: auto; 
+    height: 25px;
+    line-height: 15px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.hidden-row {
+display: none;
+}
+#filter-line {
+    text-align: center;
+    margin: 20px 0;
+}
+#filter-dropdown {
+    margin: 0 5px;
+}
+.button-container-back-reset {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: row;
+}
+.back-button {
+    font-family: Arial, sans-serif;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    padding: 1px 3px;
+    background-color: #BF40BF;
+    border: 1px solid white;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    width: 43px; 
+    color: orange; 
+}
 </style>
 
 <body>
-<div class="header">
-        <h1>Joint Table: Gyms, PCC, and User</h1>
-        <div class="button-container">
-            <div class="button add-goal-button" onclick="showInputForm()">Add Gym</div>
-            <div class="button" id="join" onclick="openNumberOfGymsPerCountry()">Compute Number of Gyms per Country</div>
-        </div>
-        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
-</div>
+<form method="post" action="">
+  <div class="header">
+    <h1>Joint Table: Gyms, PCC, and User</h1>
+    <div class="button-container">
+      <div class="button add-goal-button" onclick="showInputForm()">Add Gym</div>
+      <div class="button gyms-per-country-button" id="join" onclick="openNumberOfGymsPerCountry()">Compute Number of Gyms per Country</div>
+      <div class="button all-gyms-button" id="join" onclick="openUsersAttendingAllGyms()">Find Users Attending all Gyms</div>
+    </div>
+    <div class="button-container-back-reset">
+      <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
+    </div>
+  </div>
+</form>
 
 <div id="filter-line">
-    JOIN WHERE
-    <select id="filter-dropdown">
-        <option value="address">Address</option>
-        <option value="postalCode">Postal Code</option>
-        <option value="city">City</option>
-        <option value="name">Name</option>
-        <option value="country">Country</option>
-        <option value="userID">UserID</option>
-    </select>
-    =
-    <input type="text" id="filter-input" placeholder="Enter value">
-    <button onclick="applyFilter()">Apply Filter</button>
+    <form method="post">
+        <span style="color: purple;">JOIN WHERE</span>
+        <select id="filter-dropdown" name="filter-dropdown" style="background-color: orange;">
+            <option value="address">Address</option>
+            <option value="postalCode">Postal Code</option>
+            <option value="city">City</option>
+            <option value="name">Name</option>
+            <option value="country">Country</option>
+            <option value="userID">UserID</option>
+        </select>
+        <span style="color: purple;">=</span>
+        <input type="text" id="filter-input" name="filter-input" placeholder="Enter value" style="background-color: orange;">
+        <button type="submit" name="apply_filter" class="apply-filter-button">Apply Filter</button>
+    </form>
 </div>
 
 <?php
@@ -121,10 +203,9 @@ $stmt = oci_parse($db_conn, $query);
 oci_execute($stmt);
 
 // Display the table
+echo '<form method="post" action="">';
 echo '<table>';
 echo '<tr><th>Address</th><th>Postal Code</th><th>City</th><th>Name</th><th>Country</th><th>UserID</th></tr>';
-
-echo '<form method="post" action="">';
 
 while ($row = oci_fetch_assoc($stmt)) {
     echo '<tr>';
@@ -149,9 +230,7 @@ echo '<td colspan="2">';
 echo '<input type="submit" name="submit" value="Add">';
 echo '</td>';
 echo '</tr>';
-
 echo '</table>';
-
 echo '</form>'; 
 
 // Handle form submission
@@ -187,8 +266,74 @@ if (isset($_POST['submit'])) {
     oci_bind_by_name($insertStmt, ":userID", $userID);
     oci_execute($insertStmt);
 
+    // Refresh the page
+    echo '<script>window.location.href = window.location.href;</script>';
+    exit();
+} else if (isset($_POST['apply_filter'])) {
+
+    // Get the filter input value
+    $filterDropdown = $_POST['filter-dropdown'];
+    $filterValue = trim(strtolower($_POST['filter-input']));
+
+    // Create a view for the joinedAll table
+    $viewQuery = "CREATE VIEW joinedAll AS
+                SELECT Gym.address, Gym.postalCode, PCC.country, Gym.city, Gym.name, Attends.userID
+                FROM Gym
+                LEFT JOIN Attends ON Gym.address = Attends.address AND Gym.postalCode = Attends.postalCode
+                LEFT JOIN PCC ON Gym.postalCode = PCC.postalCode";
+
+    // Execute the view creation query
+    $createViewStmt = oci_parse($db_conn, $viewQuery);
+    oci_execute($createViewStmt);
+
+    // Perform a separate query on the view
+    $filterQuery = "SELECT address, postalCode, country, city, name, userID
+                    FROM joinedAll
+                    WHERE LOWER(" . $filterDropdown . ") = :filterValue";
+
+    $filterStmt = oci_parse($db_conn, $filterQuery);
+    oci_bind_by_name($filterStmt, ":filterValue", $filterValue);
+    oci_bind_by_name($filterStmt, ":filterDropdown", $filterDropdown);
+    oci_execute($filterStmt);    
+
+    // Fetch all rows from the executed statement into an array
+    $rows = oci_fetch_all($stmt, $result, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+    // Display the filtered table
+    echo '<form method="post" action="">';
+    echo '<table>';
+    echo '<tr><th>Address</th><th>Postal Code</th><th>City</th><th>Name</th><th>Country</th><th>UserID</th></tr>';
+
+    while ($row = oci_fetch_assoc($filterStmt)) {
+        echo '<tr>';
+        echo '<td data-column="address">' . $row['ADDRESS'] . '</td>';
+        echo '<td data-column="postalCode">' . $row['POSTALCODE'] . '</td>';
+        echo '<td data-column="city">' . $row['CITY'] . '</td>';
+        echo '<td data-column="name">' . $row['NAME'] . '</td>';
+        echo '<td data-column="country">' . $row['COUNTRY'] . '</td>';
+        echo '<td data-column="userID">' . $row['USERID'] . '</td>';
+        echo '</tr>';
+    }
+    echo '</table>';
+
+     // Add event handlers for buttons
+     echo '<button type="submit" name="reset_filter" value="reset" class="reset-button">Reset Filter</button>';
+
+     echo '</form>';
+
+    echo '</form>';
+
     // Refresh table
-    header("Refresh:0");
+    echo '<script>';
+    echo 'document.addEventListener("DOMContentLoaded", function() {';
+    echo '    var formRow = document.getElementById("form-row");';
+    echo '    formRow.style.display = "none";';
+    echo '    var tableBody = document.querySelector("table tbody");';
+    echo '    tableBody.innerHTML = `' . $tableRows . '`;';
+    echo '});';
+    echo '</script>';
+
+    exit();
 } 
 		
 // Close the database connection	
@@ -202,40 +347,15 @@ oci_close($db_conn);
         var formRow = document.getElementById('form-row');
         formRow.style.display = 'table-row';
     }
-    function applyFilter() {
-        var filterDropdown = document.getElementById("filter-dropdown");
-        var filterInput = document.getElementById("filter-input");
-
-        var filterColumn = filterDropdown.value;
-        var filterValue = filterInput.value.trim().toLowerCase();
-
-        var table = document.getElementsByTagName("table")[0];
-        var rows = table.getElementsByTagName("tr");
-
-        for (var i = 1; i < rows.length; i++) {
-            var cells = rows[i].getElementsByTagName("td");
-
-            var rowVisible = false;
-            for (var j = 0; j < cells.length; j++) {
-                var cell = cells[j];
-                var cellValue = cell.innerHTML.trim().toLowerCase();
-
-                if (j === 0 && cellValue === filterValue) {
-                    rowVisible = true;
-                    break;
-                }
-
-                if (j > 0 && filterColumn === cell.getAttribute("data-column") && cellValue === filterValue) {
-                    rowVisible = true;
-                    break;
-                }
-            }
-
-            rows[i].style.display = rowVisible ? "" : "none";
-        }
-    }
     function openNumberOfGymsPerCountry() {
         window.open("https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/numberOfGymsPerCountry.php", "_blank");
+    }
+    function openUsersAttendingAllGyms() {
+        window.open("https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/allUsersAllGyms.php", "_blank");
+    }
+    function resetTable() {
+        // Restore the original table HTML
+        location.reload();
     }
 </script>
 

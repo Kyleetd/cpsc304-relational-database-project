@@ -1,26 +1,39 @@
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Achievements</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements</title>
     <style>
+        body {
+            background-image: url('https://i.pinimg.com/564x/01/03/21/010321446051fb8a97b258436c7f0e8f.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
         .header {
             text-align: center;
             font-size: 25px;
             padding: 10px;
-            background-color: #f2f2f2;
         }
+
+        .header h1 {
+            color: #FFB74D; 
+        }
+
         table {
-        margin: auto;
-        border-collapse: collapse;
-        width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            width: 80%;
+            background-color: #8D6CE9; 
         }
+
         th, td {
             padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            color: #FFB74D; 
         }
 
         .back-button {
@@ -28,15 +41,22 @@
             top: 10px;
             left: 10px;
             padding: 1px 3px;
-            background-color: #f2f2f2;
-            border: 1px solid #ddd;
+            background-color: #FFB74D; 
+            border: 1px solid #FFB74D; 
             border-radius: 3px;
             text-decoration: none;
-            color: #333;
+            color: #8D6CE9; 
             font-size: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #FF9800; 
         }
     </style>
+</head>
 
+<body>
     <div class="header">
         <h1>Fitness Achievements</h1>
         <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goalsAndAchievements.php" class="back-button">Back</a>
@@ -52,31 +72,29 @@
         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
     }
 
-    // Prepare and execute the SQL query
+    // Define & execute the SQL query
     $query = "SELECT * FROM User_Achievement";
     $stmt = oci_parse($db_conn, $query);
     oci_execute($stmt);
 
-     // Display the table
-     echo '<table>';
-     echo '<tr><th>Achievement ID</th><th>Description</th><th>Date Accomplished</th><th>User ID</th><th>Goal ID</th></tr>';
+    // Display the table
+    echo '<table>';
+    echo '<tr><th>Achievement ID</th><th>Description</th><th>Date Accomplished</th><th>User ID</th><th>Goal ID</th></tr>';
 
-     while ($row = oci_fetch_assoc($stmt)) {
+    while ($row = oci_fetch_assoc($stmt)) {
         echo '<tr>';
-        echo '<td>'.$row['ACHIEVEMENTID'].'</td>';
-        echo '<td>'.$row['DESCRIPTION'].'</td>';
-        echo '<td>'.$row['DATEACCOMPLISHED'].'</td>';
-        echo '<td>'.$row['USERID'].'</td>';
-        echo '<td>'.$row['GOALID'].'</td>';
+        echo '<td>' . $row['ACHIEVEMENTID'] . '</td>';
+        echo '<td>' . $row['DESCRIPTION'] . '</td>';
+        echo '<td>' . $row['DATEACCOMPLISHED'] . '</td>';
+        echo '<td>' . $row['USERID'] . '</td>';
+        echo '<td>' . $row['GOALID'] . '</td>';
         echo '</tr>';
     }
     echo '</table>';
 
     // Close the database connection
-
     oci_close($db_conn);
-
     ?>
+</body>
 
-    </body>
 </html>

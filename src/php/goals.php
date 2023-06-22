@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,68 +9,110 @@
         text-align: center;
         font-size: 25px;
         padding: 10px;
-        background-color: #f2f2f2;
+        background-color: transparent;
     }
-
     table {
         margin: auto;
         border-collapse: collapse;
         width: 80%;
+        background-color: orange; 
     }
-
     th,
     td {
         padding: 8px;
         text-align: left;
         border-bottom: 1px solid #ddd;
+        color: #5D3FD3; 
     }
-
     td:first-child {
-        width: 100px; /* Set width for the first column (Set Achieved or Delete) */
+        width: 100px; 
     }
-
     td:nth-child(3) {
-        width: 40%; /* Set width for the third column (Description) */
+        width: 40%; 
     }
-
     .add-goal-button {
         display: inline-block;
         width: 30px;
         height: 30px;
         line-height: 30px;
         text-align: center;
-        background-color: #f2f2f2;
-        border: 1px solid #ddd;
+        background-color: #5D3FD3;
+        border: 1px solid orange;
         border-radius: 3px;
         cursor: pointer;
+        color: orange; 
     }
-
     .hidden-row {
         display: none;
     }
-
     .set-achieved-column {
         width: 50px;
     }
-
     .back-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 1px 3px;
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    text-decoration: none;
-    color: #333;
-    font-size: 20px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 1px 3px;
+        background-color: #5D3FD3;
+        border: 1px solid orange;
+        border-radius: 3px;
+        text-decoration: none;
+        color: orange;
+        font-size: 20px;
+    }
+    body {
+        background-image: url("https://i.pinimg.com/564x/f5/f4/ec/f5f4ec2dd2b61c2463461c3d50d03cca.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .error-message {
+        text-align: center;
+        margin-top: 20px;
+        color: #5D3FD3;
+    }
+    input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #5D3FD3;
+        border-radius: 3px;
+        outline: none;
+        transition: background-color 0.3s ease-in-out;
+        background-color: purple;
+        position: relative;
+    }
+    input[type="checkbox"]:checked {
+        background-color: purple;
+    }
+    input[type="checkbox"]::before {
+        content: "X";
+        font-weight: bold;
+        font-size: 14px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: orange;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    input[type="checkbox"]:checked::before {
+        opacity: 1;
     }
 </style>
 <body>
 
     <div class="header">
-        <h1>Fitness Goals</h1>
-        <div class="add-goal-button" onclick="showInputForm()">+</div>
+        <h1 style="color: orange;">Fitness Goals</h1>
+        <div class="add-goal-button" onclick="showInputForm()" style="color: orange;">+</div>
         <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goalsAndAchievements.php" class="back-button">Back</a>
     </div>
 
@@ -97,7 +138,7 @@
     echo '<form method="post" action="">'; // Add form element for add & delete functionality
 
     while ($row = oci_fetch_assoc($stmt)) {
-        // Skip rendering the row if it has been achieved
+        // Skip rendering the row if goal has been achieved
         if ($row['ACHIEVED'] == 1) {
             continue;
         }
@@ -114,19 +155,19 @@
     echo '<tr id="form-row" class="hidden-row">';
     echo '<td></td>';
     echo '<td></td>';
-    echo '<td><input type="text" name="description" placeholder="Enter goal description"></td>';
-    echo '<td><input type="text" name="targetDate" placeholder="Enter target date"></td>';
-    echo '<td><input type="number" name="userID" placeholder="Enter user ID"></td>';
+    echo '<td><input type="text" name="description" placeholder="Enter goal description" style="color: #5D3FD3;"></td>';
+    echo '<td><input type="text" name="targetDate" placeholder="Enter target date" style="color: #5D3FD3;"></td>';
+    echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
-    echo '<input type="submit" name="submit" value="Add">';
+    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
     echo '</td>';
     echo '</tr>';
 
     echo '</table>';
 
     // Add delete and achieve buttons
-    echo '<button type="submit" name="achieved">Achieve</button>';
-    echo '<button type="submit" name="delete">Delete</button>';
+    echo '<button type="submit" name="achieved" style="background-color: #5D3FD3; color: orange;">Achieve</button>';
+    echo '<button type="submit" name="delete" style="background-color: #5D3FD3; color: orange;">Delete</button>';
 
     echo '</form>'; // Close the form element
 
@@ -135,18 +176,29 @@
         $description = $_POST['description'];
         $targetDate = $_POST['targetDate'];
         $userID = (int) $_POST['userID'];
-
-        // Insert goal in User_Achievement table
-        $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) VALUES (:description, :targetDate, :userID)";
-        $insertStmt = oci_parse($db_conn, $insertQuery);
-        oci_bind_by_name($insertStmt, ":description", $description);
-        oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
-        oci_bind_by_name($insertStmt, ":userID", $userID);
-        oci_execute($insertStmt);
-
-        // Refresh table
-        header("Refresh:0");
-
+    
+        // Check if the user ID exists
+        $checkQuery = "SELECT COUNT(*) AS USER_COUNT FROM \"User\" WHERE ID = :userID";
+        $checkStmt = oci_parse($db_conn, $checkQuery);
+        oci_bind_by_name($checkStmt, ":userID", $userID);
+        oci_execute($checkStmt);
+        $row = oci_fetch_assoc($checkStmt);
+        $userCount = (int) $row['USER_COUNT'];
+    
+        if ($userCount > 0) {
+            // Insert goal in User_FitnessGoal table
+            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) VALUES (:description, :targetDate, :userID)";
+            $insertStmt = oci_parse($db_conn, $insertQuery);
+            oci_bind_by_name($insertStmt, ":description", $description);
+            oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
+            oci_bind_by_name($insertStmt, ":userID", $userID);
+            oci_execute($insertStmt);
+    
+            echo '<script>window.location.href = window.location.href;</script>';
+            exit();
+        } else {
+            echo '<div class="error-message">Invalid user ID. Please enter a valid user ID.</div>';
+        }   
     } else if (isset($_POST['achieved'])) {
         $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
 
@@ -173,8 +225,8 @@
             oci_bind_by_name($insertStmt, ":goalID", $goalRow['GOALID']);
             oci_execute($insertStmt);
         }
-        // Refresh table
-        header("Refresh:0");
+        echo '<script>window.location.href = window.location.href;</script>';
+        exit();        
 
     } else if (isset($_POST['delete'])) {
         $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
@@ -186,8 +238,8 @@
             oci_bind_by_name($deleteStmt, ":goalId", $goalId);
             oci_execute($deleteStmt);
         }
-        // Refresh table
-        header("Refresh:0");
+        echo '<script>window.location.href = window.location.href;</script>';
+        exit();
     }
 
     // Close the database connection
@@ -204,5 +256,4 @@
     </script>
 
 </body>
-
 </html>
