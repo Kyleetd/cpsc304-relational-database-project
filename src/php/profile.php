@@ -118,7 +118,7 @@
             <div class="button add-user-button" onclick="showInputForm()">Add User</div>
             <div class="button bmi-button" id="join" onclick="openAverageBMI()">Compute users with average BMI < overall average BMI</div>
         </div>
-        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
+        <a href="./dashboard.php" class="back-button">Back</a>
 </div>
 
 <div id="filter-line">

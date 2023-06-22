@@ -176,7 +176,7 @@ display: none;
       <div class="button all-gyms-button" id="join" onclick="openUsersAttendingAllGyms()">Find Users Attending all Gyms</div>
     </div>
     <div class="button-container-back-reset">
-      <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
+      <a href="./dashboard.php" class="back-button">Back</a>
     </div>
   </div>
 </form>

@@ -51,7 +51,7 @@
 <body>
     <div class="header">
         <h1>Fitness Achievements</h1>
-        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goalsAndAchievements.php" class="back-button">Back</a>
+        <a href="./goalsAndAchievements.php" class="back-button">Back</a>
     </div>
 
     <?php

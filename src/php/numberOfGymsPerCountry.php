@@ -50,7 +50,7 @@
 <body>
 <div class="header">
         <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">Number of Gyms Per Country</h1>
-        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/gym.php" class="back-button">Back</a>
+        <a href="./gym.php" class="back-button">Back</a>
 </div>
 
 <?php

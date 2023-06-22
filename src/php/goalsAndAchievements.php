@@ -35,13 +35,13 @@
 </style>
 
 <body>
-    <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goals.php">
+    <a href="./goals.php">
         <button id="fitnessGoalsButton">Fitness Goals</button>
     </a>
-    <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/achievements.php">
+    <a href="./achievements.php">
         <button id="fitnessAchievementsButton">Fitness Achievements</button>
     </a>
-    <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php">
+    <a href="./dashboard.php">
         <button id="back-button">Dashboard</button>
     </a>
 
