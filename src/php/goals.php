@@ -24,15 +24,12 @@
         border-bottom: 1px solid #ddd;
         color: #5D3FD3; 
     }
-
     td:first-child {
         width: 100px; 
     }
-
     td:nth-child(3) {
         width: 40%; 
     }
-
     .add-goal-button {
         display: inline-block;
         width: 30px;
@@ -45,15 +42,12 @@
         cursor: pointer;
         color: orange; 
     }
-
     .hidden-row {
         display: none;
     }
-
     .set-achieved-column {
         width: 50px;
     }
-
     .back-button {
         position: absolute;
         top: 10px;
@@ -66,12 +60,52 @@
         color: orange;
         font-size: 20px;
     }
-
     body {
         background-image: url("https://i.pinimg.com/564x/f5/f4/ec/f5f4ec2dd2b61c2463461c3d50d03cca.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+    }
+    .error-message {
+        text-align: center;
+        margin-top: 20px;
+        color: #5D3FD3;
+    }
+    input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #5D3FD3;
+        border-radius: 3px;
+        outline: none;
+        transition: background-color 0.3s ease-in-out;
+        background-color: purple;
+        position: relative;
+    }
+    input[type="checkbox"]:checked {
+        background-color: purple;
+    }
+    input[type="checkbox"]::before {
+        content: "X";
+        font-weight: bold;
+        font-size: 14px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: orange;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    input[type="checkbox"]:checked::before {
+        opacity: 1;
     }
 </style>
 <body>
@@ -104,7 +138,7 @@
     echo '<form method="post" action="">'; // Add form element for add & delete functionality
 
     while ($row = oci_fetch_assoc($stmt)) {
-        // Skip rendering the row if it has been achieved
+        // Skip rendering the row if goal has been achieved
         if ($row['ACHIEVED'] == 1) {
             continue;
         }
@@ -142,18 +176,29 @@
         $description = $_POST['description'];
         $targetDate = $_POST['targetDate'];
         $userID = (int) $_POST['userID'];
-
-        // Insert goal in User_Achievement table
-        $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) VALUES (:description, :targetDate, :userID)";
-        $insertStmt = oci_parse($db_conn, $insertQuery);
-        oci_bind_by_name($insertStmt, ":description", $description);
-        oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
-        oci_bind_by_name($insertStmt, ":userID", $userID);
-        oci_execute($insertStmt);
-
-        echo '<script>window.location.href = window.location.href;</script>';
-        exit();        
-
+    
+        // Check if the user ID exists
+        $checkQuery = "SELECT COUNT(*) AS USER_COUNT FROM \"User\" WHERE ID = :userID";
+        $checkStmt = oci_parse($db_conn, $checkQuery);
+        oci_bind_by_name($checkStmt, ":userID", $userID);
+        oci_execute($checkStmt);
+        $row = oci_fetch_assoc($checkStmt);
+        $userCount = (int) $row['USER_COUNT'];
+    
+        if ($userCount > 0) {
+            // Insert goal in User_FitnessGoal table
+            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) VALUES (:description, :targetDate, :userID)";
+            $insertStmt = oci_parse($db_conn, $insertQuery);
+            oci_bind_by_name($insertStmt, ":description", $description);
+            oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
+            oci_bind_by_name($insertStmt, ":userID", $userID);
+            oci_execute($insertStmt);
+    
+            echo '<script>window.location.href = window.location.href;</script>';
+            exit();
+        } else {
+            echo '<div class="error-message">Invalid user ID. Please enter a valid user ID.</div>';
+        }   
     } else if (isset($_POST['achieved'])) {
         $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
 
