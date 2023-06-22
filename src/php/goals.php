@@ -70,7 +70,7 @@
         color: #5D3FD3;
     }
     
-    .ach-del-button {
+    .action-button {
         background-color: #5D3FD3; 
         color: orange;
     }
@@ -111,11 +111,11 @@
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
         echo '<td>' . $row['USERID'] . '</td>';
-        echo "<td><button type='button' class='edit-button' data-row-index='$rowIndex'>Edit</button>";
+        echo "<td><button type='button' class='action-button' data-row-index='$rowIndex'>Edit</button>";
         if (!$row['ACHIEVED'] == 1) {
-            echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='ach-del-button'>Achieve</button>";
+            echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='action-button'>Achieve</button>";
         }
-        echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='ach-del-button'>Delete</button></td>";
+        echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='action-button'>Delete</button></td>";
         echo '</tr>';
 
         echo "<form id='row-form-$rowIndex' method='post' action=''>";
