@@ -29,7 +29,7 @@
       border-radius: 10px;
     }
 
-    .fitnessGoalsButton {
+    .button {
       background-color: #FFB74D; /* Warm orange color */
       border: none;
       color: #FFFFFF; /* White text color */
@@ -54,16 +54,16 @@
   <div class="menu-container">
     <div class="button-wrapper">
       <a href="./selectData.php">
-        <button class="fitnessGoalsButton">View Any Table</button>
+        <button class="button">View Any Table</button>
       </a>
       <a href="./goalsAndAchievements.php">
-        <button class="fitnessGoalsButton">Goals And Achievements</button>
+        <button class="button">Goals And Achievements</button>
       </a>
       <a href="./profile.php">
-        <button class="fitnessGoalsButton">User Profiles</button>
+        <button class="button">User Profiles</button>
       </a>
       <a href="./gym.php">
-        <button class="fitnessGoalsButton">Gyms</button>
+        <button class="button">Gyms</button>
       </a>
     </div>
   </div>
