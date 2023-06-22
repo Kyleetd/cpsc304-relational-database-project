@@ -130,6 +130,62 @@
         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
     }
 
+    // Define & execute SQL query
+    $query = "SELECT * FROM User_FitnessGoal";
+    $stmt = oci_parse($db_conn, $query);
+    oci_execute($stmt);
+
+    // Display table
+    echo '<table>';
+    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th><th>Action</th></tr>';
+
+    $rowIndex = 0;
+    while ($row = oci_fetch_assoc($stmt)) {
+        // Skip rendering the row if goal has been achieved
+        if ($row['ACHIEVED'] == 1) {
+            continue;
+        }
+        echo '<tr>';
+        echo '<td>' . $row['GOALID'] . '</td>';
+        echo '<td>' . $row['DESCRIPTION'] . '</td>';
+        echo '<td>' . $row['TARGETDATE'] . '</td>';
+        echo '<td>' . $row['USERID'] . '</td>';
+        echo "<td><button type='button' class='edit-button' data-row-index='$rowIndex'>Edit</button>";
+        echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='ach-del-button'>Achieve</button>";
+        echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='ach-del-button'>Delete</button></td>";
+        echo '</tr>';
+
+        echo "<form id='row-form-$rowIndex' method='post' action=''>";
+        echo "<tr class='update-row' style='display: none;'>
+            <td>&nbsp</td>
+            <td><input type='text' name='update_list[DESCRIPTION]'></td>
+            <td><input type='text' name='update_list[TARGETDATE]' placeholder='YYYY-MM-DD'></td>
+            <td>&nbsp</td>
+            <td>
+                <button type='submit'>Update</button>
+                <button type='button' class='cancel-button'>Cancel</button>
+            </td>
+            <input type='hidden' name='goalID' value='" . $row['GOALID'] . "'>
+        </tr></form>";
+    $rowIndex++;
+    }
+
+
+
+    echo '<form id="add-del" method="post" action="">'; // Add form element for add & delete functionality
+    // Display input form row (last row) if '+' button is clicked
+    echo '<tr id="form-row" class="hidden-row">';
+    echo '<td>&nbsp</td>';
+    echo '<td><input type="text" name="description" placeholder="Enter goal description" style="color: #5D3FD3;"></td>';
+    echo '<td><input type="text" name="targetDate" placeholder="Enter target date" style="color: #5D3FD3;"></td>';
+    echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
+    echo '<td colspan="2">';
+    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
+    echo '</td>';
+    echo '</tr>';
+    echo '</table>'; 
+    echo '</form>'; // Close the form element
+
     // Handle form submission
     if (isset($_POST['submit']) && !isset($_POST['update_list'])) {
         $description = $_POST['description'];
@@ -137,7 +193,7 @@
         $userID = (int) $_POST['userID'];
     
         // Check if the user ID exists
-        $checkQuery = "SELECT COUNT(*) AS USER_COUNT FROM \"User\" WHERE ID = :userID";
+        $checkQuery = "SELECT COUNT(*) AS USER_COUNT FROM Users WHERE ID = :userID";
         $checkStmt = oci_parse($db_conn, $checkQuery);
         oci_bind_by_name($checkStmt, ":userID", $userID);
         oci_execute($checkStmt);
@@ -146,7 +202,8 @@
     
         if ($userCount > 0) {
             // Insert goal in User_FitnessGoal table
-            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) VALUES (:description, :targetDate, :userID)";
+            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) 
+            VALUES (:description, TO_DATE(:targetDate, 'YYYY-MM-DD'), :userID)";
             $insertStmt = oci_parse($db_conn, $insertQuery);
             oci_bind_by_name($insertStmt, ":description", $description);
             oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
@@ -211,63 +268,8 @@
             
         $query = $updateStatement . " WHERE GOALID = :goalID";
         executeBoundSQL($query, $updateVars);
+        echo '<script>window.location.href = window.location.href;</script>';
     }
-
-        // Define & execute SQL query
-        $query = "SELECT * FROM User_FitnessGoal";
-        $stmt = oci_parse($db_conn, $query);
-        oci_execute($stmt);
-    
-        // Display table
-        echo '<table>';
-        echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th><th>Action</th></tr>';
-    
-        $rowIndex = 0;
-        while ($row = oci_fetch_assoc($stmt)) {
-            // Skip rendering the row if goal has been achieved
-            if ($row['ACHIEVED'] == 1) {
-                continue;
-            }
-            echo '<tr>';
-            echo '<td>' . $row['GOALID'] . '</td>';
-            echo '<td>' . $row['DESCRIPTION'] . '</td>';
-            echo '<td>' . $row['TARGETDATE'] . '</td>';
-            echo '<td>' . $row['USERID'] . '</td>';
-            echo "<td><button type='button' class='edit-button' data-row-index='$rowIndex'>Edit</button>";
-            echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='ach-del-button'>Achieve</button>";
-            echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='ach-del-button'>Delete</button></td>";
-            echo '</tr>';
-    
-            echo "<form id='row-form-$rowIndex' method='post' action=''>";
-            echo "<tr class='update-row' style='display: none;'>
-                <td>&nbsp</td>
-                <td><input type='text' name='update_list[DESCRIPTION]'></td>
-                <td><input type='text' name='update_list[TARGETDATE]' placeholder='YYYY-MM-DD'></td>
-                <td>&nbsp</td>
-                <td>
-                    <button type='submit'>Update</button>
-                    <button type='button' class='cancel-button'>Cancel</button>
-                </td>
-                <input type='hidden' name='goalID' value='" . $row['GOALID'] . "'>
-            </tr></form>";
-        $rowIndex++;
-        }
-    
-    
-    
-        echo '<form id="add-del" method="post" action="">'; // Add form element for add & delete functionality
-        // Display input form row (last row) if '+' button is clicked
-        echo '<tr id="form-row" class="hidden-row">';
-        echo '<td>&nbsp</td>';
-        echo '<td><input type="text" name="description" placeholder="Enter goal description" style="color: #5D3FD3;"></td>';
-        echo '<td><input type="text" name="targetDate" placeholder="Enter target date" style="color: #5D3FD3;"></td>';
-        echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
-        echo '<td colspan="2">';
-        echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
-        echo '</td>';
-        echo '</tr>';
-        echo '</table>'; 
-        echo '</form>'; // Close the form element
 
     // Close the database connection
     oci_free_statement($stmt);
