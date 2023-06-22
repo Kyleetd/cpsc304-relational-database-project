@@ -7,11 +7,18 @@
 </head>
 
 <style>
+    body {
+    background-image: url('https://i.pinimg.com/564x/a9/80/22/a98022cdb8b339e11542132b6428ac92.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
     .header {
         text-align: center;
         font-size: 25px;
         padding: 10px;
-        background-color: #f2f2f2;
+        background-color: transparent;
+        color: orange; 
+        text-shadow: 2px 2px 4px #5D3FD3;
     }
     .button-container {
         display: inline-block;
@@ -19,6 +26,7 @@
     }
     .button {
         display: inline-block;
+        background-color: #BF40BF;
         width: auto; 
         height: 30px;
         line-height: 30px;
@@ -31,16 +39,19 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: orange;
     }
     table {
         margin: auto;
         border-collapse: collapse;
         width: 80%;
-        }
+        background-color: #BF40BF; 
+    }
     th, td {
         padding: 8px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid orange;
+        color: orange; 
     }
     .add-user-button {
         display: inline-block;
@@ -49,12 +60,14 @@
         line-height: 30px;
         text-align: center;
         background-color: #f2f2f2;
-        border: 2px solid #ddd;
+        border: 2px solid orange;
         border-radius: 5px;
         cursor: pointer;
+        background-color: #BF40BF;
+        color: orange; 
     }
     .hidden-row {
-    display: none;
+        display: none;
     }
     #filter-line {
         text-align: center;
@@ -160,85 +173,17 @@ if (isset($_POST['submit'])) {
     oci_execute($insertStmt);
 
     // // Insert User in User table
-    // $insertQuery = "INSERT INTO User (ID, NAME) VALUES (:ID, :name)";
-    // $insertStmt = oci_parse($db_conn, $insertQuery);
-    // oci_bind_by_name($insertStmt, ":ID", $userID);
-    // oci_bind_by_name($insertStmt, ":name", $name);
-    // oci_execute($insertStmt);
+    $insertQuery = "INSERT INTO User (ID, NAME) VALUES (:ID, :name)";
+    $insertStmt = oci_parse($db_conn, $insertQuery);
+    oci_bind_by_name($insertStmt, ":ID", $userID);
+    oci_bind_by_name($insertStmt, ":name", $name);
+    oci_execute($insertStmt);
 
     // Refresh table
      echo '<script>window.location.href = window.location.href;</script>';
      exit();
-} else if (isset($_POST['apply_filter'])) {
+} 
 
-    // Get the filter input value
-    $filterValue = trim(strtolower($_POST['filter-input']));
-
-    // Perform a filter query 
-    $filterQuery = "SELECT COUNT(*) AS user_count
-                    FROM Users
-                    JOIN User_Measurement ON User_Measurement.userID = Users.ID
-                    GROUP BY Users.ID
-                    HAVING MAX(User_Measurement.BMI) > :filterValue";
-
-    $filterStmt = oci_parse($db_conn, $filterQuery);
-    oci_bind_by_name($filterStmt, ":filterValue", $filterValue);
-    oci_execute($filterStmt);
-
-    if (($error = oci_error($filterStmt)) !== false) {
-        // Handle the error appropriately, such as logging or displaying an error message.
-        echo "Query error: " . $error['message'];
-        exit;
-    }
-    
-    // Fetch the result of the query
-    $count = oci_fetch_single($filterStmt);
-    if ($count !== false) {
-        echo "Count: " . $count;
-    } else {
-        echo "No results found.";
-    }
-
-    // Fetch all rows from the executed statement into an array
-    $rows = oci_fetch_all($stmt, $result, null, null, OCI_FETCHSTATEMENT_BY_ROW);
-
-    // Display the filtered table
-    echo '<form method="post" action="">';
-    echo '<table>';
-    echo '<tr><th>UserID</th><th>Name</th><th>Height</th><th>Weight</th><th>BMI</th><th></th></tr>';
-
-    while ($row = oci_fetch_assoc($filterStmt)) {
-        echo '<tr>';
-        echo '<td data-column="userID">' . $row['USERID'] . '</td>';
-        echo '<td data-column="name">' . $row['NAME'] . '</td>';
-        echo '<td data-column="height">' . $row['HEIGHT'] . '</td>';
-        echo '<td data-column="weight">' . $row['WEIGHT'] . '</td>';
-        echo '<td data-column="BMI">' . $row['BMI'] . '</td>';
-        echo '</tr>';
-    }
-    echo '</table>';
- 
-     // Add event handlers for buttons
-     echo '<button type="submit" name="reset_filter" value="reset" class="reset-button">Reset Filter</button>';
-
-     echo '</form>';
-
-    echo '</form>';
-
-    // Refresh table
-    echo '<script>';
-    echo 'document.addEventListener("DOMContentLoaded", function() {';
-    echo '    var formRow = document.getElementById("form-row");';
-    echo '    formRow.style.display = "none";';
-    echo '    var tableBody = document.querySelector("table tbody");';
-    echo '    tableBody.innerHTML = `' . $tableRows . '`;';
-    echo '});';
-    echo '</script>';
-
-    exit();
-
-}
-		
 // Close the database connection	
 oci_free_statement($stmt);	
 oci_close($db_conn);

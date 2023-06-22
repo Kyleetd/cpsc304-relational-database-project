@@ -39,9 +39,10 @@
     .back-button {
         display: inline-block;
         width: auto; 
+        top: 10px;
+        left: 0px;
         height: 30px;
         line-height: 30px;
-        text-align: center;
         background-color: #f2f2f2;
         border: 2px solid orange;
         border-radius: 5px;
@@ -107,7 +108,7 @@ $overallAverageStmt = oci_parse($db_conn, $overallAverageQuery);
 oci_execute($overallAverageStmt);
 $overallAverageRow = oci_fetch_assoc($overallAverageStmt);
 
-echo '<p style="color: cyan;">Overall Average of BMIs: ' . $overallAverageRow['OVERALL_AVERAGE'] . '</p>';
+echo '<p style="color: orange; text-align: center; font-size: 40px;">Overall Average of BMIs: ' . $overallAverageRow['OVERALL_AVERAGE'] . '</p>';
 
 // Close the database connection
 oci_free_statement($stmt);

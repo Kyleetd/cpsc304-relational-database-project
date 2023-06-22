@@ -138,7 +138,6 @@ display: none;
 }
 .back-button {
     font-family: Arial, sans-serif;
-    position: absolute;
     top: 10px;
     left: 0px;
     padding: 1px 3px;
