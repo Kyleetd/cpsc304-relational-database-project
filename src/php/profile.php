@@ -109,7 +109,7 @@ if (!$db_conn) {
 // define & execute the SQL query
 $query = "SELECT User_Measurement.userID, User.name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
           FROM User_Measurement, User
-          WHERE User_Measurement.userID = User.ID";
+          LEFT JOIN User_Measurement ON User";
 $stmt = oci_parse($db_conn, $query);
 oci_execute($stmt);
 
@@ -159,46 +159,38 @@ if (isset($_POST['submit'])) {
     oci_bind_by_name($insertStmt, ":userID", $userID);
     oci_execute($insertStmt);
 
-    // Insert User in User table
-    $insertQuery = "INSERT INTO User (ID, NAME) VALUES (:ID, :name)";
-    $insertStmt = oci_parse($db_conn, $insertQuery);
-    oci_bind_by_name($insertStmt, ":ID", $userID);
-    oci_bind_by_name($insertStmt, ":name", $name);
-    oci_execute($insertStmt);
+    // // Insert User in User table
+    // $insertQuery = "INSERT INTO User (ID, NAME) VALUES (:ID, :name)";
+    // $insertStmt = oci_parse($db_conn, $insertQuery);
+    // oci_bind_by_name($insertStmt, ":ID", $userID);
+    // oci_bind_by_name($insertStmt, ":name", $name);
+    // oci_execute($insertStmt);
 
     // Refresh table
-    echo '<script>';
-    echo 'document.addEventListener("DOMContentLoaded", function() {';
-    echo '    var formRow = document.getElementById("form-row");';
-    echo '    formRow.style.display = "none";';
-    echo '    var tableBody = document.querySelector("table tbody");';
-    echo '    tableBody.innerHTML = `' . $tableRows . '`;';
-    echo '});';
-    echo '</script>';
+     echo '<script>window.location.href = window.location.href;</script>';
+     exit();
 } else if (isset($_POST['apply_filter'])) {
 
     // Get the filter input value
-    $filterDropdown = $_POST['filter-dropdown'];
     $filterValue = trim(strtolower($_POST['filter-input']));
 
     // Create a view for the joinedAll table
     $viewQuery = "CREATE VIEW joinedAll AS
                 SELECT User_Measurement.userID, User.name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
                 FROM User_Measurement, User
-                WHERE User_Measurement.userID = User.ID";
+                LEFT JOIN User_Measurement ON User";
 
     // Execute the view creation query
     $createViewStmt = oci_parse($db_conn, $viewQuery);
     oci_execute($createViewStmt);
 
     // Perform a separate query on the view
-    $filterQuery = "SELECT userID, name, height, weight, BMI
+    $filterQuery = "SELECT COUNT(*)
                     FROM joinedAll
-                    WHERE LOWER(" . $filterDropdown . ") = :filterValue";
+                    WHERE BMI > :filterValue";
 
     $filterStmt = oci_parse($db_conn, $filterQuery);
     oci_bind_by_name($filterStmt, ":filterValue", $filterValue);
-    oci_bind_by_name($filterStmt, ":filterDropdown", $filterDropdown);
     oci_execute($filterStmt);    
 
     // Fetch all rows from the executed statement into an array
@@ -230,6 +222,11 @@ if (isset($_POST['submit'])) {
     echo '    tableBody.innerHTML = `' . $tableRows . '`;';
     echo '});';
     echo '</script>';
+} else if (isset($_POST['reset'])) {
+    // Redirect the user to the same page
+    header("Location: " . $_SERVER['PHP_SELF']);
+    echo '<script>window.location.href = window.location.href;</script>';
+    exit();
 }
 		
 // Close the database connection	
