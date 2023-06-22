@@ -170,7 +170,7 @@
                                     <option value="<=">Less than or equal to (<=)</option>
                                     <option value=">=">Greater than or equal to (>=)</option>
                                 </select>
-                                <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="Number">
+                                <input type="number" name="filter_list[<?php echo $column; ?>]" placeholder="Number">
                             <?php elseif ($dataType === 'VARCHAR2') : ?>
                                 <select name="filter_operators[<?php echo $column; ?>]" >
                                     <option value="=">Equal to (=)</option>
@@ -185,7 +185,7 @@
                                     <option value="<=">Less than or equal to (<=)</option>
                                     <option value=">=">Greater than or equal to (>=)</option>
                                 </select>
-                                <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="DD-MM-YYYY">
+                                <input type="date" name="filter_list[<?php echo $column; ?>]">
                             <?php endif; ?>
                             <br>
                         </div>
