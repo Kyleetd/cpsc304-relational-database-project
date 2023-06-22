@@ -33,7 +33,7 @@
                     $filterConditions[] = "$column".$_POST['filter_operators'][$column]."'$value'";
                 }
             }
-        
+            
             // Finalize the query
             if (!empty($filterConditions)) {
                 $filterClause = implode(" AND ", $filterConditions);
@@ -41,7 +41,7 @@
             } else {
                 $query = $selectStatement;
             }
-        
+
             $results = executePlainSQL($query);
             disconnectFromDB();
         }

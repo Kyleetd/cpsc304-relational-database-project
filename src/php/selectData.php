@@ -100,7 +100,7 @@
                                 <option value="<=">Less than or equal to (<=)</option>
                                 <option value=">=">Greater than or equal to (>=)</option>
                             </select>
-                            <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="DD-MM-YYYY">
+                            <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="YYYY-MM-DD">
                         <?php endif; ?>
                     <br>
                     </div>

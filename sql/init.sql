@@ -1,4 +1,4 @@
-- Drop Table Statements
+-- Drop Table Statements
 
 DROP TABLE AccomplishedBy;
 DROP TABLE Attends;
@@ -17,12 +17,12 @@ DROP TABLE Workout;
 DROP TABLE Gym;
 DROP TABLE PCC;
 DROP TABLE TrainingPlan;
-DROP TABLE "User";
+DROP TABLE Users;
 
 
 -- Table Creation Statements
 
-CREATE TABLE "User" (
+CREATE TABLE Users (
     ID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(30)
 );
@@ -30,10 +30,10 @@ CREATE TABLE "User" (
 CREATE TABLE User_FitnessGoal (
     goalID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     description VARCHAR(100),
-    targetDate VARCHAR(20),
+    targetDate DATE,
     achieved INT,
     userID INT,
-    FOREIGN KEY (userID) REFERENCES "User" (ID)
+    FOREIGN KEY (userID) REFERENCES Users (ID)
         ON DELETE SET NULL
 );
 
@@ -57,10 +57,10 @@ CREATE TABLE ConsistsOf (
 CREATE TABLE User_Achievement (
     achievementID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     description VARCHAR(100),
-    dateAccomplished VARCHAR(20),
+    dateAccomplished DATE,
     userID INT,
     goalID INT NOT NULL,
-    FOREIGN KEY (userID) REFERENCES "User" (ID) ON DELETE CASCADE,
+    FOREIGN KEY (userID) REFERENCES Users (ID) ON DELETE CASCADE,
     FOREIGN KEY (goalID) REFERENCES User_FitnessGoal (goalID) ON DELETE CASCADE,
     UNIQUE (goalID)
 );
@@ -68,9 +68,9 @@ CREATE TABLE User_Achievement (
 CREATE TABLE Completes (
     userID INT,
     workoutID INT,
-    dateCompleted VARCHAR(10),
+    dateCompleted DATE,
     PRIMARY KEY (userID, workoutID),
-    FOREIGN KEY (userID) REFERENCES "User" (ID) ON DELETE SET NULL,
+    FOREIGN KEY (userID) REFERENCES Users (ID) ON DELETE SET NULL,
     FOREIGN KEY (workoutID) REFERENCES Workout (workoutID) ON DELETE CASCADE
 );
 
@@ -119,7 +119,7 @@ CREATE TABLE User_Measurement (
     BMI REAL,
     userID INT NOT NULL,
     PRIMARY KEY (userID, height, weight, BMI),
-    FOREIGN KEY (userID) REFERENCES "User" (ID)
+    FOREIGN KEY (userID) REFERENCES Users (ID)
         ON DELETE CASCADE
 );
 
@@ -130,7 +130,7 @@ CREATE TABLE Attends (
     PRIMARY KEY (address, postalCode, userID),
     FOREIGN KEY (address, postalCode) REFERENCES Gym (address, postalCode)
         ON DELETE SET NULL,
-    FOREIGN KEY (userID) REFERENCES "User" (ID)
+    FOREIGN KEY (userID) REFERENCES Users (ID)
         ON DELETE SET NULL
 );
 
@@ -165,21 +165,21 @@ CREATE TABLE Sees (
     userID INT,
     planID INT,
     PRIMARY KEY (userID, planID),
-    FOREIGN KEY (userID) REFERENCES "User" (ID)
+    FOREIGN KEY (userID) REFERENCES Users (ID)
         ON DELETE SET NULL,
     FOREIGN KEY (planID) REFERENCES TrainingPlan (planID)
         ON DELETE SET NULL
 );
 
-
+ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD';
 
 -- Insert Statements
 
-INSERT INTO "User" (name) VALUES ('Kylee');
-INSERT INTO "User" (name) VALUES ('Jon');
-INSERT INTO "User" (name) VALUES ('Kashish');
-INSERT INTO "User" (name) VALUES ('Mickey');
-INSERT INTO "User" (name) VALUES ('Naruto');
+INSERT INTO Users (name) VALUES ('Kylee');
+INSERT INTO Users (name) VALUES ('Jon');
+INSERT INTO Users (name) VALUES ('Kashish');
+INSERT INTO Users (name) VALUES ('Mickey');
+INSERT INTO Users (name) VALUES ('Naruto');
 
 INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('20 chin-ups', '2023-12-31', 1, 1);
 INSERT INTO User_FitnessGoal (description, targetDate, achieved, userID) VALUES ('80 push-ups', '2023-10-15', 1, 2);
@@ -234,17 +234,17 @@ INSERT INTO ConsistsOf (workoutID, exerciseName) VALUES (4, 'Hanging Leg Raises'
 INSERT INTO ConsistsOf (workoutID, exerciseName) VALUES (4, 'Ballet Bar Routine');
 INSERT INTO ConsistsOf (workoutID, exerciseName) VALUES (5, 'Cycling');
 
-INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('20 chin-ups', '12/06/2023', 1, 1);
-INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('80 push-ups', '12/06/2023', 1, 2);
-INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('Splits on both sides', '01/05/2023', 2, 3);
-INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('Splits on both sides', '15/02/2023', 4, 4);
-INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('Run for 30 minutes at 9 kph', '01/01/2023', 5, 5);
+INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('20 chin-ups', '2023-06-12', 1, 1);
+INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('80 push-ups', '2023-06-12', 1, 2);
+INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('Splits on both sides', '2023-05-01', 2, 3);
+INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('Splits on both sides', '2023-02-15', 4, 4);
+INSERT INTO User_Achievement (description, dateAccomplished, userID, goalID) VALUES ('Run for 30 minutes at 9 kph', '2023-01-01', 5, 5);
 
-INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (1, 5, '22/03/2023');
-INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (2, 4, '09/02/2023');
-INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (3, 3, '11/05/2023');
-INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (4, 2, '29/01/2023');
-INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (5, 1, '14/02/2023');
+INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (1, 5, '2023-03-22');
+INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (2, 4, '2023-02-09');
+INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (3, 3, '2023-05-11');
+INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (4, 2, '2023-01-29');
+INSERT INTO Completes (userID, workoutID, dateCompleted) VALUES (5, 1, '2023-02-14');
 
 INSERT INTO CardioExercise (name, duration, speed) VALUES ('Jump Squats and Lunges', 5, NULL);
 INSERT INTO CardioExercise (name, duration, speed) VALUES ('Box Jumps', 10, NULL);
@@ -330,5 +330,3 @@ INSERT INTO Sees (userID, planID) VALUES (2, 1);
 INSERT INTO Sees (userID, planID) VALUES (3, 2);
 INSERT INTO Sees (userID, planID) VALUES (4, 3);
 INSERT INTO Sees (userID, planID) VALUES (5, 3);
-
-
