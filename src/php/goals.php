@@ -119,6 +119,7 @@
     </div>
 
     <?php
+    require_once("./dbUtils.php");
     // Establish a connection to the Oracle database
     $db_conn = OCILogon("ora_jhan27", "a82584830", "dbhost.students.cs.ubc.ca:1522/stu");
 
@@ -156,14 +157,14 @@
         echo "<form id='row-form-$rowIndex' method='post' action=''>";
         echo "<tr class='update-row' style='display: none;'>
             <td>&nbsp</td>
-            <td>&nbsp</td>
-            <td><input type='text' name='update_list[\"DESCRIPTION\"]'></td>
-            <td><input type='text' name='update_list[\"TARGETDATE\"]'></td>
+            <td><input type='text' name='update_list[DESCRIPTION]'></td>
+            <td><input type='text' name='update_list[TARGETDATE]'></td>
             <td>&nbsp</td>
             <td>
                 <button type='submit'>Update</button>
                 <button type='button' class='cancel-button'>Cancel</button>
             </td>
+            <input type='hidden' name='goalID' value='" . $row['GOALID'] . "'>
         </tr></form>";
     $rowIndex++;
     }
@@ -256,6 +257,20 @@
 
         echo '<script>window.location.href = window.location.href;</script>';
         exit();
+    } else if (isset($_POST['update_list'])) {
+        $updates = $_POST['update_list'];
+        $goalId = $_POST['goalID'];
+
+        $setStatements = array();
+        $updateVars = array(":goalID => $goalId");
+        foreach($updates as $column => $value) {
+            $setStatements[] = "$column = :$column";
+            $updateVars[":$column"] = $value;
+        }
+
+        $updateStatement = "UPDATE USER_FITNESSGOAL SET " . implode(", ", $setStatements);
+        $query = $updateStatement . " WHERE goalID = :goalID";
+        $results = executeBoundSQL($query, $updateVars);
     }
 
     // Close the database connection
