@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,28 +9,28 @@
         text-align: center;
         font-size: 25px;
         padding: 10px;
-        background-color: #f2f2f2;
+        background-color: transparent;
     }
-
     table {
         margin: auto;
         border-collapse: collapse;
         width: 80%;
+        background-color: orange; 
     }
-
     th,
     td {
         padding: 8px;
         text-align: left;
         border-bottom: 1px solid #ddd;
+        color: #5D3FD3; 
     }
 
     td:first-child {
-        width: 100px; /* Set width for the first column (Set Achieved or Delete) */
+        width: 100px; 
     }
 
     td:nth-child(3) {
-        width: 40%; /* Set width for the third column (Description) */
+        width: 40%; 
     }
 
     .add-goal-button {
@@ -40,10 +39,11 @@
         height: 30px;
         line-height: 30px;
         text-align: center;
-        background-color: #f2f2f2;
-        border: 1px solid #ddd;
+        background-color: #5D3FD3;
+        border: 1px solid orange;
         border-radius: 3px;
         cursor: pointer;
+        color: orange; 
     }
 
     .hidden-row {
@@ -55,23 +55,30 @@
     }
 
     .back-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 1px 3px;
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    text-decoration: none;
-    color: #333;
-    font-size: 20px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 1px 3px;
+        background-color: #5D3FD3;
+        border: 1px solid orange;
+        border-radius: 3px;
+        text-decoration: none;
+        color: orange;
+        font-size: 20px;
+    }
+
+    body {
+        background-image: url("https://i.pinimg.com/564x/f5/f4/ec/f5f4ec2dd2b61c2463461c3d50d03cca.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 </style>
 <body>
 
     <div class="header">
-        <h1>Fitness Goals</h1>
-        <div class="add-goal-button" onclick="showInputForm()">+</div>
+        <h1 style="color: orange;">Fitness Goals</h1>
+        <div class="add-goal-button" onclick="showInputForm()" style="color: orange;">+</div>
         <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goalsAndAchievements.php" class="back-button">Back</a>
     </div>
 
@@ -114,19 +121,19 @@
     echo '<tr id="form-row" class="hidden-row">';
     echo '<td></td>';
     echo '<td></td>';
-    echo '<td><input type="text" name="description" placeholder="Enter goal description"></td>';
-    echo '<td><input type="text" name="targetDate" placeholder="Enter target date"></td>';
-    echo '<td><input type="number" name="userID" placeholder="Enter user ID"></td>';
+    echo '<td><input type="text" name="description" placeholder="Enter goal description" style="color: #5D3FD3;"></td>';
+    echo '<td><input type="text" name="targetDate" placeholder="Enter target date" style="color: #5D3FD3;"></td>';
+    echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
-    echo '<input type="submit" name="submit" value="Add">';
+    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
     echo '</td>';
     echo '</tr>';
 
     echo '</table>';
 
     // Add delete and achieve buttons
-    echo '<button type="submit" name="achieved">Achieve</button>';
-    echo '<button type="submit" name="delete">Delete</button>';
+    echo '<button type="submit" name="achieved" style="background-color: #5D3FD3; color: orange;">Achieve</button>';
+    echo '<button type="submit" name="delete" style="background-color: #5D3FD3; color: orange;">Delete</button>';
 
     echo '</form>'; // Close the form element
 
@@ -204,5 +211,4 @@
     </script>
 
 </body>
-
 </html>

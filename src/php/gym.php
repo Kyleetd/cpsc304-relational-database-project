@@ -7,83 +7,149 @@
 </head>
 
 <style>
-    .header {
-        text-align: center;
-        font-size: 25px;
-        padding: 10px;
-        background-color: #f2f2f2;
+body {
+    background-image: url('https://i.pinimg.com/564x/a9/80/22/a98022cdb8b339e11542132b6428ac92.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.header {
+    text-align: center;
+    font-size: 25px;
+    padding: 10px;
+    background-color: transparent;
+    color: orange; /* Modified color */
+}
+.button-container {
+    display: inline-block;
+    vertical-align: middle;
+}
+.button {
+    display: inline-block;
+    background-color: #BF40BF;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: orange; /* Modified color */
+}
+table {
+    margin: auto;
+    border-collapse: collapse;
+    width: 80%;
+    background-color: #BF40BF; 
     }
-    .button-container {
-        display: inline-block;
-        vertical-align: middle;
-    }
-    .button {
-        display: inline-block;
-        width: auto; 
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #f2f2f2;
-        border: 2px solid #ddd;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-right: 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    table {
-        margin: auto;
-        border-collapse: collapse;
-        width: 80%;
-        }
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-    .add-goal-button {
-        display: inline-block;
-        width: auto; 
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #f2f2f2;
-        border: 2px solid #ddd;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .hidden-row {
-    display: none;
-    }
-    #filter-line {
-        text-align: center;
-        margin: 20px 0;
-    }
-    #filter-dropdown {
-        margin: 0 5px;
-    }
-    .button-container-back-reset {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        display: flex;
-        flex-direction: row;
-    }
-    .back-button {
-        font-family: Arial, sans-serif;
-        position: absolute;
-        top: 10px;
-        left: 0px;
-        padding: 1px 3px;
-        background-color: #f2f2f2;
-        border: 1px solid #000000;
-        border-radius: 3px;
-        text-decoration: none;
-        color: #333;
-        font-size: 15px;
-        width: 43px; 
-    }
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: orange; 
+}
+.add-goal-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.gyms-per-country-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.all-gyms-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.apply-filter-button {
+    display: inline-block;
+    width: auto; 
+    height: 25px;
+    line-height: 15px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.reset-button {
+    display: inline-block;
+    width: auto; 
+    height: 25px;
+    line-height: 15px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.hidden-row {
+display: none;
+}
+#filter-line {
+    text-align: center;
+    margin: 20px 0;
+}
+#filter-dropdown {
+    margin: 0 5px;
+}
+.button-container-back-reset {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: row;
+}
+.back-button {
+    font-family: Arial, sans-serif;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    padding: 1px 3px;
+    background-color: #BF40BF;
+    border: 1px solid white;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    width: 43px; 
+    color: orange; 
+}
 </style>
 
 <body>
@@ -92,8 +158,8 @@
     <h1>Joint Table: Gyms, PCC, and User</h1>
     <div class="button-container">
       <div class="button add-goal-button" onclick="showInputForm()">Add Gym</div>
-      <div class="button" id="join" onclick="openNumberOfGymsPerCountry()">Compute Number of Gyms per Country</div>
-      <div class="button" id="join" onclick="openUsersAttendingAllGyms()">Find Users Attending all Gyms</div>
+      <div class="button gyms-per-country-button" id="join" onclick="openNumberOfGymsPerCountry()">Compute Number of Gyms per Country</div>
+      <div class="button all-gyms-button" id="join" onclick="openUsersAttendingAllGyms()">Find Users Attending all Gyms</div>
     </div>
     <div class="button-container-back-reset">
       <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
@@ -103,8 +169,8 @@
 
 <div id="filter-line">
     <form method="post">
-        JOIN WHERE
-        <select id="filter-dropdown" name="filter-dropdown">
+        <span style="color: purple;">JOIN WHERE</span>
+        <select id="filter-dropdown" name="filter-dropdown" style="background-color: orange;">
             <option value="address">Address</option>
             <option value="postalCode">Postal Code</option>
             <option value="city">City</option>
@@ -112,9 +178,9 @@
             <option value="country">Country</option>
             <option value="userID">UserID</option>
         </select>
-        =
-        <input type="text" id="filter-input" name="filter-input" placeholder="Enter value">
-        <button type="submit" name="apply_filter">Apply Filter</button>
+        <span style="color: purple;">=</span>
+        <input type="text" id="filter-input" name="filter-input" placeholder="Enter value" style="background-color: orange;">
+        <button type="submit" name="apply_filter" class="apply-filter-button">Apply Filter</button>
     </form>
 </div>
 
@@ -251,7 +317,7 @@ if (isset($_POST['submit'])) {
     echo '</table>';
 
      // Add event handlers for buttons
-     echo '<button type="submit" name="reset_filter" value="reset">Reset Filter</button>';
+     echo '<button type="submit" name="reset_filter" value="reset" class="reset-button">Reset Filter</button>';
 
      echo '</form>';
 
