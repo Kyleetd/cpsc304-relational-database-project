@@ -135,26 +135,25 @@
 
     // Display table
     echo '<table>';
-    echo '<tr><th>Set Achieved or Delete</th><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th><th>Action</th></tr>';
+    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th><th>Action</th></tr>';
 
     $rowIndex = 0;
     while ($row = oci_fetch_assoc($stmt)) {
-        echo "<form id='update-form' method='post' action='action.php'>";
         // Skip rendering the row if goal has been achieved
         if ($row['ACHIEVED'] == 1) {
             continue;
         }
         echo '<tr>';
-        echo '<td><input type="checkbox" name="goals[]" value="' . $row['GOALID'] . '"></td>';
         echo '<td>' . $row['GOALID'] . '</td>';
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
         echo '<td>' . $row['USERID'] . '</td>';
         echo "<td><button type='button' class='edit-button' data-row-index='$rowIndex'>Edit</button>";
-        echo "<button type='submit' name='achieved' class='ach-del-button'>Achieve</button>";
-        echo "<button type='submit' name='delete' value='$rowIndex' class='ach-del-button'>Delete</button></td>";
+        echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='ach-del-button'>Achieve</button>";
+        echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='ach-del-button'>Delete</button></td>";
         echo '</tr>';
 
+        echo "<form id='row-form-$rowIndex' method='post' action='action.php'>";
         echo "<tr class='update-row' style='display: none;'>
             <td>&nbsp</td>
             <td>&nbsp</td>
@@ -165,22 +164,21 @@
                 <button type='submit'>Update</button>
                 <button type='button' class='cancel-button'>Cancel</button>
             </td>
-        </tr>";
+        </tr></form>";
     $rowIndex++;
     }
 
-    echo "</form>";
+
 
     echo '<form id="add-del" method="post" action="">'; // Add form element for add & delete functionality
     // Display input form row (last row) if '+' button is clicked
     echo '<tr id="form-row" class="hidden-row">';
     echo '<td>&nbsp</td>';
-    echo '<td>&nbsp</td>';
     echo '<td><input type="text" name="description" placeholder="Enter goal description" style="color: #5D3FD3;"></td>';
     echo '<td><input type="text" name="targetDate" placeholder="Enter target date" style="color: #5D3FD3;"></td>';
     echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
-    echo '<input form="" type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
+    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
     echo '</td>';
     echo '</tr>';
 
@@ -219,7 +217,7 @@
             echo '<div class="error-message">Invalid user ID. Please enter a valid user ID.</div>';
         }   
     } else if (isset($_POST['achieved'])) {
-        $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
+        $selectedGoal = isset($_POST['goals']) ? $_POST['goals'] : [];
 
         foreach ($selectedGoals as $goalId) {
             // Update User_FitnessGoal table to set ACHIEVED = 1
