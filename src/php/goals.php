@@ -27,9 +27,6 @@
     td:first-child {
         width: 100px; 
     }
-    td:nth-child(3) {
-        width: 40%; 
-    }
     .add-goal-button {
         display: inline-block;
         width: 30px;
@@ -107,6 +104,11 @@
     input[type="checkbox"]:checked::before {
         opacity: 1;
     }
+    
+    .ach-del-button {
+        background-color: #5D3FD3; 
+        color: orange;
+    }
 </style>
 <body>
 
@@ -133,11 +135,11 @@
 
     // Display table
     echo '<table>';
-    echo '<tr><th>Set Achieved or Delete</th><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th></tr>';
+    echo '<tr><th>Set Achieved or Delete</th><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th><th>Action</th></tr>';
 
-    echo '<form method="post" action="">'; // Add form element for add & delete functionality
-
+    $rowIndex = 0;
     while ($row = oci_fetch_assoc($stmt)) {
+        echo "<form id='update-form' method='post' action='action.php'>";
         // Skip rendering the row if goal has been achieved
         if ($row['ACHIEVED'] == 1) {
             continue;
@@ -148,31 +150,48 @@
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
         echo '<td>' . $row['USERID'] . '</td>';
+        echo "<td><button type='button' class='edit-button' data-row-index='$rowIndex'>Edit</button>";
+        echo "<button type='submit' name='achieved' class='ach-del-button'>Achieve</button>";
+        echo "<button type='submit' name='delete' value='$rowIndex' class='ach-del-button'>Delete</button></td>";
         echo '</tr>';
+
+        echo "<tr class='update-row' style='display: none;'>
+            <td>&nbsp</td>
+            <td>&nbsp</td>
+            <td><input type='text' name='update_list[\"DESCRIPTION\"]'></td>
+            <td><input type='text' name='update_list[\"TARGETDATE\"]'></td>
+            <td>&nbsp</td>
+            <td>
+                <button type='submit'>Update</button>
+                <button type='button' class='cancel-button'>Cancel</button>
+            </td>
+        </tr>";
+    $rowIndex++;
     }
 
+    echo "</form>";
+
+    echo '<form id="add-del" method="post" action="">'; // Add form element for add & delete functionality
     // Display input form row (last row) if '+' button is clicked
     echo '<tr id="form-row" class="hidden-row">';
-    echo '<td></td>';
-    echo '<td></td>';
+    echo '<td>&nbsp</td>';
+    echo '<td>&nbsp</td>';
     echo '<td><input type="text" name="description" placeholder="Enter goal description" style="color: #5D3FD3;"></td>';
     echo '<td><input type="text" name="targetDate" placeholder="Enter target date" style="color: #5D3FD3;"></td>';
     echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
-    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
+    echo '<input form="" type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
     echo '</td>';
     echo '</tr>';
 
     echo '</table>';
 
     // Add delete and achieve buttons
-    echo '<button type="submit" name="achieved" style="background-color: #5D3FD3; color: orange;">Achieve</button>';
-    echo '<button type="submit" name="delete" style="background-color: #5D3FD3; color: orange;">Delete</button>';
 
     echo '</form>'; // Close the form element
 
     // Handle form submission
-    if (isset($_POST['submit'])) {
+    if (isset($_POST['submit']) && !isset($_POST['update_list'])) {
         $description = $_POST['description'];
         $targetDate = $_POST['targetDate'];
         $userID = (int) $_POST['userID'];
@@ -253,6 +272,27 @@
             var formRow = document.getElementById('form-row');
             formRow.style.display = 'table-row';
         }
+
+        // Add event listeners to the edit buttons and cancel buttons
+        const editButtons = document.querySelectorAll('.edit-button');
+        const cancelButtons = document.querySelectorAll('.cancel-button');
+        const updateRows = document.querySelectorAll('.update-row');
+
+        // Allow each edit button to reveal the hidden row
+        editButtons.forEach((button, index) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const rowIndex = button.getAttribute('data-row-index');
+                updateRows[rowIndex].style.display = 'table-row';
+            });
+        });
+
+        // Allow each cancel button to hide the row
+        cancelButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                updateRows[index].style.display = 'none';
+            });
+        });
     </script>
 
 </body>
