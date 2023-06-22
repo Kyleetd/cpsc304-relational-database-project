@@ -63,3 +63,11 @@
     color: #333;
     font-size: 20px;
 }
+
+.filter-container {
+    text-align: center;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

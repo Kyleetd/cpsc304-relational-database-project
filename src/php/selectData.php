@@ -60,14 +60,7 @@
         text-align: center;
         margin-bottom: 20px;
     }
-    .filter-container {
-        text-align: center;
-        margin: auto;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: flex-start;
-    }
+
     body {
         background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
         background-size: cover;
