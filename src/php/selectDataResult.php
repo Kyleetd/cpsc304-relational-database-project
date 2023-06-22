@@ -55,51 +55,6 @@
     <?php
     require_once('./dbUtils.php');
 
-    function getPrimaryKeys() {
-        if (connectToDB()) {
-            $selectedTable = $_POST['table_selection'];
-
-            $stmt = "SELECT cols.table_name, cols.column_name, cols.position, cons.status, cons.owner
-            FROM all_constraints cons, all_cons_columns cols
-            WHERE cols.table_name = '$selectedTable'
-            AND cons.constraint_type = 'P'
-            AND cons.constraint_name = cols.constraint_name
-            AND cons.owner = cols.owner
-            ORDER BY cols.table_name, cols.position";
-
-            $results = executePlainSQL($stmt);
-            while ($row = oci_fetch_array($results, OCI_ASSOC)) {
-                echo $row["TABLE_NAME"];
-            }
-            disconnectFromDB();
-            return $results;
-        }
-    }
-
-    function handleUpdate() {
-        if (connectToDB()) {
-            $updates = $_POST['update_list'];
-            $selectedTable = $_POST['table_selection'];
-            $updateStatement = "UPDATE $selectedTable SET ";
-
-            $setStatements = array();
-            // $tuples = array();
-            // foreach ($updates as $column => value) {
-            //     if (!empty($value)) {
-            //         $setStatements[] = "$column = ':$column'";
-            //         $tuples[":$column"] = $value;
-            //     } 
-            // }
-
-            if (!empty($setStatements)) {
-                $setClause = implode(", ", $setStatements);
-                $query = $updateStatement . $setClause . " WHERE ohiughuguyf";
-                $results = executeBoundSQL($query, $tuples);
-            }
-            disconnectFromDB();
-        }
-    }
-
     $results = array();
     function handleColAndFilterRequest() {
         if (connectToDB()) {
@@ -134,9 +89,6 @@
         }
     }
    
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_list'])) {
-        handleUpdate();
-    }
     if ($_SERVER['REQUEST_METHOD'] === 'POST' 
         && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) {
         handleColAndFilterRequest();

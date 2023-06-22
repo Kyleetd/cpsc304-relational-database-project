@@ -183,11 +183,7 @@
     echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
     echo '</td>';
     echo '</tr>';
-
-    echo '</table>';
-
-    // Add delete and achieve buttons
-
+    echo '</table>'; 
     echo '</form>'; // Close the form element
 
     // Handle form submission
@@ -197,7 +193,7 @@
         $userID = (int) $_POST['userID'];
     
         // Check if the user ID exists
-        $checkQuery = "SELECT COUNT(*) AS USER_COUNT FROM \"User\" WHERE ID = :userID";
+        $checkQuery = "SELECT COUNT(*) AS USER_COUNT FROM Users WHERE ID = :userID";
         $checkStmt = oci_parse($db_conn, $checkQuery);
         oci_bind_by_name($checkStmt, ":userID", $userID);
         oci_execute($checkStmt);
@@ -206,7 +202,8 @@
     
         if ($userCount > 0) {
             // Insert goal in User_FitnessGoal table
-            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) VALUES (:description, :targetDate, :userID)";
+            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) 
+            VALUES (:description, TO_DATE(:targetDate, 'YYYY-MM-DD'), :userID)";
             $insertStmt = oci_parse($db_conn, $insertQuery);
             oci_bind_by_name($insertStmt, ":description", $description);
             oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
@@ -261,15 +258,17 @@
     } else if (isset($_POST['update_list'])) {
         $updates = $_POST['update_list'];
         $goalId = $_POST['goalID'];
-
+    
         $updateVars = array(":goalID" => $goalId);
         $updateVars[":DESCRIPTION"] = $updates['DESCRIPTION'];
         $updateVars[":TARGETDATE"] = $updates['TARGETDATE'];
-
+    
         $updateStatement = "UPDATE USER_FITNESSGOAL 
             SET DESCRIPTION = :DESCRIPTION, TARGETDATE = TO_DATE(:TARGETDATE, 'YYYY-MM-DD')";
+            
         $query = $updateStatement . " WHERE GOALID = :goalID";
-        $results = executeBoundSQL($query, $updateVars);
+        executeBoundSQL($query, $updateVars);
+        echo '<script>window.location.href = window.location.href;</script>';
     }
 
     // Close the database connection
