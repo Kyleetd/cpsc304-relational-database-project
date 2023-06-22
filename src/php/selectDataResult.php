@@ -8,9 +8,49 @@
 </head>
 <body>
     <div class="header">
-        <h1>View Table Data</h1>
+        <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">View Table Data</h1>
         <a href="./selectData.php" class="back-button">Back</a>
     </div>
+    <style>
+    .header {
+        text-align: center;
+        font-size: 25px;
+        padding: 10px;
+        background-color: transparent;
+    }
+    .back-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 1px 3px;
+        background-color: orange;
+        border: 1px solid #5D3FD3;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #5D3FD3;
+        font-size: 20px;
+    }
+    body {
+        background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0;
+        height: 100vh; 
+    }
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        width: 80%;
+        background-color: #5D3FD3; 
+    }
+    th, td {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid orange;
+        color: orange; 
+    }
+    </style>
 
     <?php
     require_once('./dbUtils.php');
@@ -103,82 +143,28 @@
     }
     ?>
 
-<?php if ($_SERVER['REQUEST_METHOD'] === 'POST' 
-    && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) : ?>
-    <?php getPrimaryKeys(); ?>
-    <table>
-        <caption><?php echo $_POST['table_selection']; ?></caption>
-        <thead>
-            <tr>
-                <?php foreach ($_POST['selected_columns_list'] as $column) : ?>
-                    <th><?php echo $column; ?></th>
-                <?php endforeach; ?>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $rowIndex = 0; ?>
-            <?php while ($row = oci_fetch_array($results, OCI_ASSOC)) : ?>
+    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' 
+        && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) : ?>
+        <table>
+        <caption style="color: #5D3FD3;"><?php echo $_POST['table_selection']; ?></caption>
+            <thead>
                 <tr>
                     <?php foreach ($_POST['selected_columns_list'] as $column) : ?>
-                        <td><?php echo $row[$column]; ?></td>
+                        <th><?php echo $column; ?></th>
                     <?php endforeach; ?>
-                    <td>
-                        <button type="button" class="edit-button" data-row-index="<?php echo $rowIndex; ?>">Edit</button>
-                    </td>
                 </tr>
-                <tr class="update-row" style="display: none;">
-                    <form method="post" action="">
+            </thead>
+            <tbody>
+                <?php while ($row = oci_fetch_array($results, OCI_ASSOC)) : ?>
+                    <tr>
                         <?php foreach ($_POST['selected_columns_list'] as $column) : ?>
-                            <td><input type="text" name="<?php echo "update_list[$column]"; ?>"></td>
+                            <td><?php echo $row[$column]; ?></td>
                         <?php endforeach; ?>
-                        <td>
-                            <button type="submit">Update</button>
-                            <button type="button" class="cancel-button">Cancel</button>
-                        </td>
-
-                        <input type="hidden" name="table_selection" value="<?php echo $_POST['table_selection']; ?>">
-
-                        <?php foreach ($_POST['selected_columns_list'] as $column) : ?>
-                            <input type="hidden" name="<?php echo "selected_columns_list[]"; ?>" value="<?php echo $column; ?>">
-                        <?php endforeach; ?>
-
-                        <?php foreach ($_POST['filter_list'] as $filter) : ?>
-                            <input type="hidden" name="<?php echo "filter_list[]"; ?>" value="<?php echo $filter; ?>">
-                        <?php endforeach; ?>
-
-                        <?php foreach ($_POST['filter_operators'] as $op) : ?>
-                            <input type="hidden" name="<?php echo "filter_operators[]"; ?>" value="<?php echo $op; ?>">
-                        <?php endforeach; ?>
-                    </form>
-                </tr>
-                <?php $rowIndex++; ?>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-<?php endif; ?>
-
-<script>
-    // Add event listeners to the edit buttons and cancel buttons
-    const editButtons = document.querySelectorAll('.edit-button');
-    const cancelButtons = document.querySelectorAll('.cancel-button');
-    const updateRows = document.querySelectorAll('.update-row');
-
-    // Allow each edit button to reveal the hidden row
-    editButtons.forEach((button, index) => {
-        button.addEventListener('click', () => {
-            const rowIndex = button.getAttribute('data-row-index');
-            updateRows[rowIndex].style.display = 'table-row';
-        });
-    });
-
-    // Allow each cancel button to hide the row
-    cancelButtons.forEach((button, index) => {
-        button.addEventListener('click', () => {
-            updateRows[index].style.display = 'none';
-        });
-    });
-</script>
-
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+    </div>
 </body>
 </html>

@@ -8,9 +8,49 @@
 </head>
 <body>
     <div class="header">
-        <h1>View Table Data</h1>
+        <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">View Table Data</h1>
         <a href="./dashboard.php" class="back-button">Back</a>
     </div>
+    <style>
+    .header {
+        text-align: center;
+        font-size: 25px;
+        padding: 10px;
+        background-color: transparent;
+    }
+    .back-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 1px 3px;
+        background-color: orange;
+        border: 1px solid #5D3FD3;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #5D3FD3;
+        font-size: 20px;
+    }
+    .select-button {
+        background-color: orange;
+        border: 1px solid #5D3FD3;
+        border-radius: 3px;
+        color: #5D3FD3;
+    }
+    .get-table-button {
+        background-color: orange;
+        border: 1px solid #5D3FD3;
+        border-radius: 3px;
+        color: #5D3FD3;
+    }
+    body {
+        background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0;
+        height: 100vh; 
+    }
+    </style>
 
     <?php
     require_once('./dbUtils.php');
@@ -41,7 +81,7 @@
 
     <div class="form-container">
     <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
-        Select a Table :  
+        <span style="color: orange;">Select a Table :</span>  
         <select name="table_selection">  
         <option value="">--- Select ---</option>  
 
@@ -62,7 +102,7 @@
             }
         ?>  
         </select>  
-        <input type="submit" name="Submit" value="Select" />  
+        <input class="select-button" type="submit" name="Submit" value="Select" />  
     </form>
 
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) :?>
@@ -108,7 +148,7 @@
             </div>
 
             <input type="hidden" name="table_selection" value="<?php echo $_POST['table_selection']; ?>">
-            <input type="submit" name="Submit" value="Get Table">
+            <input class="get-table-button" type="submit" name="Submit" value="Get Table">
         </form>
     <?php endif; ?>
     </div>
