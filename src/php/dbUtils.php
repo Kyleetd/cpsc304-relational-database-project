@@ -52,11 +52,14 @@
             $success = False;
         }
 
-        echo "$cmdstr<br>";
-        foreach ($list as $bind => $val) {
-            echo $bind . " Bound to " . $val . "<br>";
-            OCIBindByName($statement, $bind, $val);
-            unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
+        // echo "$cmdstr<br>";
+        foreach ($list as $bind => &$val) {
+            // echo $bind . " Bound to " . $val . "<br>";
+            if (is_numeric($val)) {
+                OCIBindByName($statement, $bind, $val);
+            } else {
+                OCIBindByName($statement, $bind, $val, strlen($val));
+            }
         }
 
         $r = OCIExecute($statement, OCI_DEFAULT);
@@ -67,6 +70,9 @@
             echo "<br>";
             $success = False;
         }
+
+        OCICommit($db_conn); // Commit the changes
+
         return $statement;
     }
 
