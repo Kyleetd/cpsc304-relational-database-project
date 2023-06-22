@@ -144,8 +144,8 @@
         oci_bind_by_name($insertStmt, ":userID", $userID);
         oci_execute($insertStmt);
 
-        // Refresh table
-        header("Refresh:0");
+        echo '<script>window.location.href = window.location.href;</script>';
+        exit();        
 
     } else if (isset($_POST['achieved'])) {
         $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
@@ -173,8 +173,8 @@
             oci_bind_by_name($insertStmt, ":goalID", $goalRow['GOALID']);
             oci_execute($insertStmt);
         }
-        // Refresh table
-        header("Refresh:0");
+        echo '<script>window.location.href = window.location.href;</script>';
+        exit();        
 
     } else if (isset($_POST['delete'])) {
         $selectedGoals = isset($_POST['goals']) ? $_POST['goals'] : [];
@@ -186,8 +186,8 @@
             oci_bind_by_name($deleteStmt, ":goalId", $goalId);
             oci_execute($deleteStmt);
         }
-        // Refresh table
-        header("Refresh:0");
+        echo '<script>window.location.href = window.location.href;</script>';
+        exit();
     }
 
     // Close the database connection

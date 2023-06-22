@@ -73,7 +73,7 @@
     .back-button {
         font-family: Arial, sans-serif;
         position: absolute;
-        top: 30px;
+        top: 10px;
         left: 0px;
         padding: 1px 3px;
         background-color: #f2f2f2;
@@ -83,22 +83,6 @@
         color: #333;
         font-size: 15px;
         width: 43px; 
-    }
-    .reset-button {
-        font-family: Arial, sans-serif;
-        position: absolute;
-        top: 40px;
-        left: 10px;
-        padding: 1px 3px;
-        background-color: #f2f2f2;
-        border: 1px solid #000000;
-        border-radius: 3px;
-        text-decoration: none;
-        color: #333;
-        font-size: 15px;
-        width: 50px; 
-        height: 20px;
-        margin: auto;
     }
 </style>
 
@@ -113,7 +97,6 @@
     </div>
     <div class="button-container-back-reset">
       <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
-      <button type="submit" class="reset" name="reset">Reset</button>
     </div>
   </div>
 </form>
@@ -217,15 +200,9 @@ if (isset($_POST['submit'])) {
     oci_bind_by_name($insertStmt, ":userID", $userID);
     oci_execute($insertStmt);
 
-    // Refresh table
-    echo '<script>';
-    echo 'document.addEventListener("DOMContentLoaded", function() {';
-    echo '    var formRow = document.getElementById("form-row");';
-    echo '    formRow.style.display = "none";';
-    echo '    var tableBody = document.querySelector("table tbody");';
-    echo '    tableBody.innerHTML = `' . $tableRows . '`;';
-    echo '});';
-    echo '</script>';
+    // Refresh the page
+    echo '<script>window.location.href = window.location.href;</script>';
+    exit();
 } else if (isset($_POST['apply_filter'])) {
 
     // Get the filter input value
@@ -272,6 +249,12 @@ if (isset($_POST['submit'])) {
         echo '</tr>';
     }
     echo '</table>';
+
+     // Add event handlers for buttons
+     echo '<button type="submit" name="reset_filter" value="reset">Reset Filter</button>';
+
+     echo '</form>';
+
     echo '</form>';
 
     // Refresh table
@@ -283,11 +266,9 @@ if (isset($_POST['submit'])) {
     echo '    tableBody.innerHTML = `' . $tableRows . '`;';
     echo '});';
     echo '</script>';
-} else if (isset($_POST['reset'])) {
-    // Redirect the user to the same page
-    header("Location: " . $_SERVER['PHP_SELF']);
+
     exit();
-}
+} 
 		
 // Close the database connection	
 oci_free_statement($stmt);	
@@ -305,6 +286,10 @@ oci_close($db_conn);
     }
     function openUsersAttendingAllGyms() {
         window.open("https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/allUsersAllGyms.php", "_blank");
+    }
+    function resetTable() {
+        // Restore the original table HTML
+        location.reload();
     }
 </script>
 
