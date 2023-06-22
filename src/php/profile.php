@@ -104,14 +104,14 @@
     <form method="post">
         COUNT USERS HAVING BMI
         >
-        <input type="text" id="filter-input" name="filter-input" placeholder="Enter BMI value">
-        <button type="submit" name="apply_filter">Find Count</button>
+        <input type="number" id="find-count" name="find-count" placeholder="Enter BMI value" min="0">
+        <button type="submit" name="find-count-submit">Find Count</button>
     </form>
 </div>
 
 <?php
 // Establish a connection to the Oracle database
-$db_conn = OCILogon("ora_gargkash", "a89601264", "dbhost.students.cs.ubc.ca:1522/stu");
+$db_conn = OCILogon("ora_kyleetd", "a78242021", "dbhost.students.cs.ubc.ca:1522/stu");
 
 // Check if the connection was successful
 if (!$db_conn) {
@@ -182,8 +182,42 @@ if (isset($_POST['submit'])) {
     // Refresh table
      echo '<script>window.location.href = window.location.href;</script>';
      exit();
-} 
+} else if (isset($_POST['find-count-submit'])) {
 
+    // Get the BMI input value
+    $BMIValue = trim($_POST['find-count']);
+
+    // Perform a filter query 
+    $countQuery = "SELECT COUNT(*) AS user_count
+                FROM (
+                        SELECT Users.ID
+                        FROM Users
+                        JOIN User_Measurement ON User_Measurement.userID = Users.ID
+                        GROUP BY Users.ID
+                        HAVING MAX(User_Measurement.BMI) > :BMIValue
+                ) subquery";
+
+    // Prepare the query statement
+    $countStmt = oci_parse($db_conn, $countQuery);
+    oci_bind_by_name($countStmt, ":BMIValue", $BMIValue);
+
+    // Execute the query
+    oci_execute($countStmt);
+
+    $count = oci_fetch_assoc($countStmt);
+
+    // Check if a result was fetched
+    if ($count === false) {
+        echo "No users found with a BMI over " . $BMIValue;
+    } else {
+        echo "Count of Users having BMI over " . $BMIValue . " is: " . $count['USER_COUNT'];
+    }
+
+    // Clean up the statement
+    oci_free_statement($countStmt);
+    exit();
+}
+		
 // Close the database connection	
 oci_free_statement($stmt);	
 oci_close($db_conn);
