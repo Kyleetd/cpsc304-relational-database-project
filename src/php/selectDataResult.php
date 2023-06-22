@@ -20,29 +20,30 @@
         if (connectToDB()) {
             global $results;
             $selectedColumns = $_POST['selected_columns_list'];
-            $filterStatements = $_POST['filter_list'];  
+            $filterStatements = $_POST['filter_list'];
             $selectedTable = $_POST['table_selection'];
-        
+    
             // Build the SELECT statement
             $selectStatement = "SELECT " . implode(", ", $selectedColumns) . " FROM $selectedTable";
-        
-            //Build the filter conditions
+    
+            // Build the filter conditions
             $filterConditions = array();
             foreach ($filterStatements as $column => $value) {
                 if (!empty($value)) {
-                    $filterConditions[] = "$column".$_POST['filter_operators'][$column]."'$value'";
+                    $filterConditions[] = "$column " . $_POST['filter_operators'][$column] . " :$column";
+                    $tuples[":$column"] = $value;
                 }
             }
-            
+    
             // Finalize the query
             if (!empty($filterConditions)) {
                 $filterClause = implode(" AND ", $filterConditions);
-                $query = $selectStatement." WHERE ".$filterClause;
+                $query = $selectStatement . " WHERE " . $filterClause;
+                $results = executeBoundSQL($query, $tuples);
             } else {
                 $query = $selectStatement;
+                $results = executePlainSQL($query);
             }
-
-            $results = executePlainSQL($query);
             disconnectFromDB();
         }
     }
