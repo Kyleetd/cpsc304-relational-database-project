@@ -34,7 +34,7 @@ CREATE TABLE User_FitnessGoal (
     achieved INT,
     userID INT,
     FOREIGN KEY (userID) REFERENCES Users (ID)
-        ON DELETE SET NULL
+        ON DELETE CASCADE
 );
 
 CREATE TABLE Workout (
@@ -139,9 +139,9 @@ CREATE TABLE AccomplishedBy (
     workoutID INT,
     PRIMARY KEY (goalID, workoutID),
     FOREIGN KEY (goalID) REFERENCES User_FitnessGoal (goalID)
-        ON DELETE SET NULL,
+        ON DELETE CASCADE,
     FOREIGN KEY (workoutID) REFERENCES Workout (workoutID)
-        ON DELETE SET NULL
+        ON DELETE CASCADE
 );
 
 CREATE TABLE TrainingPlan (

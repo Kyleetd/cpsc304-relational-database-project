@@ -33,6 +33,8 @@
             $success = False;
         }
 
+        OCICommit($db_conn); // Commit the changes
+
         return $statement;
     }
 
