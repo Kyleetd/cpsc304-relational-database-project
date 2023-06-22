@@ -52,9 +52,9 @@
             $success = False;
         }
 
+        echo "$cmdstr<br>";
         foreach ($list as $bind => $val) {
-            // echo $val;
-            // echo "<br>".$bind."<br>";
+            echo $bind . " Bound to " . $val . "<br>";
             OCIBindByName($statement, $bind, $val);
             unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
         }

@@ -1,4 +1,4 @@
-- Drop Table Statements
+-- Drop Table Statements
 
 DROP TABLE AccomplishedBy;
 DROP TABLE Attends;
@@ -30,7 +30,7 @@ CREATE TABLE "User" (
 CREATE TABLE User_FitnessGoal (
     goalID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     description VARCHAR(100),
-    targetDate VARCHAR(20),
+    targetDate DATE,
     achieved INT,
     userID INT,
     FOREIGN KEY (userID) REFERENCES "User" (ID)
@@ -171,7 +171,7 @@ CREATE TABLE Sees (
         ON DELETE SET NULL
 );
 
-
+ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD';
 
 -- Insert Statements
 

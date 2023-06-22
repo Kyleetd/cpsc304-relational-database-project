@@ -158,7 +158,7 @@
         echo "<tr class='update-row' style='display: none;'>
             <td>&nbsp</td>
             <td><input type='text' name='update_list[DESCRIPTION]'></td>
-            <td><input type='text' name='update_list[TARGETDATE]'></td>
+            <td><input type='text' name='update_list[TARGETDATE]' placeholder='YYYY-MM-DD'></td>
             <td>&nbsp</td>
             <td>
                 <button type='submit'>Update</button>
@@ -261,15 +261,13 @@
         $updates = $_POST['update_list'];
         $goalId = $_POST['goalID'];
 
-        $setStatements = array();
-        $updateVars = array(":goalID => $goalId");
-        foreach($updates as $column => $value) {
-            $setStatements[] = "$column = :$column";
-            $updateVars[":$column"] = $value;
-        }
+        $updateVars = array(":goalID" => $goalId);
+        $updateVars[":DESCRIPTION"] = $updates['DESCRIPTION'];
+        $updateVars[":TARGETDATE"] = $updates['TARGETDATE'];
 
-        $updateStatement = "UPDATE USER_FITNESSGOAL SET " . implode(", ", $setStatements);
-        $query = $updateStatement . " WHERE goalID = :goalID";
+        $updateStatement = "UPDATE USER_FITNESSGOAL 
+            SET DESCRIPTION = :DESCRIPTION, TARGETDATE = TO_DATE(:TARGETDATE, 'YYYY-MM-DD')";
+        $query = $updateStatement . " WHERE GOALID = :goalID";
         $results = executeBoundSQL($query, $updateVars);
     }
 
