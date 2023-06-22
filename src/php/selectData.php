@@ -185,7 +185,7 @@
                                     <option value="<=">Less than or equal to (<=)</option>
                                     <option value=">=">Greater than or equal to (>=)</option>
                                 </select>
-                                <input type="date" name="filter_list[<?php echo $column; ?>]">
+                                <input type="date" min="1900-01-01" max="9999-12-31" name="filter_list[<?php echo $column; ?>]">
                             <?php endif; ?>
                             <br>
                         </div>

@@ -69,42 +69,6 @@
         margin-top: 20px;
         color: #5D3FD3;
     }
-    input[type="checkbox"] {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        width: 20px;
-        height: 20px;
-        border: 2px solid #5D3FD3;
-        border-radius: 3px;
-        outline: none;
-        transition: background-color 0.3s ease-in-out;
-        background-color: purple;
-        position: relative;
-    }
-    input[type="checkbox"]:checked {
-        background-color: purple;
-    }
-    input[type="checkbox"]::before {
-        content: "X";
-        font-weight: bold;
-        font-size: 14px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: orange;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-    }
-    input[type="checkbox"]:checked::before {
-        opacity: 1;
-    }
     
     .ach-del-button {
         background-color: #5D3FD3; 
@@ -142,16 +106,15 @@
     $rowIndex = 0;
     while ($row = oci_fetch_assoc($stmt)) {
         // Skip rendering the row if goal has been achieved
-        if ($row['ACHIEVED'] == 1) {
-            continue;
-        }
         echo '<tr>';
         echo '<td>' . $row['GOALID'] . '</td>';
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
         echo '<td>' . $row['USERID'] . '</td>';
         echo "<td><button type='button' class='edit-button' data-row-index='$rowIndex'>Edit</button>";
-        echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='ach-del-button'>Achieve</button>";
+        if (!$row['ACHIEVED'] == 1) {
+            echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='ach-del-button'>Achieve</button>";
+        }
         echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='ach-del-button'>Delete</button></td>";
         echo '</tr>';
 
@@ -159,7 +122,7 @@
         echo "<tr class='update-row' style='display: none;'>
             <td>&nbsp</td>
             <td><input type='text' name='update_list[DESCRIPTION]'></td>
-            <td><input type='text' name='update_list[TARGETDATE]' placeholder='YYYY-MM-DD'></td>
+            <td><input type='date' min='1900-01-01' max='9999-12-31' name='update_list[TARGETDATE]'></td>
             <td>&nbsp</td>
             <td>
                 <button type='submit'>Update</button>
@@ -170,14 +133,12 @@
     $rowIndex++;
     }
 
-
-
     echo '<form id="add-del" method="post" action="">'; // Add form element for add & delete functionality
     // Display input form row (last row) if '+' button is clicked
     echo '<tr id="form-row" class="hidden-row">';
     echo '<td>&nbsp</td>';
     echo '<td><input type="text" name="description" placeholder="Enter goal description" style="color: #5D3FD3;"></td>';
-    echo '<td><input type="text" name="targetDate" placeholder="Enter target date" style="color: #5D3FD3;"></td>';
+    echo '<td><input type="date" name="targetDate" min="1900-01-01" max="9999-12-31" style="color: #5D3FD3;"></td>';
     echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
     echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
@@ -202,8 +163,8 @@
     
         if ($userCount > 0) {
             // Insert goal in User_FitnessGoal table
-            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) 
-            VALUES (:description, TO_DATE(:targetDate, 'YYYY-MM-DD'), :userID)";
+            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, ACHIEVED, USERID) 
+            VALUES (:description, TO_DATE(:targetDate, 'YYYY-MM-DD'), 0, :userID)";
             $insertStmt = oci_parse($db_conn, $insertQuery);
             oci_bind_by_name($insertStmt, ":description", $description);
             oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
@@ -232,7 +193,8 @@
         $goalRow = oci_fetch_assoc($stmt);
 
         // Insert goal into User_Achievement table
-        $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID, GOALID) VALUES (:description, :dateAccomplished, :userID, :goalID)";
+        $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID, GOALID) 
+        VALUES (:description, TO_DATE(:dateAccomplished, 'YYYY-MM-DD'), :userID, :goalID)";
         $insertStmt = oci_parse($db_conn, $insertQuery);
         $todayDate = date("Y-m-d");
         oci_bind_by_name($insertStmt, ":description", $goalRow['DESCRIPTION']);
@@ -304,6 +266,5 @@
             });
         });
     </script>
-
 </body>
 </html>
