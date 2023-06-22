@@ -10,6 +10,7 @@
         font-size: 25px;
         padding: 10px;
         background-color: transparent;
+        text-shadow: 2px 2px 4px #5D3FD3;
     }
     table {
         margin: auto;
@@ -21,7 +22,7 @@
     td {
         padding: 8px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid purple;
         color: #5D3FD3; 
     }
     td:first-child {

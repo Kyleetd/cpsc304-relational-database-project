@@ -11,7 +11,7 @@
         text-align: center;
         font-size: 25px;
         padding: 10px;
-        background-color: #f2f2f2;
+        background-color: transparent;
     }
     .table-container {
         display: flex;
@@ -21,29 +21,39 @@
         border-collapse: collapse;
         width: 80%;
         text-align: center;
+        background-color: #5D3FD3; 
     }
     th, td {
         padding: 8px;
         text-align: center;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid orange;
+        color: orange; 
     }
     .back-button {
         position: absolute;
         top: 10px;
         left: 10px;
         padding: 1px 3px;
-        background-color: #f2f2f2;
-        border: 1px solid #ddd;
+        background-color: orange;
+        border: 1px solid #5D3FD3;
         border-radius: 3px;
         text-decoration: none;
-        color: #333;
+        color: #5D3FD3;
         font-size: 20px;
+    }
+    body {
+        background-image: url("https://i.pinimg.com/564x/b9/16/99/b91699c52243770ce558b9035658e852.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0;
+        height: 100vh; 
     }
 </style>
 
 <body>
 <div class="header">
-        <h1>Users who Attend Every Gym</h1>
+        <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">All Users Who Attend All Gyms</h1>
         <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/gym.php" class="back-button">Back</a>
 </div>
 

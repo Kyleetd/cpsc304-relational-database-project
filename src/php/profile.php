@@ -98,7 +98,7 @@
 
 <?php
 // Establish a connection to the Oracle database
-$db_conn = OCILogon("ora_kyleetd", "a78242021", "dbhost.students.cs.ubc.ca:1522/stu");
+$db_conn = OCILogon("ora_gargkash", "a89601264", "dbhost.students.cs.ubc.ca:1522/stu");
 
 // Check if the connection was successful
 if (!$db_conn) {
@@ -107,9 +107,9 @@ if (!$db_conn) {
 }
 
 // define & execute the SQL query
-$query = 'SELECT User_Measurement.userID, "User".name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
-          FROM "User", User_Measurement
-          WHERE User_Measurement.userID = "User".ID';
+$query = 'SELECT User_Measurement.userID, Users.name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
+          FROM Users, User_Measurement
+          WHERE User_Measurement.userID = Users.ID';
 $stmt = oci_parse($db_conn, $query);
 oci_execute($stmt);
 
@@ -169,7 +169,75 @@ if (isset($_POST['submit'])) {
     // Refresh table
      echo '<script>window.location.href = window.location.href;</script>';
      exit();
-} 
+} else if (isset($_POST['apply_filter'])) {
+
+    // Get the filter input value
+    $filterValue = trim(strtolower($_POST['filter-input']));
+
+    // Perform a filter query 
+    $filterQuery = "SELECT COUNT(*) AS user_count
+                    FROM Users
+                    JOIN User_Measurement ON User_Measurement.userID = Users.ID
+                    GROUP BY Users.ID
+                    HAVING MAX(User_Measurement.BMI) > :filterValue";
+
+    $filterStmt = oci_parse($db_conn, $filterQuery);
+    oci_bind_by_name($filterStmt, ":filterValue", $filterValue);
+    oci_execute($filterStmt);
+
+    if (($error = oci_error($filterStmt)) !== false) {
+        // Handle the error appropriately, such as logging or displaying an error message.
+        echo "Query error: " . $error['message'];
+        exit;
+    }
+    
+    // Fetch the result of the query
+    $count = oci_fetch_single($filterStmt);
+    if ($count !== false) {
+        echo "Count: " . $count;
+    } else {
+        echo "No results found.";
+    }
+
+    // Fetch all rows from the executed statement into an array
+    $rows = oci_fetch_all($stmt, $result, null, null, OCI_FETCHSTATEMENT_BY_ROW);
+
+    // Display the filtered table
+    echo '<form method="post" action="">';
+    echo '<table>';
+    echo '<tr><th>UserID</th><th>Name</th><th>Height</th><th>Weight</th><th>BMI</th><th></th></tr>';
+
+    while ($row = oci_fetch_assoc($filterStmt)) {
+        echo '<tr>';
+        echo '<td data-column="userID">' . $row['USERID'] . '</td>';
+        echo '<td data-column="name">' . $row['NAME'] . '</td>';
+        echo '<td data-column="height">' . $row['HEIGHT'] . '</td>';
+        echo '<td data-column="weight">' . $row['WEIGHT'] . '</td>';
+        echo '<td data-column="BMI">' . $row['BMI'] . '</td>';
+        echo '</tr>';
+    }
+    echo '</table>';
+ 
+     // Add event handlers for buttons
+     echo '<button type="submit" name="reset_filter" value="reset" class="reset-button">Reset Filter</button>';
+
+     echo '</form>';
+
+    echo '</form>';
+
+    // Refresh table
+    echo '<script>';
+    echo 'document.addEventListener("DOMContentLoaded", function() {';
+    echo '    var formRow = document.getElementById("form-row");';
+    echo '    formRow.style.display = "none";';
+    echo '    var tableBody = document.querySelector("table tbody");';
+    echo '    tableBody.innerHTML = `' . $tableRows . '`;';
+    echo '});';
+    echo '</script>';
+
+    exit();
+
+}
 		
 // Close the database connection	
 oci_free_statement($stmt);	
