@@ -37,18 +37,18 @@
         color: orange; 
     }
     .back-button {
+        font-family: Arial, sans-serif;
+        font-size: 15px;
         display: inline-block;
         width: auto; 
         top: 10px;
-        left: 0px;
-        height: 30px;
-        line-height: 30px;
-        background-color: #f2f2f2;
+        left: 10px;
         border: 2px solid orange;
         border-radius: 5px;
-        cursor: pointer;
         background-color: #BF40BF;
         color: orange; 
+        text-decoration: none;
+        position: absolute;
     }
 </style>
 

@@ -12,6 +12,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 .header {
     text-align: center;
@@ -113,7 +114,7 @@ th, td {
     line-height: 15px;
     text-align: center;
     background-color: #f2f2f2;
-    border: 2px solid #ddd;
+    border: 2px solid orange;
     border-radius: 5px;
     cursor: pointer;
     background-color: #BF40BF;
@@ -139,7 +140,7 @@ display: none;
 .back-button {
     font-family: Arial, sans-serif;
     top: 10px;
-    left: 0px;
+    left: 10px;
     padding: 1px 3px;
     background-color: #BF40BF;
     border: 1px solid orange;
@@ -149,10 +150,7 @@ display: none;
     font-size: 15px;
     width: 43px; 
     color: orange; 
-}
-.button-container {
-    /* Add container styles if necessary */
-}
+}   
 .button-container input[type="submit"] {
     font-family: Arial, sans-serif;
     background-color: #BF40BF;
