@@ -21,8 +21,8 @@
         text-shadow: 2px 2px 4px #5D3FD3;
     }
     .button-container {
-    display: inline-block;
-    vertical-align: middle;
+        display: inline-block;
+        vertical-align: middle;
     }
     table {
         margin: auto;

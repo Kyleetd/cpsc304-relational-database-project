@@ -2,7 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/goals.css">
     <title>Goals</title>
 </head>
 <style>
@@ -22,7 +21,7 @@
     th,
     td {
         padding: 8px;
-        text-align: center;
+        text-align: left;
         border-bottom: 1px solid purple;
         color: #5D3FD3; 
     }
@@ -70,23 +69,60 @@
         margin-top: 20px;
         color: #5D3FD3;
     }
+    input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #5D3FD3;
+        border-radius: 3px;
+        outline: none;
+        transition: background-color 0.3s ease-in-out;
+        background-color: purple;
+        position: relative;
+    }
+    input[type="checkbox"]:checked {
+        background-color: purple;
+    }
+    input[type="checkbox"]::before {
+        content: "X";
+        font-weight: bold;
+        font-size: 14px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: orange;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    input[type="checkbox"]:checked::before {
+        opacity: 1;
+    }
     
-    .action-button {
+    .ach-del-button {
         background-color: #5D3FD3; 
         color: orange;
     }
 </style>
 <body>
+
     <div class="header">
         <h1 style="color: orange;">Fitness Goals</h1>
         <div class="add-goal-button" onclick="showInputForm()" style="color: orange;">+</div>
-        <a href="./goalsAndAchievements.php" class="back-button">Back</a>
+        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/goalsAndAchievements.php" class="back-button">Back</a>
     </div>
 
     <?php
     require_once("./dbUtils.php");
     // Establish a connection to the Oracle database
-    $db_conn = OCILogon("ora_jhan27", "a82584830", "dbhost.students.cs.ubc.ca:1522/stu");
+    $db_conn = OCILogon("ora_kyleetd", "a78242021", "dbhost.students.cs.ubc.ca:1522/stu");
 
     // Check if the connection was successful
     if (!$db_conn) {
@@ -101,22 +137,22 @@
 
     // Display table
     echo '<table>';
-    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th>
-    <th style="width:200px;">Action</th></tr>';
+    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th><th>Action</th></tr>';
 
     $rowIndex = 0;
     while ($row = oci_fetch_assoc($stmt)) {
         // Skip rendering the row if goal has been achieved
+        if ($row['ACHIEVED'] == 1) {
+            continue;
+        }
         echo '<tr>';
         echo '<td>' . $row['GOALID'] . '</td>';
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
         echo '<td>' . $row['USERID'] . '</td>';
-        echo "<td class='action-button-container'><button type='button' class='action-button' data-row-index='$rowIndex'>Edit</button>";
-        if (!$row['ACHIEVED'] == 1) {
-            echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='action-button'>Achieve</button>";
-        }
-        echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='action-button'>Delete</button></td>";
+        echo "<td><button type='button' class='edit-button' data-row-index='$rowIndex'>Edit</button>";
+        echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='ach-del-button'>Achieve</button>";
+        echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='ach-del-button'>Delete</button></td>";
         echo '</tr>';
 
         echo "<form id='row-form-$rowIndex' method='post' action=''>";
@@ -142,7 +178,7 @@
     echo '<td><input type="date" name="targetDate" min="1900-01-01" max="9999-12-31" style="color: #5D3FD3;"></td>';
     echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
-    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: orange;"></td>';
+    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
     echo '</td>';
     echo '</tr>';
     echo '</table>'; 
@@ -164,8 +200,8 @@
     
         if ($userCount > 0) {
             // Insert goal in User_FitnessGoal table
-            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, ACHIEVED, USERID) 
-            VALUES (:description, TO_DATE(:targetDate, 'YYYY-MM-DD'), 0, :userID)";
+            $insertQuery = "INSERT INTO User_FitnessGoal (DESCRIPTION, TARGETDATE, USERID) 
+            VALUES (:description, TO_DATE(:targetDate, 'YYYY-MM-DD'), :userID)";
             $insertStmt = oci_parse($db_conn, $insertQuery);
             oci_bind_by_name($insertStmt, ":description", $description);
             oci_bind_by_name($insertStmt, ":targetDate", $targetDate);
@@ -194,8 +230,7 @@
         $goalRow = oci_fetch_assoc($stmt);
 
         // Insert goal into User_Achievement table
-        $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID, GOALID) 
-        VALUES (:description, TO_DATE(:dateAccomplished, 'YYYY-MM-DD'), :userID, :goalID)";
+        $insertQuery = "INSERT INTO User_Achievement (DESCRIPTION, DATEACCOMPLISHED, USERID, GOALID) VALUES (:description, :dateAccomplished, :userID, :goalID)";
         $insertStmt = oci_parse($db_conn, $insertQuery);
         $todayDate = date("Y-m-d");
         oci_bind_by_name($insertStmt, ":description", $goalRow['DESCRIPTION']);
@@ -267,5 +302,6 @@
             });
         });
     </script>
+
 </body>
 </html>

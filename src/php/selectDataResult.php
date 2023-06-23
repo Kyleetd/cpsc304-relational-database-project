@@ -12,44 +12,7 @@
         <a href="./selectData.php" class="back-button">Back</a>
     </div>
     <style>
-    .header {
-        text-align: center;
-        font-size: 25px;
-        padding: 10px;
-        background-color: transparent;
-    }
-    .back-button {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        padding: 1px 3px;
-        background-color: orange;
-        border: 1px solid #5D3FD3;
-        border-radius: 3px;
-        text-decoration: none;
-        color: #5D3FD3;
-        font-size: 20px;
-    }
-    body {
-        background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        margin: 0;
-        height: 100vh; 
-    }
-    table {
-        margin: auto;
-        border-collapse: collapse;
-        width: 80%;
-        background-color: #5D3FD3; 
-    }
-    th, td {
-        padding: 8px;
-        text-align: center;
-        border-bottom: 1px solid orange;
-        color: orange; 
-    }
+
     </style>
 
     <?php
@@ -60,34 +23,50 @@
         if (connectToDB()) {
             global $results;
             $selectedColumns = $_POST['selected_columns_list'];
-            $filterStatements = $_POST['filter_list'];  
+            $filterStatements = $_POST['filter_list'];
             $selectedTable = $_POST['table_selection'];
-        
+
+            $table = executePlainSQL("SELECT * FROM $selectedTable");
+
+            //Add columns to columns array
+            $columnTypes = array();
+            $numCols = oci_num_fields($table);
+            for ($i = 1; $i <= $numCols; $i++) {
+                $column = oci_field_name($table, $i);
+                $dataType = oci_field_type($table, $i);
+                $columnTypes[$column] = $dataType;
+            }
+    
             // Build the SELECT statement
             $selectStatement = "SELECT " . implode(", ", $selectedColumns) . " FROM $selectedTable";
-        
-            //Build the filter conditions
+    
+            // Build the filter conditions
             $filterConditions = array();
+            $tuples = array();
             foreach ($filterStatements as $column => $value) {
                 if (!empty($value)) {
-                    $filterConditions[] = "$column".$_POST['filter_operators'][$column]."'$value'";
+                    if ($columnTypes[$column] === 'DATE') {
+                        $filterConditions[] = "$column " . $_POST['filter_operators'][$column] . " TO_DATE(:$column, 'YYYY-MM-DD')"; 
+                    } else {
+                        $filterConditions[] = "$column " . $_POST['filter_operators'][$column] . " :$column";
+                    }
+                    $tuples[":$column"] = $value;
                 }
             }
-        
+    
             // Finalize the query
             if (!empty($filterConditions)) {
                 $filterClause = implode(" AND ", $filterConditions);
-                $query = $selectStatement." WHERE ".$filterClause;
+                $query = $selectStatement . " WHERE " . $filterClause;
+                $results = executeBoundSQL($query, $tuples);
             } else {
                 $query = $selectStatement;
+                $results = executePlainSQL($query);
             }
-        
-            $results = executePlainSQL($query);
             disconnectFromDB();
         }
     }
-    
-
+   
     if ($_SERVER['REQUEST_METHOD'] === 'POST' 
         && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) {
         handleColAndFilterRequest();
@@ -97,7 +76,7 @@
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' 
         && isset($_POST['selected_columns_list']) && isset($_POST['filter_list'])) : ?>
         <table>
-        <caption style="color: #5D3FD3;"><?php echo $_POST['table_selection']; ?></caption>
+        <caption><?php echo $_POST['table_selection']; ?></caption>
             <thead>
                 <tr>
                     <?php foreach ($_POST['selected_columns_list'] as $column) : ?>

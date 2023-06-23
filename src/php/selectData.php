@@ -11,82 +11,6 @@
         <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">View Table Data</h1>
         <a href="./dashboard.php" class="back-button">Back</a>
     </div>
-    <style>
-    .header {
-        text-align: center;
-        font-size: 25px;
-        padding: 10px;
-        background-color: transparent;
-    }
-    .back-button {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        padding: 1px 3px;
-        background-color: orange;
-        border: 1px solid #5D3FD3;
-        border-radius: 3px;
-        text-decoration: none;
-        color: #5D3FD3;
-        font-size: 20px;
-    }
-    .select-button {
-        background-color: orange;
-        border: 1px solid #5D3FD3;
-        border-radius: 3px;
-        color: #5D3FD3;
-    }
-    .get-table-button {
-        background-color: orange;
-        border: 1px solid #5D3FD3;
-        border-radius: 3px;
-        color: #5D3FD3;
-    }
-    .form-container {
-        text-align: center;
-        margin-top: auto;
-        align-items: center;
-    }
-    .attributes-container {
-        text-align: center;
-        margin-top: auto;
-        align-items: center;
-    }
-    .filter-cell {
-        display: block;
-        margin-bottom: 10px;
-    }
-    .center-content {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .filter-container {
-        text-align: center;
-        margin: auto;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: flex-start;
-    }
-    body {
-        background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        margin: 0;
-        height: 100vh; 
-    }
-    .purple-box {
-        background-color: purple;
-        padding: 10px;
-        margin: 10px;
-        display: inline-flex;
-        align-items: center;
-        color: white;
-        font-weight: bold;
-        border-radius: 5px;
-    }
-    </style>
 
     <?php
     require_once('./dbUtils.php');
@@ -116,11 +40,10 @@
     ?>
 
     <div class="form-container">
-        <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
-            <div class="purple-box">
-                <span style="color: orange;">Select a Table :</span>  
-            </div>
-            <select name="table_selection">  
+        <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">
+            <div class=table-select-container>
+            <span class="purple-box">Select a Table :</span>  
+            <select class="table-selection" name="table_selection">  
                 <option value="">--- Select ---</option>  
 
                 <?php  
@@ -142,7 +65,8 @@
                 }
                 ?>  
             </select>  
-            <input class="select-button" type="submit" name="Submit" value="Select" />  
+            <input class="select-button" type="submit" name="Submit" value="Select" />
+            </div>
         </form>
     </div>
 
@@ -150,27 +74,26 @@
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) :?>
             <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="./selectDataResult.php">
                 <br>
-                <div class="center-content">
-                    <div class="purple-box">
-                        <span style="color: orange;">Select all columns you would like to show: Enter values in text book to filter. Leave empty if no filtering desired.</span>
-                    </div>
+                <div class="purple-box">
+                    <span>Select all columns you would like to show:<br>
+                        Enter values in boxes to filter. Leave empty if no filtering desired.</span>
                 </div>
 
                 <div class="filter-container">
                     <?php foreach ($columns as $column => $dataType) : ?>
                         <div class="filter-cell">
-                            <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
+                            <input class="filter-checkbox"type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
                                 id="filter_list[<?php echo $column; ?>]">
-                            <label for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
+                            <label class="purple-box" for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
                             <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
-                                <select name="filter_operators[<?php echo $column; ?>]">
+                                <select class name="filter_operators[<?php echo $column; ?>]">
                                     <option value="=">Equal to (=)</option>
                                     <option value="<">Less than (<)</option>
                                     <option value=">">Greater than (>)</option>
                                     <option value="<=">Less than or equal to (<=)</option>
                                     <option value=">=">Greater than or equal to (>=)</option>
                                 </select>
-                                <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="Number">
+                                <input type="number" name="filter_list[<?php echo $column; ?>]" placeholder="Number">
                             <?php elseif ($dataType === 'VARCHAR2') : ?>
                                 <select name="filter_operators[<?php echo $column; ?>]" >
                                     <option value="=">Equal to (=)</option>
@@ -185,7 +108,7 @@
                                     <option value="<=">Less than or equal to (<=)</option>
                                     <option value=">=">Greater than or equal to (>=)</option>
                                 </select>
-                                <input type="text" name="filter_list[<?php echo $column; ?>]" placeholder="DD-MM-YYYY">
+                                <input type="date" min="1900-01-01" max="9999-12-31" name="filter_list[<?php echo $column; ?>]">
                             <?php endif; ?>
                             <br>
                         </div>
@@ -193,7 +116,7 @@
                 </div>
 
                 <input type="hidden" name="table_selection" value="<?php echo $_POST['table_selection']; ?>">
-                <input class="get-table-button" type="submit" name="Submit" value="Get Table">
+                <input class="select-button" type="submit" name="Submit" value="Get Table">
             </form>
         <?php endif; ?>
     </div>
