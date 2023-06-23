@@ -26,6 +26,10 @@
             $filterStatements = $_POST['filter_list'];
             $selectedTable = $_POST['table_selection'];
 
+            if (str_contains($selectedTable, ";")) {
+                return;
+            }
+
             $table = executePlainSQL("SELECT * FROM $selectedTable");
 
             //Add columns to columns array
@@ -59,7 +63,7 @@
                 $filterClause = implode(" AND ", $filterConditions);
                 $query = $selectStatement . " WHERE " . $filterClause;
                 $results = executeBoundSQL($query, $tuples);
-            } else {
+            } else if (!str_contains($selectStatement, ";")) {
                 $query = $selectStatement;
                 $results = executePlainSQL($query);
             }
