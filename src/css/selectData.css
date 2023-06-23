@@ -55,13 +55,20 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    padding: 1px 3px;
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    border-radius: 3px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #5D3FD3;
+    color: #fff;
     text-decoration: none;
-    color: #333;
-    font-size: 20px;
+    border-radius: 4px;
+}
+
+.back-button:hover {
+    background-color: #4C2BBB;
+}
+  
+.back-button:active {
+background-color: #3A1F99;
 }
 
 .filter-container {
@@ -70,4 +77,54 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+.header {
+    text-align: center;
+    font-size: 25px;
+    padding: 10px;
+    background-color: transparent;
+}
+.get-table-button {
+    background-color: orange;
+    border: 1px solid #5D3FD3;
+    border-radius: 3px;
+    color: #5D3FD3;
+}
+.form-container {
+    text-align: center;
+    margin-top: auto;
+    align-items: center;
+}
+.attributes-container {
+    text-align: center;
+    margin-top: auto;
+    align-items: center;
+}
+.filter-cell {
+    display: block;
+    margin-bottom: 10px;
+}
+.center-content {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+body {
+    background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    height: 100vh; 
+}
+.purple-box {
+    background-color: purple;
+    padding: 10px;
+    margin: 10px;
+    display: inline-flex;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
 }
