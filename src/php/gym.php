@@ -330,11 +330,8 @@ if (isset($_POST['submit'])) {
     }
     echo '</table>';
 
-     // Add event handlers for buttons
-     echo '<button type="submit" name="reset_filter" value="reset" class="reset-button">Reset Filter</button>';
-
-     echo '</form>';
-
+    // Add event handlers for buttons
+    echo '<button type="submit" name="reset_filter" value="reset" class="reset-button">Reset Filter</button>';
     echo '</form>';
 
     // Refresh table

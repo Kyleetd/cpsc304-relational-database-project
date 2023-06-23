@@ -85,12 +85,10 @@
         display: flex;
         justify-content: center;
     }
-
     #filter-line .center-content {
         border: 2px solid orange;
         padding: 10px;
     }
-
     #filter-line .count-text {
         color: purple;
     }
@@ -123,11 +121,9 @@
 
 <div id="filter-line">
   <div class="center-content">
-    <form method="post">
-      <span class="count-text">COUNT USERS HAVING BMI > </span>
-      <input type="number" id="find-count" name="find-count" placeholder="Enter BMI value" min="0">
-      <button type="submit" class="find-count-button" name="find-count-submit">Find Count</button>
-    </form>
+    <span class="count-text">COUNT USERS HAVING BMI > </span>
+    <input type="number" id="find-count" name="find-count" placeholder="Enter BMI value" min="0">
+    <button type="button" class="find-count-button" onclick="handleFindCount()">Find Count</button>
   </div>
 </div>
 
@@ -195,8 +191,8 @@ if (isset($_POST['submit'])) {
     oci_bind_by_name($insertStmt, ":userID", $userID);
     oci_execute($insertStmt);
 
-    // // Insert User in User table
-    $insertQuery = "INSERT INTO User (ID, NAME) VALUES (:ID, :name)";
+    // // Insert User in Users table
+    $insertQuery = "INSERT INTO Users (ID, NAME) VALUES (:ID, :name)";
     $insertStmt = oci_parse($db_conn, $insertQuery);
     oci_bind_by_name($insertStmt, ":ID", $userID);
     oci_bind_by_name($insertStmt, ":name", $name);
@@ -205,41 +201,7 @@ if (isset($_POST['submit'])) {
     // Refresh table
      echo '<script>window.location.href = window.location.href;</script>';
      exit();
-} else if (isset($_POST['find-count-submit'])) {
-
-    // Get the BMI input value
-    $BMIValue = trim($_POST['find-count']);
-
-    // Perform a filter query 
-    $countQuery = "SELECT COUNT(*) AS user_count
-                FROM (
-                        SELECT Users.ID
-                        FROM Users
-                        JOIN User_Measurement ON User_Measurement.userID = Users.ID
-                        GROUP BY Users.ID
-                        HAVING MAX(User_Measurement.BMI) > :BMIValue
-                ) subquery";
-
-    // Prepare the query statement
-    $countStmt = oci_parse($db_conn, $countQuery);
-    oci_bind_by_name($countStmt, ":BMIValue", $BMIValue);
-
-    // Execute the query
-    oci_execute($countStmt);
-
-    $count = oci_fetch_assoc($countStmt);
-
-    // Check if a result was fetched
-    if ($count === false) {
-        echo "No users found with a BMI over " . $BMIValue;
-    } else {
-        echo "Count of Users having BMI over " . $BMIValue . " is: " . $count['USER_COUNT'];
-    }
-
-    // Clean up the statement
-    oci_free_statement($countStmt);
-    exit();
-}
+} 
 		
 // Close the database connection	
 oci_free_statement($stmt);	
@@ -254,6 +216,11 @@ oci_close($db_conn);
     }
     function openAverageBMI() {
         window.open("https://www.students.cs.ubc.ca/~gargkash/project_j4i5v_j7r8j_r6z9i/src/php/averageBMI.php", "_blank");
+    }
+    function handleFindCount() {
+        var BMIValue = document.getElementById('find-count').value;
+        var url = "https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/numUsersBMI.php?BMI=" + BMIValue;
+        window.open(url, "_blank");
     }
 </script>
 
