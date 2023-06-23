@@ -20,16 +20,19 @@
         if (connectToDB()) {
             // Query the selected table
             $table = $_POST['table_selection'];
-            $result = executePlainSQL("SELECT * FROM $table");
+            if (!str_contains($table, ";")) {
+                $result = executePlainSQL("SELECT * FROM $table");
 
-            //Add columns to columns array
-            global $columns;
-            $numCols = oci_num_fields($result);
-            for ($i = 1; $i <= $numCols; $i++) {
-                $column = oci_field_name($result, $i);
-                $dataType = oci_field_type($result, $i);
-                $columns[$column] = $dataType;
+                //Add columns to columns array
+                global $columns;
+                $numCols = oci_num_fields($result);
+                for ($i = 1; $i <= $numCols; $i++) {
+                    $column = oci_field_name($result, $i);
+                    $dataType = oci_field_type($result, $i);
+                    $columns[$column] = $dataType;
+                }
             }
+
             disconnectFromDB();
         }
     }    
