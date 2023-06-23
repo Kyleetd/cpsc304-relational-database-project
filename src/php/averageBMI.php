@@ -61,7 +61,7 @@
 <?php
 
 // Establish a connection to the Oracle database
-$db_conn = OCILogon("ora_gargkash", "a89601264", "dbhost.students.cs.ubc.ca:1522/stu");
+$db_conn = OCILogon("ora_kyleetd", "a78242021", "dbhost.students.cs.ubc.ca:1522/stu");
 
 // Check if the connection was successful
 if (!$db_conn) {
