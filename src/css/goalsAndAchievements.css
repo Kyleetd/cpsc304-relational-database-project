@@ -58,7 +58,7 @@ header {
 }
   
 .back-button:active {
-background-color: #3A1F99;
+    background-color: #3A1F99;
 }
 
 .button:hover {
