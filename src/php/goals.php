@@ -2,81 +2,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/goals.css">
     <title>Goals</title>
 </head>
-<style>
-    .header {
-        text-align: center;
-        font-size: 25px;
-        padding: 10px;
-        background-color: transparent;
-        text-shadow: 2px 2px 4px #5D3FD3;
-    }
-    table {
-        margin: auto;
-        border-collapse: collapse;
-        width: 80%;
-        background-color: orange; 
-    }
-    th,
-    td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid purple;
-        color: #5D3FD3; 
-    }
-    td:first-child {
-        width: 100px; 
-    }
-    .add-goal-button {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #5D3FD3;
-        border: 1px solid orange;
-        border-radius: 3px;
-        cursor: pointer;
-        color: orange; 
-    }
-    .hidden-row {
-        display: none;
-    }
-    .set-achieved-column {
-        width: 50px;
-    }
-    .back-button {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        padding: 1px 3px;
-        background-color: #5D3FD3;
-        border: 1px solid orange;
-        border-radius: 3px;
-        text-decoration: none;
-        color: orange;
-        font-size: 20px;
-    }
-    body {
-        background-image: url("https://i.pinimg.com/564x/f5/f4/ec/f5f4ec2dd2b61c2463461c3d50d03cca.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-    .error-message {
-        text-align: center;
-        margin-top: 20px;
-        color: #5D3FD3;
-    }
-    
-    .action-button {
-        background-color: #5D3FD3; 
-        color: orange;
-    }
-</style>
 <body>
-
     <div class="header">
         <h1 style="color: orange;">Fitness Goals</h1>
         <div class="add-goal-button" onclick="showInputForm()" style="color: orange;">+</div>
@@ -101,7 +30,8 @@
 
     // Display table
     echo '<table>';
-    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th><th>Action</th></tr>';
+    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th>
+    <th style="width:200px;">Action</th></tr>';
 
     $rowIndex = 0;
     while ($row = oci_fetch_assoc($stmt)) {
@@ -111,7 +41,7 @@
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
         echo '<td>' . $row['USERID'] . '</td>';
-        echo "<td><button type='button' class='action-button' data-row-index='$rowIndex'>Edit</button>";
+        echo "<td class='action-button-container'><button type='button' class='action-button' data-row-index='$rowIndex'>Edit</button>";
         if (!$row['ACHIEVED'] == 1) {
             echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='action-button'>Achieve</button>";
         }
@@ -141,7 +71,7 @@
     echo '<td><input type="date" name="targetDate" min="1900-01-01" max="9999-12-31" style="color: #5D3FD3;"></td>';
     echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
-    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
+    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: orange;"></td>';
     echo '</td>';
     echo '</tr>';
     echo '</table>'; 

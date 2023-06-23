@@ -1,0 +1,91 @@
+body {
+    background-image: url("https://i.pinimg.com/564x/f5/f4/ec/f5f4ec2dd2b61c2463461c3d50d03cca.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.header {
+    text-align: center;
+    font-size: 25px;
+    padding: 10px;
+    background-color: transparent;
+    text-shadow: 2px 2px 4px #5D3FD3;
+}
+
+table {
+    margin: auto;
+    border-collapse: collapse;
+    width: 80%;
+    background-color: orange; 
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid purple;
+    color: #5D3FD3; 
+}
+
+td:first-child {
+    width: 100px; 
+}
+
+.add-goal-button {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #5D3FD3;
+    border: 1px solid orange;
+    border-radius: 3px;
+    cursor: pointer;
+    color: orange; 
+}
+
+.hidden-row {
+    display: none;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 1px 3px;
+    background-color: #5D3FD3;
+    border: 1px solid orange;
+    border-radius: 3px;
+    text-decoration: none;
+    color: orange;
+    font-size: 20px;
+}
+
+.error-message {
+    text-align: center;
+    margin-top: 20px;
+    color: red;
+
+    background-color: rgb(207, 207, 207);
+    padding: 10px;
+    margin: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 25px;
+    width: 500px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.action-button {
+    background-color: #5D3FD3; 
+    color: orange;
+}
+
+.action-button-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
