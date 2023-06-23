@@ -141,17 +141,16 @@
 
     $rowIndex = 0;
     while ($row = oci_fetch_assoc($stmt)) {
-        // Skip rendering the row if goal has been achieved
-        if ($row['ACHIEVED'] == 1) {
-            continue;
-        }
         echo '<tr>';
         echo '<td>' . $row['GOALID'] . '</td>';
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
         echo '<td>' . $row['USERID'] . '</td>';
         echo "<td><button type='button' class='edit-button' data-row-index='$rowIndex'>Edit</button>";
+        
+        if (!$row['ACHIEVED'] == 1) {
         echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='ach-del-button'>Achieve</button>";
+        }
         echo "<button form='row-form-$rowIndex' type='submit' name='delete' value='" . $row['GOALID'] . "' class='ach-del-button'>Delete</button></td>";
         echo '</tr>';
 
