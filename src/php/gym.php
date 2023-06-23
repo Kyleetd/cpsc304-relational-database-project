@@ -12,7 +12,6 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
 }
 .header {
     text-align: center;
@@ -114,7 +113,7 @@ th, td {
     line-height: 15px;
     text-align: center;
     background-color: #f2f2f2;
-    border: 2px solid orange;
+    border: 2px solid #ddd;
     border-radius: 5px;
     cursor: pointer;
     background-color: #BF40BF;
@@ -139,8 +138,9 @@ display: none;
 }
 .back-button {
     font-family: Arial, sans-serif;
+    position: absolute;
     top: 10px;
-    left: 10px;
+    left: 0px;
     padding: 1px 3px;
     background-color: #BF40BF;
     border: 1px solid orange;
@@ -150,7 +150,7 @@ display: none;
     font-size: 15px;
     width: 43px; 
     color: orange; 
-}   
+}
 .button-container input[type="submit"] {
     font-family: Arial, sans-serif;
     background-color: #BF40BF;
@@ -174,7 +174,7 @@ display: none;
       <div class="button all-gyms-button" id="join" onclick="openUsersAttendingAllGyms()">Find Users Attending all Gyms</div>
     </div>
     <div class="button-container-back-reset">
-      <a href="./dashboard.php" class="back-button">Back</a>
+      <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/dashboard.php" class="back-button">Back</a>
     </div>
   </div>
 </form>
@@ -328,8 +328,11 @@ if (isset($_POST['submit'])) {
     }
     echo '</table>';
 
-    // Add event handlers for buttons
-    echo '<button type="submit" name="reset_filter" value="reset" class="reset-button">Reset Filter</button>';
+     // Add event handlers for buttons
+     echo '<button type="submit" name="reset_filter" value="reset" class="reset-button">Reset Filter</button>';
+
+     echo '</form>';
+
     echo '</form>';
 
     // Refresh table
