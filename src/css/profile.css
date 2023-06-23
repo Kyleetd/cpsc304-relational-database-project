@@ -1,0 +1,108 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-image: url('https://i.pinimg.com/564x/a9/80/22/a98022cdb8b339e11542132b6428ac92.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    text-align: center;
+    font-size: 25px;
+    padding: 10px;
+    background-color: transparent;
+    color: orange; 
+    text-shadow: 2px 2px 4px #5D3FD3;
+}
+.button-container {
+    display: inline-block;
+    vertical-align: middle;
+} 
+table {
+    margin: auto;
+    border-collapse: collapse;
+    width: 80%;
+    background-color: #BF40BF; 
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid orange;
+    color: orange; 
+}
+.add-user-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid orange;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.bmi-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid orange;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.find-count-button {
+    display: inline-block;
+    width: auto; 
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 2px solid orange;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #BF40BF;
+    color: orange; 
+}
+.hidden-row {
+    display: none;
+}
+#filter-line {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+#filter-line .center-content {
+    border: 2px solid orange;
+    padding: 10px;
+}
+#filter-line .count-text {
+    color: purple;
+}
+#filter-dropdown {
+    margin: 0 5px;
+}
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 1px 3px;
+    background-color: #5D3FD3;
+    border: 1px solid orange;
+    border-radius: 3px;
+    text-decoration: none;
+    color: orange;
+    font-size: 20px;
+}

@@ -3,111 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/profile.css" />
     <title>Profile</title>
 </head>
-
-<style>
-    body {
-    background-image: url('https://i.pinimg.com/564x/a9/80/22/a98022cdb8b339e11542132b6428ac92.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    }
-    .header {
-        text-align: center;
-        font-size: 25px;
-        padding: 10px;
-        background-color: transparent;
-        color: orange; 
-        text-shadow: 2px 2px 4px #5D3FD3;
-    }
-    .button-container {
-        display: inline-block;
-        vertical-align: middle;
-    } 
-    table {
-        margin: auto;
-        border-collapse: collapse;
-        width: 80%;
-        background-color: #BF40BF; 
-    }
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid orange;
-        color: orange; 
-    }
-    .add-user-button {
-        display: inline-block;
-        width: auto; 
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #f2f2f2;
-        border: 2px solid orange;
-        border-radius: 5px;
-        cursor: pointer;
-        background-color: #BF40BF;
-        color: orange; 
-    }
-    .bmi-button {
-        display: inline-block;
-        width: auto; 
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #f2f2f2;
-        border: 2px solid orange;
-        border-radius: 5px;
-        cursor: pointer;
-        background-color: #BF40BF;
-        color: orange; 
-    }
-    .find-count-button {
-        display: inline-block;
-        width: auto; 
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #f2f2f2;
-        border: 2px solid orange;
-        border-radius: 5px;
-        cursor: pointer;
-        background-color: #BF40BF;
-        color: orange; 
-    }
-    .hidden-row {
-        display: none;
-    }
-    #filter-line {
-        text-align: center;
-        margin: 20px 0;
-        position: relative;
-        display: flex;
-        justify-content: center;
-    }
-    #filter-line .center-content {
-        border: 2px solid orange;
-        padding: 10px;
-    }
-    #filter-line .count-text {
-        color: purple;
-    }
-    #filter-dropdown {
-        margin: 0 5px;
-    }
-    .back-button {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        padding: 1px 3px;
-        background-color: #5D3FD3;
-        border: 1px solid orange;
-        border-radius: 3px;
-        text-decoration: none;
-        color: orange;
-        font-size: 20px;
-    }
-</style>
 
 <body>
 <div class="header">
@@ -215,11 +113,11 @@ oci_close($db_conn);
         formRow.style.display = 'table-row';
     }
     function openAverageBMI() {
-        window.open("./averageBMI.php", "_blank");
+        window.open("https://www.students.cs.ubc.ca/~gargkash/project_j4i5v_j7r8j_r6z9i/src/php/averageBMI.php", "_blank");
     }
     function handleFindCount() {
         var BMIValue = document.getElementById('find-count').value;
-        var url = "./numUsersBMI.php?BMI=" + BMIValue;
+        var url = "https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/numUsersBMI.php?BMI=" + BMIValue;
         window.open(url, "_blank");
     }
 </script>
