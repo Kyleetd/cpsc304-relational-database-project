@@ -44,7 +44,7 @@
             <div class=table-select-container>
             <span class="purple-box">Select a Table :</span>  
             <select class="table-selection" name="table_selection">  
-                <option value="">--- Select ---</option>  
+                <option disabled value="">--- Select ---</option>  
 
                 <?php  
                 if (connectToDB()) {
