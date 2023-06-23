@@ -40,11 +40,10 @@
     ?>
 
     <div class="form-container">
-        <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">  
-            <div class="purple-box">
-                <span style="color: orange;">Select a Table :</span>  
-            </div>
-            <select name="table_selection">  
+        <form id="TableSelectorForm" name="TableSelectorForm" method="post" action="">
+            <div class=table-select-container>
+            <span class="purple-box">Select a Table :</span>  
+            <select class="table-selection" name="table_selection">  
                 <option value="">--- Select ---</option>  
 
                 <?php  
@@ -66,7 +65,8 @@
                 }
                 ?>  
             </select>  
-            <input class="select-button" type="submit" name="Submit" value="Select" />  
+            <input class="select-button" type="submit" name="Submit" value="Select" />
+            </div>
         </form>
     </div>
 
@@ -74,10 +74,9 @@
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($columns)) :?>
             <form id="ColumnSelectorForm" name="ColumnSelectorForm" method="post" action="./selectDataResult.php">
                 <br>
-                <div class="center-content">
-                    <div class="purple-box">
-                        <span style="color: orange;">Select all columns you would like to show: Enter values in text book to filter. Leave empty if no filtering desired.</span>
-                    </div>
+                <div class="purple-box">
+                    <span>Select all columns you would like to show:<br>
+                        Enter values in boxes to filter. Leave empty if no filtering desired.</span>
                 </div>
 
                 <div class="filter-container">
@@ -85,9 +84,9 @@
                         <div class="filter-cell">
                             <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
                                 id="filter_list[<?php echo $column; ?>]">
-                            <label for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
+                            <label class="purple-box" for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
                             <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>
-                                <select name="filter_operators[<?php echo $column; ?>]">
+                                <select class name="filter_operators[<?php echo $column; ?>]">
                                     <option value="=">Equal to (=)</option>
                                     <option value="<">Less than (<)</option>
                                     <option value=">">Greater than (>)</option>
@@ -117,7 +116,7 @@
                 </div>
 
                 <input type="hidden" name="table_selection" value="<?php echo $_POST['table_selection']; ?>">
-                <input class="get-table-button" type="submit" name="Submit" value="Get Table">
+                <input class="select-button" type="submit" name="Submit" value="Get Table">
             </form>
         <?php endif; ?>
     </div>
