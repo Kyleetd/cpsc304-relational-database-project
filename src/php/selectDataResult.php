@@ -11,9 +11,6 @@
         <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">View Table Data</h1>
         <a href="./selectData.php" class="back-button">Back</a>
     </div>
-    <style>
-
-    </style>
 
     <?php
     require_once('./dbUtils.php');
