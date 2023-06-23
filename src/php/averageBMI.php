@@ -55,7 +55,7 @@
 <body>
 <div class="header">
         <h1>Users with average BMI < overall average BMI</h1>
-        <a href="https://www.students.cs.ubc.ca/~gargkash/project_j4i5v_j7r8j_r6z9i/src/php/profile.php" class="back-button">Back</a>
+        <a href="./profile.php" class="back-button">Back</a>
 </div>
 
 <?php

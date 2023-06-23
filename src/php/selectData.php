@@ -11,82 +11,6 @@
         <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">View Table Data</h1>
         <a href="./dashboard.php" class="back-button">Back</a>
     </div>
-    <style>
-    .header {
-        text-align: center;
-        font-size: 25px;
-        padding: 10px;
-        background-color: transparent;
-    }
-    .back-button {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        padding: 1px 3px;
-        background-color: orange;
-        border: 1px solid #5D3FD3;
-        border-radius: 3px;
-        text-decoration: none;
-        color: #5D3FD3;
-        font-size: 20px;
-    }
-    .select-button {
-        background-color: orange;
-        border: 1px solid #5D3FD3;
-        border-radius: 3px;
-        color: #5D3FD3;
-    }
-    .get-table-button {
-        background-color: orange;
-        border: 1px solid #5D3FD3;
-        border-radius: 3px;
-        color: #5D3FD3;
-    }
-    .form-container {
-        text-align: center;
-        margin-top: auto;
-        align-items: center;
-    }
-    .attributes-container {
-        text-align: center;
-        margin-top: auto;
-        align-items: center;
-    }
-    .filter-cell {
-        display: block;
-        margin-bottom: 10px;
-    }
-    .center-content {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .filter-container {
-        text-align: center;
-        margin: auto;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: flex-start;
-    }
-    body {
-        background-image: url("https://i.pinimg.com/564x/26/59/09/265909ebce6c16b329e09c48b9147667.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        margin: 0;
-        height: 100vh; 
-    }
-    .purple-box {
-        background-color: purple;
-        padding: 10px;
-        margin: 10px;
-        display: inline-flex;
-        align-items: center;
-        color: white;
-        font-weight: bold;
-        border-radius: 5px;
-    }
-    </style>
 
     <?php
     require_once('./dbUtils.php');
@@ -185,7 +109,7 @@
                                     <option value="<=">Less than or equal to (<=)</option>
                                     <option value=">=">Greater than or equal to (>=)</option>
                                 </select>
-                                <input type="date" name="filter_list[<?php echo $column; ?>]">
+                                <input type="date" min="1900-01-01" max="9999-12-31" name="filter_list[<?php echo $column; ?>]">
                             <?php endif; ?>
                             <br>
                         </div>

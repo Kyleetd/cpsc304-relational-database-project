@@ -62,6 +62,17 @@
             $selectedColumns = $_POST['selected_columns_list'];
             $filterStatements = $_POST['filter_list'];
             $selectedTable = $_POST['table_selection'];
+
+            $table = executePlainSQL("SELECT * FROM $selectedTable");
+
+            //Add columns to columns array
+            $columnTypes = array();
+            $numCols = oci_num_fields($table);
+            for ($i = 1; $i <= $numCols; $i++) {
+                $column = oci_field_name($table, $i);
+                $dataType = oci_field_type($table, $i);
+                $columnTypes[$column] = $dataType;
+            }
     
             // Build the SELECT statement
             $selectStatement = "SELECT " . implode(", ", $selectedColumns) . " FROM $selectedTable";
@@ -71,7 +82,11 @@
             $tuples = array();
             foreach ($filterStatements as $column => $value) {
                 if (!empty($value)) {
-                    $filterConditions[] = "$column " . $_POST['filter_operators'][$column] . " :$column";
+                    if ($columnTypes[$column] === 'DATE') {
+                        $filterConditions[] = "$column " . $_POST['filter_operators'][$column] . " TO_DATE(:$column, 'YYYY-MM-DD')"; 
+                    } else {
+                        $filterConditions[] = "$column " . $_POST['filter_operators'][$column] . " :$column";
+                    }
                     $tuples[":$column"] = $value;
                 }
             }
