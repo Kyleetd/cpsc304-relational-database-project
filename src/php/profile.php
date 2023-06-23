@@ -8,9 +8,9 @@
 
 <style>
     body {
-    background-image: url('https://i.pinimg.com/564x/a9/80/22/a98022cdb8b339e11542132b6428ac92.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
+        background-image: url('https://i.pinimg.com/564x/a9/80/22/a98022cdb8b339e11542132b6428ac92.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
     }
     .header {
         text-align: center;
@@ -19,6 +19,7 @@
         background-color: transparent;
         color: orange; 
         text-shadow: 2px 2px 4px #5D3FD3;
+        position: relative; 
     }
     .button-container {
         display: inline-block;
@@ -96,6 +97,7 @@
         margin: 0 5px;
     }
     .back-button {
+        display: inline-block;
         position: absolute;
         top: 10px;
         left: 10px;
@@ -105,19 +107,21 @@
         border-radius: 3px;
         text-decoration: none;
         color: orange;
-        font-size: 20px;
+        font-size: 15px;
+        text-align: center;
     }
 </style>
 
 <body>
 <div class="header">
-        <h1>Profile: Users and Measurements</h1>
-        <div class="button-container">
-            <div class="button add-user-button" onclick="showInputForm()">Add User</div>
-            <div class="button bmi-button" id="join" onclick="openAverageBMI()">Compute users with average BMI < overall average BMI</div>
-        </div>
-        <a href="./dashboard.php" class="back-button">Back</a>
+    <h1>Profile: Users and Measurements</h1>
+    <div class="button-container">
+        <div class="button add-user-button" onclick="showInputForm()">Add User</div>
+        <div class="button bmi-button" id="join" onclick="openAverageBMI()">Compute users with average BMI < overall average BMI</div>
+        <a href="./dashboard.php" class="back-button new-class">Back</a>
+    </div>
 </div>
+
 
 <div id="filter-line">
   <div class="center-content">
@@ -138,7 +142,7 @@ if (!$db_conn) {
     trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 }
 
-// define & execute the SQL query
+// Define & execute the SQL query
 $query = 'SELECT User_Measurement.userID, Users.name, User_Measurement.height, User_Measurement.weight, User_Measurement.BMI
           FROM Users, User_Measurement
           WHERE User_Measurement.userID = Users.ID';
@@ -191,7 +195,7 @@ if (isset($_POST['submit'])) {
     oci_bind_by_name($insertStmt, ":userID", $userID);
     oci_execute($insertStmt);
 
-    // // Insert User in Users table
+    // Insert User in Users table
     $insertQuery = "INSERT INTO Users (ID, NAME) VALUES (:ID, :name)";
     $insertStmt = oci_parse($db_conn, $insertQuery);
     oci_bind_by_name($insertStmt, ":ID", $userID);
@@ -215,7 +219,7 @@ oci_close($db_conn);
         formRow.style.display = 'table-row';
     }
     function openAverageBMI() {
-        window.open("https://www.students.cs.ubc.ca/~gargkash/project_j4i5v_j7r8j_r6z9i/src/php/averageBMI.php", "_blank");
+        window.open("https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/averageBMI.php", "_blank");
     }
     function handleFindCount() {
         var BMIValue = document.getElementById('find-count').value;
