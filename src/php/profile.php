@@ -215,11 +215,11 @@ oci_close($db_conn);
         formRow.style.display = 'table-row';
     }
     function openAverageBMI() {
-        window.open("https://www.students.cs.ubc.ca/~gargkash/project_j4i5v_j7r8j_r6z9i/src/php/averageBMI.php", "_blank");
+        window.open("./averageBMI.php", "_blank");
     }
     function handleFindCount() {
         var BMIValue = document.getElementById('find-count').value;
-        var url = "https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/numUsersBMI.php?BMI=" + BMIValue;
+        var url = "./numUsersBMI.php?BMI=" + BMIValue;
         window.open(url, "_blank");
     }
 </script>
