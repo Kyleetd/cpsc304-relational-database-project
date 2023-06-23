@@ -82,7 +82,7 @@
                 <div class="filter-container">
                     <?php foreach ($columns as $column => $dataType) : ?>
                         <div class="filter-cell">
-                            <input type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
+                            <input class="filter-checkbox"type="checkbox" name="selected_columns_list[]" value="<?php echo $column; ?>"
                                 id="filter_list[<?php echo $column; ?>]">
                             <label class="purple-box" for="filter_list[<?php echo $column; ?>]"><?php echo $column; ?></label>
                             <?php if ($dataType === 'NUMBER' || $dataType === 'REAL') : ?>

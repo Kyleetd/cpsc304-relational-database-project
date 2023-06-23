@@ -24,7 +24,7 @@ body {
 
 .form-container {
     margin: auto;
-    width: 650px;
+    width: 800px;
     background-color: #8D6CE9;
     padding: 20px;
     border-radius: 5px;
@@ -101,7 +101,7 @@ background-color: #3A1F99;
 
     background-color: #8D6CE9;
     border: 4px solid #8D6CE9;
-    width: 650px;
+    width: 800px;
     padding: 20px;
     padding-top: 5px;
     border-radius: 5px;
@@ -143,4 +143,9 @@ background-color: #3A1F99;
     border-radius: 5px;
     color: orange;
     font-size: 17px;
+}
+
+.filter-checkbox {
+    width: 20px;
+    height: 20px;
 }
