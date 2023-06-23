@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/goals.css">
     <title>Goals</title>
 </head>
 <style>
@@ -76,7 +77,6 @@
     }
 </style>
 <body>
-
     <div class="header">
         <h1 style="color: orange;">Fitness Goals</h1>
         <div class="add-goal-button" onclick="showInputForm()" style="color: orange;">+</div>
@@ -101,7 +101,8 @@
 
     // Display table
     echo '<table>';
-    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th><th>Action</th></tr>';
+    echo '<tr><th>Goal ID</th><th>Description</th><th>Target Date</th><th>User ID</th>
+    <th style="width:200px;">Action</th></tr>';
 
     $rowIndex = 0;
     while ($row = oci_fetch_assoc($stmt)) {
@@ -111,7 +112,7 @@
         echo '<td>' . $row['DESCRIPTION'] . '</td>';
         echo '<td>' . $row['TARGETDATE'] . '</td>';
         echo '<td>' . $row['USERID'] . '</td>';
-        echo "<td><button type='button' class='action-button' data-row-index='$rowIndex'>Edit</button>";
+        echo "<td class='action-button-container'><button type='button' class='action-button' data-row-index='$rowIndex'>Edit</button>";
         if (!$row['ACHIEVED'] == 1) {
             echo "<button form='row-form-$rowIndex' type='submit' name='achieved' value='" . $row['GOALID'] . "' class='action-button'>Achieve</button>";
         }
@@ -141,7 +142,7 @@
     echo '<td><input type="date" name="targetDate" min="1900-01-01" max="9999-12-31" style="color: #5D3FD3;"></td>';
     echo '<td><input type="number" name="userID" placeholder="Enter user ID" style="color: #5D3FD3;"></td>';
     echo '<td colspan="2">';
-    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: #fff;"></td>';
+    echo '<input type="submit" name="submit" value="Add" style="background-color: #5D3FD3; color: orange;"></td>';
     echo '</td>';
     echo '</tr>';
     echo '</table>'; 
