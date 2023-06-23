@@ -54,7 +54,7 @@
 <body>
 <div class="header">
         <h1 style="color: orange; text-shadow: 2px 2px 4px #5D3FD3;">All Users Who Attend All Gyms</h1>
-        <a href="./gym.php" class="back-button">Back</a>
+        <a href="https://www.students.cs.ubc.ca/~kyleetd/project_j4i5v_j7r8j_r6z9i/src/php/gym.php" class="back-button">Back</a>
 </div>
 
 <?php
@@ -69,7 +69,7 @@ if (!$db_conn) {
 
 // define & execute the SQL query
 $query = "SELECT DISTINCT(U.ID) AS U_ID, U.name AS U_NAME
-          FROM \"User\" U
+          FROM Users U
           JOIN Attends A ON U.ID = A.userID
           JOIN Gym G ON A.address = G.address AND A.postalCode = G.postalCode
           WHERE NOT EXISTS (

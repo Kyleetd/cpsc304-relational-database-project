@@ -23,7 +23,7 @@ table {
 th,
 td {
     padding: 8px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid purple;
     color: #5D3FD3; 
 }
@@ -88,4 +88,9 @@ td:first-child {
     display: flex;
     justify-content: flex-start;
     gap: 10px;
+}
+
+.ach-del-button {
+    background-color: #5D3FD3; 
+    color: orange;
 }
